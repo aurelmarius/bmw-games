@@ -108,6 +108,22 @@ The car apps (Engine Care, Hybrid Cost) are in [aurelmarius/bmw-apps](https://gi
 ![Solitaire - won: the cards bounce off the foundations](docs/screenshots/solitaire-win.png)
 <sub>Screenshots drawn by the app on a PC (`tools/screenshots.js`), seeded deals played by the hint.</sub>
 
+### 7. 🏎️ Apex Chase (`apex_chase`)
+*A maze chase in a city at night: the M car against four electric cars. GPU renderer at 60 fps. Parked only.*
+
+* **The city from above**: asphalt streets with lane marks and pools of street-lamp light, blocks of buildings with lit windows and rooftop plant, parks with trees, tunnels at both ends of the middle avenue, the charging station in the middle. Two cities, in turns from level to level.
+* **The M car** (white, blue, green, red or yellow, with the three stripes on its bonnet and its headlights on the street) collects the fuel drops on every street.
+* **Four electric cars** hunt it, each its own way: **Volt** goes for the car, **Spark** for where it's heading, **Amp** for the street behind it, **Watt** comes close and then turns away; now and then they all go round their own corner of the city.
+* **NITRO**: a can in each corner drains the electric cars' batteries: they crawl and flee (a red battery blinks over them), and one caught goes back to the charging station: 200, 400, 800, 1600.
+* **Bonus** items (chequered flag, trophy, wrench, race tyre, key) under the station, an extra car at 10 000; every cleared city is faster, the nitro shorter.
+* **iDrive controller**: push the way to go (kept until the car can turn), turn = right / left, press = pause. **Touchscreen**: swipe the way to go.
+* **Settings**: difficulty (easy / normal / hard: how fast the electric cars are, how long a nitro lasts), your car's paint. Best score kept for each difficulty.
+* An original game: its own city, cars and rules; the electric cars are generic, with no make's badge.
+
+![Apex Chase - the chase under way](docs/screenshots/apex_chase-game.png)
+![Apex Chase - NITRO: a car caught, the others fleeing](docs/screenshots/apex_chase-nitro.png)
+<sub>Screenshots drawn by the app on a PC (`tools/screenshots.js`), played by an autopilot.</sub>
+
 ---
 
 ## 🚀 Installation
@@ -120,7 +136,7 @@ The car apps (Engine Care, Hybrid Cost) are in [aurelmarius/bmw-apps](https://gi
    github.com/aurelmarius/bmw-games
    ```
 4. Select **Releases** as the source type.
-5. Tap **Install** next to **Snake**, **Track Defender**, **Pit Wall**, **Lucky Sevens**, **Blackjack** or **Solitaire**.
+5. Tap **Install** next to **Snake**, **Track Defender**, **Pit Wall**, **Lucky Sevens**, **Blackjack**, **Solitaire** or **Apex Chase**.
 
 The games run smoothest with the **mgu-render** GPU renderer, installed from the same Store. Without it they still run, as images handed to the HMI a few times a second.
 
@@ -128,7 +144,7 @@ The games run smoothest with the **mgu-render** GPU renderer, installed from the
 1. Download the `<game>@<version>.tgz` files from [Releases](https://github.com/aurelmarius/bmw-games/releases).
 2. Copy the files onto a USB stick or build a USB repository:
    ```powershell
-   node mgu-install.js usb-repo E:\ snake@1.0.0.tgz track_defender@1.0.0.tgz pit_wall@1.0.0.tgz lucky_sevens@1.1.0.tgz blackjack@1.0.1.tgz solitaire@1.0.0.tgz
+   node mgu-install.js usb-repo E:\ snake@1.0.0.tgz track_defender@1.0.0.tgz pit_wall@1.0.0.tgz lucky_sevens@1.1.0.tgz blackjack@1.0.1.tgz solitaire@1.0.0.tgz apex_chase@1.0.0.tgz
    ```
 3. Insert the USB drive into your car and install from the **USB** page of the Store.
 
@@ -141,6 +157,7 @@ Copy the package to the head unit and run `mgu-deploy.sh`:
 /var/opt/mgu-deploy/mgu-deploy.sh install --artifact lucky_sevens@1.1.0.tgz --yes
 /var/opt/mgu-deploy/mgu-deploy.sh install --artifact blackjack@1.0.1.tgz --yes
 /var/opt/mgu-deploy/mgu-deploy.sh install --artifact solitaire@1.0.0.tgz --yes
+/var/opt/mgu-deploy/mgu-deploy.sh install --artifact apex_chase@1.0.0.tgz --yes
 ```
 
 ---
@@ -158,7 +175,7 @@ Copy the package to the head unit and run `mgu-deploy.sh`:
 ## 🧪 Development
 
 ```bash
-python3 kit/tools/build.py snake track_defender pit_wall lucky_sevens blackjack solitaire  # -> dist/<id>@<version>.tgz
+python3 kit/tools/build.py snake track_defender pit_wall lucky_sevens blackjack solitaire apex_chase  # -> dist/<id>@<version>.tgz
 node kit/tools/preview.js dist/blackjack preview        # a game on a simulated head unit, as PNGs
 node tests/snake.test.js                                # Snake's rules
 node tests/track_defender.test.js                       # Track Defender's rules
@@ -166,6 +183,7 @@ node tests/pit_wall.test.js                             # Pit Wall's rules
 node tests/lucky_sevens.test.js                         # Lucky Sevens' rules
 node tests/blackjack.test.js                            # Blackjack's rules
 node tests/solitaire.test.js                            # Solitaire's rules
+node tests/apex_chase.test.js                           # Apex Chase's rules
 node tools/screenshots.js                               # the README's screenshots (after a build)
 ```
 

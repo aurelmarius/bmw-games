@@ -4,7 +4,7 @@
  * screenshots.js - the README's screenshots (docs/screenshots/*.png), drawn by the built games on a
  * PC: seeded games played by an autopilot, a car that stands still (a fake SOME/IP). No head unit needed.
  *
- *   python3 kit/tools/build.py snake track_defender pit_wall lucky_sevens blackjack solitaire && node tools/screenshots.js
+ *   python3 kit/tools/build.py snake track_defender pit_wall lucky_sevens blackjack solitaire apex_chase && node tools/screenshots.js
  *
  * Each game runs in its own process (the fake clock replaces Date.now and the timers).
  */
@@ -18,7 +18,7 @@ const OUT = path.join(ROOT, 'docs', 'screenshots');
 
 if (!process.argv[2]) {
     fs.mkdirSync(OUT, { recursive: true });
-    for (const app of ['snake', 'track_defender', 'pit_wall', 'lucky_sevens', 'blackjack', 'solitaire']) {
+    for (const app of ['snake', 'track_defender', 'pit_wall', 'lucky_sevens', 'blackjack', 'solitaire', 'apex_chase']) {
         process.stdout.write(execFileSync(process.execPath, [__filename, app], { encoding: 'utf8' }));
     }
     process.exit(0);
@@ -281,6 +281,58 @@ if (which === 'solitaire') {
         }
         await frames(3800);
         shot('solitaire-win', lastFrame);
+        process.exit(0);
+    })().catch((e) => { console.error(e); process.exit(1); });
+    return;
+}
+
+/* ---------- Apex Chase: an autopilot that collects drops and keeps away from the electric cars ---------- */
+if (which === 'apex_chase') {
+    let seed = 17;
+    Math.random = () => { seed = (seed * 1103515245 + 12345) % 2147483648; return seed / 2147483648; };
+    fs.writeFileSync(path.join(DATA, 'apex_chase_best.json'), JSON.stringify({ normal: 18450 }));
+    const M = require(path.join(APP, 'model'));
+    let g = null;
+    const Game = M.Game;
+    M.Game = class extends Game { constructor(o) { super(o); g = this; } };
+    /** at the crossing ahead: away from hunting cars that are close, else to scared ones or the nearest drop */
+    function pilot() {
+        const c = g.car;
+        // decide for the crossing ahead (the cell the car is heading into)
+        const nx0 = c.t > 0 ? M.wrapX(c.x + M.DIRS[c.dir][0]) : c.x, ny0 = c.t > 0 ? c.y + M.DIRS[c.dir][1] : c.y;
+        const cell = (d, e) => d[Math.round(e.y)][M.wrapX(Math.round(e.x))];
+        const here = M.distances(g.grid, { x: nx0, y: ny0 }, true);
+        const ways = ['U', 'L', 'D', 'R'].filter((d) => g.open(nx0 + M.DIRS[d][0], ny0 + M.DIRS[d][1]));
+        const threats = g.evs.filter((e) => e.state === 'out' && cell(here, e) < 6);
+        const score = (d) => {
+            const from = M.distances(g.grid, { x: M.wrapX(nx0 + M.DIRS[d][0]), y: ny0 + M.DIRS[d][1] }, true);
+            if (threats.length) return Math.min(...threats.map((e) => cell(from, e))) * 10;
+            const prey = g.evs.filter((e) => e.state === 'scared' && g.fright > 1200);
+            if (prey.length) return -Math.min(...prey.map((e) => cell(from, e)));
+            let best = 1e9; for (const k of g.dots) { const [x, y] = k.split(',').map(Number); best = Math.min(best, from[y][x]); } return -best;
+        };
+        let bd = null, bv = -1e9; for (const d of ways) { const v = score(d); if (v > bv) { bv = v; bd = d; } }
+        if (bd) g.steer(bd);
+    }
+
+    (async () => {
+        require(path.join(APP, 'app.js'));
+        ctx.display = { own: () => true };          // as where the kit runs the screen (mgu-render): touch hints
+        await global.__app.start(ctx);
+        const frames = async (ms, until) => { for (let t = 0; t < ms; t += 16) { now += 16; pilot(); await ctx.draw(); if (until && until()) return true; } return false; };
+        clicks.BTN_PLAY();
+        // the chase under way: about a third of the drops gone, the four cars out
+        const calm = () => !g.fright && !g.dying && g.pause <= 0 && g.evs.filter((e) => e.state === 'out').length >= 3 && !g.evs.some((e) => e.state === 'back');
+        await frames(120000, () => g.eaten > 90 && calm());
+        shot('apex_chase-game', lastFrame);
+        // a nitro (given: the autopilot doesn't plan for one), a car caught, the others fleeing
+        await frames(3000);
+        const near = () => { const d = M.distances(g.grid, { x: g.car.x, y: g.car.y }, true); return g.evs.filter((e) => d[Math.round(e.y)][M.wrapX(Math.round(e.x))] < 7).length; };
+        await frames(90000, () => calm() && g.evs.filter((e) => e.state === 'out').length === 4 && near() >= 2);
+        g._nitro();
+        await frames(7000, () => g.fright > 2100 && g.evs.some((e) => e.state === 'back') && g.evs.some((e) => e.state === 'scared'));
+        await frames(250);
+        shot('apex_chase-nitro', lastFrame);
         process.exit(0);
     })().catch((e) => { console.error(e); process.exit(1); });
     return;

@@ -1,0 +1,153 @@
+{
+  "id": "apex_chase",
+  "title": "Apex Chase",
+  "description": "A maze chase in a city at night, drawn by the GPU renderer at 60 fps: the M car collects the fuel drops while four electric cars hunt it; a NITRO can drains their batteries. iDrive controller or swipes. Parked only.",
+  "version": "1.0.0",
+  "vendor": "custom",
+  "loggingId": "OA9A",
+  "iconGlyph": "chase",
+  "signals": {
+    "de.bmw.infotainment.vehicle.Vehicle2": {
+      "statusCarSpeed2": "rs"
+    }
+  },
+  "screens": [
+    {
+      "name": "MAIN",
+      "kind": "canvas",
+      "title": "Apex Chase",
+      "buttons": [
+        [
+          "BTN_PLAY",
+          "Start"
+        ],
+        [
+          "BTN_UP",
+          "Up"
+        ],
+        [
+          "BTN_DOWN",
+          "Down"
+        ],
+        [
+          "BTN_LEFT",
+          "Left"
+        ],
+        [
+          "BTN_RIGHT",
+          "Right"
+        ],
+        [
+          "BTN_SETTINGS",
+          "Settings"
+        ]
+      ]
+    }
+  ],
+  "settings": [
+    {
+      "key": "difficulty",
+      "label": "Difficulty",
+      "type": "choice",
+      "default": "normal",
+      "options": [
+        [
+          "easy",
+          "Easy"
+        ],
+        [
+          "normal",
+          "Normal"
+        ],
+        [
+          "hard",
+          "Hard"
+        ]
+      ]
+    },
+    {
+      "key": "paint",
+      "label": "Your car's paint",
+      "type": "choice",
+      "default": "white",
+      "options": [
+        [
+          "white",
+          "White"
+        ],
+        [
+          "blue",
+          "Blue"
+        ],
+        [
+          "green",
+          "Green"
+        ],
+        [
+          "red",
+          "Red"
+        ],
+        [
+          "yellow",
+          "Yellow"
+        ]
+      ]
+    },
+    {
+      "key": "theme",
+      "label": "Colour theme",
+      "type": "choice",
+      "default": "m_tricolour",
+      "options": [
+        [
+          "m_red",
+          "M Red"
+        ],
+        [
+          "m_tricolour",
+          "M Tricolour"
+        ],
+        [
+          "ice",
+          "Ice White"
+        ],
+        [
+          "amber",
+          "Night Amber"
+        ]
+      ]
+    },
+    {
+      "key": "layout",
+      "label": "Screen layout",
+      "type": "choice",
+      "default": "full",
+      "options": [
+        [
+          "full",
+          "Full screen"
+        ],
+        [
+          "standard",
+          "Standard"
+        ]
+      ]
+    },
+    {
+      "key": "renderer",
+      "label": "Renderer",
+      "type": "choice",
+      "default": "auto",
+      "options": [
+        [
+          "auto",
+          "GPU 60 fps (default)"
+        ],
+        [
+          "software",
+          "Software"
+        ]
+      ]
+    }
+  ]
+}

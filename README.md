@@ -1,6 +1,6 @@
 # BMW iDrive 7 Games (MGU)
 
-Games for BMW iDrive 7 (MGU head units), for when the car is parked: drawn by the **mgu-render** GPU renderer at 60 fps, played with the iDrive controller or the touchscreen. Compatible with **Robert Nisipeanu's mgu-store** and **IterioDev's App Manager**.
+Games for BMW iDrive 7 (MGU head units), for when the car is parked: drawn by the **mgu-render** GPU renderer at 60 fps, played with the iDrive controller or the touchscreen. Compatible with **Robert Nisipeanu's mgu-store**.
 
 Every game is **parked only**: it pauses (or deals no new hand) as soon as the car moves above 3 km/h. The casino games use **play credits only**: nothing to buy, nothing to win.
 

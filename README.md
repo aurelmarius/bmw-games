@@ -156,7 +156,7 @@ The car apps (Engine Care, Hybrid Cost) are in [aurelmarius/bmw-apps](https://gi
 
 The games run smoothest with the **mgu-render** GPU renderer, installed from the same Store.
 
-**Installed a game before v1.2.0?** The games' ids now carry the `aurelm_` prefix (`aurelm_snake`, …), as the Store's publishing guide asks, so the Store sees them as new apps: install them again, then remove the old ones (without the prefix) from the Store. Best scores, credits and statistics start afresh. Without it they still run, as images handed to the HMI a few times a second.
+**Installed a game from v1.1.3 or older?** The games' ids now carry the `aurelm_` prefix (`aurelm_snake`, …), as the Store's publishing guide asks, so the Store sees them as new apps: install them again, then remove the old ones (without the prefix) from the Store. Best scores, credits and statistics start afresh. Without it they still run, as images handed to the HMI a few times a second.
 
 ### Method 2: Via USB Stick
 1. Download the `<game>@<version>.tgz` files from [Releases](https://github.com/aurelmarius/bmw-games/releases).

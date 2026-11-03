@@ -3,7 +3,7 @@
   "name": "Aurel Marius BMW Games",
   "components": [
     {
-      "id": "apex_chase",
+      "id": "aurelm_apex_chase",
       "kind": "app",
       "version": "1.0.0",
       "title": "Apex Chase",
@@ -12,15 +12,15 @@
         "ID7"
       ],
       "artifact": {
-        "name": "apex_chase@1.0.0.tgz",
-        "size": 569994,
-        "sha256": "c071751093a318811d9159013f55d027178c1e54ad1b75dc715487af6d7cc06d",
-        "url": "packages/apex_chase@1.0.0.tgz"
+        "name": "aurelm_apex_chase@1.0.0.tgz",
+        "size": 570128,
+        "sha256": "21c78f14db74f9e08210862fa16d100e9af010244933c769bb9083764267c02b",
+        "url": "packages/aurelm_apex_chase@1.0.0.tgz"
       },
       "uninstallable": true
     },
     {
-      "id": "blackjack",
+      "id": "aurelm_blackjack",
       "kind": "app",
       "version": "1.0.1",
       "title": "Blackjack",
@@ -29,15 +29,15 @@
         "ID7"
       ],
       "artifact": {
-        "name": "blackjack@1.0.1.tgz",
-        "size": 573793,
-        "sha256": "629b1a11cd348c0baeab12d2728f45dcd52bbe18e4b8b2d1ffc250f6ab66d689",
-        "url": "packages/blackjack@1.0.1.tgz"
+        "name": "aurelm_blackjack@1.0.1.tgz",
+        "size": 573880,
+        "sha256": "128e7261e22a43d3d441c998a694a3891cc171cec16d20aa1740bcfd5b6c6fd5",
+        "url": "packages/aurelm_blackjack@1.0.1.tgz"
       },
       "uninstallable": true
     },
     {
-      "id": "lucky_sevens",
+      "id": "aurelm_lucky_sevens",
       "kind": "app",
       "version": "1.1.0",
       "title": "Lucky Sevens",
@@ -46,15 +46,15 @@
         "ID7"
       ],
       "artifact": {
-        "name": "lucky_sevens@1.1.0.tgz",
-        "size": 573859,
-        "sha256": "fba1fff415d29ab48d2041b89897d7e3a7c6f2b04a1bf8f0a676e52f5e5473c9",
-        "url": "packages/lucky_sevens@1.1.0.tgz"
+        "name": "aurelm_lucky_sevens@1.1.0.tgz",
+        "size": 573862,
+        "sha256": "e5ab4ccce1f2f9159eaba91c251caa3c2485b4daf08ee812517000303557708a",
+        "url": "packages/aurelm_lucky_sevens@1.1.0.tgz"
       },
       "uninstallable": true
     },
     {
-      "id": "pit_wall",
+      "id": "aurelm_pit_wall",
       "kind": "app",
       "version": "1.0.0",
       "title": "Pit Wall",
@@ -63,15 +63,15 @@
         "ID7"
       ],
       "artifact": {
-        "name": "pit_wall@1.0.0.tgz",
-        "size": 565426,
-        "sha256": "1d7aad8daf93446ff419c3236656f6f76df8e62342a052b14ec38e259462212a",
-        "url": "packages/pit_wall@1.0.0.tgz"
+        "name": "aurelm_pit_wall@1.0.0.tgz",
+        "size": 565262,
+        "sha256": "63053576847bc45d1a76a43d77cc11cf33a7d1d4f64307eb8a48de6bc952de31",
+        "url": "packages/aurelm_pit_wall@1.0.0.tgz"
       },
       "uninstallable": true
     },
     {
-      "id": "snake",
+      "id": "aurelm_snake",
       "kind": "app",
       "version": "1.0.0",
       "title": "Snake",
@@ -80,15 +80,15 @@
         "ID7"
       ],
       "artifact": {
-        "name": "snake@1.0.0.tgz",
-        "size": 557541,
-        "sha256": "2b0f904d6b1e594a5eab9c362b6271116aab67e6b174097759e526a6749fc7fc",
-        "url": "packages/snake@1.0.0.tgz"
+        "name": "aurelm_snake@1.0.0.tgz",
+        "size": 557582,
+        "sha256": "bc2e4a76023e0b2a778e722d69aed4ad90a9b7eb21324d624f13fd54ef61c014",
+        "url": "packages/aurelm_snake@1.0.0.tgz"
       },
       "uninstallable": true
     },
     {
-      "id": "solitaire",
+      "id": "aurelm_solitaire",
       "kind": "app",
       "version": "1.0.0",
       "title": "Solitaire",
@@ -97,15 +97,15 @@
         "ID7"
       ],
       "artifact": {
-        "name": "solitaire@1.0.0.tgz",
-        "size": 570522,
-        "sha256": "50a9cfbd0b04b03e4d473a551bf975cdd4a665fd012674dedb8d3d868a9d8c5e",
-        "url": "packages/solitaire@1.0.0.tgz"
+        "name": "aurelm_solitaire@1.0.0.tgz",
+        "size": 570552,
+        "sha256": "742ed7f80b4169341a68675aa226b445398f24898f39906f53e6358aae980c3e",
+        "url": "packages/aurelm_solitaire@1.0.0.tgz"
       },
       "uninstallable": true
     },
     {
-      "id": "street_siege",
+      "id": "aurelm_street_siege",
       "kind": "app",
       "version": "1.0.0",
       "title": "Street Siege",
@@ -114,15 +114,15 @@
         "ID7"
       ],
       "artifact": {
-        "name": "street_siege@1.0.0.tgz",
-        "size": 571833,
-        "sha256": "538b67f4dd8db3f35cdf1b27519f3ccf9db751f6a7f93f35d6b3868ac8bc07cf",
-        "url": "packages/street_siege@1.0.0.tgz"
+        "name": "aurelm_street_siege@1.0.0.tgz",
+        "size": 571843,
+        "sha256": "de7c99afa830479d6a5170b1e386316a2d849a9fd77874b16a499cd17e2cc479",
+        "url": "packages/aurelm_street_siege@1.0.0.tgz"
       },
       "uninstallable": true
     },
     {
-      "id": "track_defender",
+      "id": "aurelm_track_defender",
       "kind": "app",
       "version": "1.0.0",
       "title": "Track Defender",
@@ -131,10 +131,10 @@
         "ID7"
       ],
       "artifact": {
-        "name": "track_defender@1.0.0.tgz",
-        "size": 565022,
-        "sha256": "19c523659942a41a35eea3febd91b1bc23b068db58944a3aa466fd3fbf5bffcf",
-        "url": "packages/track_defender@1.0.0.tgz"
+        "name": "aurelm_track_defender@1.0.0.tgz",
+        "size": 564807,
+        "sha256": "14f972b3cd7e41e0addff451164226b90cf25ff69f27a71d63b2449018dec378",
+        "url": "packages/aurelm_track_defender@1.0.0.tgz"
       },
       "uninstallable": true
     }

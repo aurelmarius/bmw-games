@@ -1,59 +1,59 @@
 {
   "apps": {
-    "apex_chase": {
+    "aurelm_apex_chase": {
       "title": "Apex Chase",
       "description": "A maze chase in a city at night, drawn by the GPU renderer at 60 fps: the M car collects the fuel drops while four electric cars hunt it; a NITRO can drains their batteries. iDrive controller or swipes. Parked only.",
       "author": "custom",
-      "icon": "apex_chase.png",
+      "icon": "aurelm_apex_chase.png",
       "iconSha256": "2def54864ab5f2f35ec6aeabf45dbe83e5ee463bbb5518191bf06a8dbe4b5a80"
     },
-    "blackjack": {
+    "aurelm_blackjack": {
       "title": "Blackjack",
       "description": "Casino blackjack for play credits, drawn by the GPU renderer at 60 fps: a felt table with a leather rail, cards dealt from the shoe, chips, six decks, 3 to 2, double, split, insurance, a strategy hint, statistics. iDrive controller or touch. Parked only.",
       "author": "custom",
-      "icon": "blackjack.png",
+      "icon": "aurelm_blackjack.png",
       "iconSha256": "a13dd922338503c5d022f9a19bad0eb207453f942a8739975e29bec908aca7c7"
     },
-    "lucky_sevens": {
+    "aurelm_lucky_sevens": {
       "title": "Lucky Sevens",
       "description": "A five reel slot machine for play credits, drawn by the GPU renderer at 60 fps: glossy symbols, reels that bounce to a stop, ten paylines, WILD, free spins, a progressive jackpot, statistics. iDrive controller or touch. Parked only.",
       "author": "custom",
-      "icon": "lucky_sevens.png",
+      "icon": "aurelm_lucky_sevens.png",
       "iconSha256": "2c446e07e482a3f68a463578ec7d28307b6bb3b997e6d15a9b0ba4f90b7c7815"
     },
-    "pit_wall": {
+    "aurelm_pit_wall": {
       "title": "Pit Wall",
       "description": "Break the advertising panels off the pit wall: a night race scene drawn by the GPU renderer at 60 fps, the ball on an M front wing, start lights, combos and power-ups. iDrive controller or touch. Parked only.",
       "author": "custom",
-      "icon": "pit_wall.png",
+      "icon": "aurelm_pit_wall.png",
       "iconSha256": "bb29f663abcb1a14203087f26224b2f6b55debd6f529b38229f91319f94fad0b"
     },
-    "snake": {
+    "aurelm_snake": {
       "title": "Snake",
       "description": "Snake on the central display, drawn by the GPU renderer at 60 fps: steer with the iDrive controller (push or turn) or swipe on the screen. Parked only.",
       "author": "custom",
-      "icon": "snake.png",
+      "icon": "aurelm_snake.png",
       "iconSha256": "19bceca073c4d63c2cceae959171571eea55432471bfb569d5bf33cb947a6a03"
     },
-    "solitaire": {
+    "aurelm_solitaire": {
       "title": "Solitaire",
       "description": "Klondike solitaire drawn by the GPU renderer at 60 fps: a felt card table, cards that fly, flip and bounce home. Tap or press for the best move, drag cards, draw one or three, undo, hint, auto finish, statistics. Parked only.",
       "author": "custom",
-      "icon": "solitaire.png",
+      "icon": "aurelm_solitaire.png",
       "iconSha256": "1effec6c194696f547afd63ee87201c65a59f54fb4cbfa652fafa4eeb027bdc1"
     },
-    "street_siege": {
+    "aurelm_street_siege": {
       "title": "Street Siege",
       "description": "Defend the M garage: cars storm an industrial yard at night and the M car stops them with its roof cannon. Tyre walls that fall apart, concrete, a canal, trees, oil, power-ups; drawn by the GPU renderer at 60 fps. Parked only.",
       "author": "custom",
-      "icon": "street_siege.png",
+      "icon": "aurelm_street_siege.png",
       "iconSha256": "4e43bb80493533e2d3ed224b7e2904edfc505116d8f2ca1ac8ab042246bcdb25"
     },
-    "track_defender": {
+    "aurelm_track_defender": {
       "title": "Track Defender",
       "description": "Arcade shooter on the central display, drawn by the GPU renderer at 60 fps: drones attack the track in waves, the M car shoots them down. iDrive controller or touch. Parked only.",
       "author": "custom",
-      "icon": "track_defender.png",
+      "icon": "aurelm_track_defender.png",
       "iconSha256": "24c81280b14e8e2732c78d1880e0f610634b6656b6e1716d7e47bcee65b4a8cb"
     }
   }

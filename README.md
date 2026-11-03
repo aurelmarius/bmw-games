@@ -146,10 +146,10 @@ The car apps (Engine Care, Hybrid Cost) are in [aurelmarius/bmw-apps](https://gi
 
 ### Method 1: Via mgu-store (Recommended)
 1. Open **Store** on your BMW central display.
-2. Go to **Settings** -> **Add repository**.
+2. Go to **Settings** -> **Add source**.
 3. Enter:
    ```text
-   github.com/aurelmarius/bmw-games
+   aurelmarius/bmw-games
    ```
 4. Select **Releases** as the source type.
 5. Tap **Install** next to **Snake**, **Track Defender**, **Pit Wall**, **Lucky Sevens**, **Blackjack**, **Solitaire**, **Apex Chase** or **Street Siege**.

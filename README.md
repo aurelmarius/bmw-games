@@ -124,6 +124,22 @@ The car apps (Engine Care, Hybrid Cost) are in [aurelmarius/bmw-apps](https://gi
 ![Apex Chase - NITRO: a car caught, the others fleeing](docs/screenshots/apex_chase-nitro.png)
 <sub>Screenshots drawn by the app on a PC (`tools/screenshots.js`), played by an autopilot.</sub>
 
+### 8. 🛡️ Street Siege (`street_siege`)
+*Defend the M garage: cars storm an industrial yard at night, the M car stops them with its roof cannon. GPU renderer at 60 fps. Parked only.*
+
+* **The yard from above**: asphalt with painted bays, cracks, drains and pools of lamp light; stacks of race tyres (red and white) that fall apart brick by brick when shot, concrete barriers with hazard stripes, a canal (cars can't cross it, shots can), trees whose crowns hide the cars under them, oil patches that make a car slide on. Every level its own yard (symmetric, reachable everywhere).
+* **Twenty cars a level**, four on the yard at most, in from the top: **hatchbacks** (fast), **vans**, **pick-ups** (they fire twice as often), **armoured SUVs** (four hits; they go rusty, then scorched). Three of them flash: hit, they leave a power-up.
+* **Power-ups**: CANNON (faster shots, then two at a time, then through concrete), SHIELD, NITRO (the others stand still), FORTRESS (concrete round the garage for a while), +1 CAR, EMP (every car on the yard gone).
+* **The garage** stands three hits (it smokes; two hits at once count as one); lost, or with no cars left, it's over. The M car's own shots don't hurt it.
+* **Explosions** with sparks, smoke and a shake, chips of tyre and concrete flying, tracers, a shield that turns round the car.
+* **iDrive controller**: push and hold the way to drive, press = fire, turn = pause. **Touchscreen**: a joystick where the finger goes down on the yard, a tap or FIRE fires. **Automatic fire** (a setting, on): the cannon fires by itself at a car in its line.
+* **Settings**: difficulty (easy / normal / hard), automatic fire, your car's paint. Best score kept for each difficulty.
+* An original game in the genre of arena tank shooters: its own yards, cars and rules; no make's badge on any car.
+
+![Street Siege - the siege under way](docs/screenshots/street_siege-game.png)
+![Street Siege - shield and NITRO on, a power-up on the yard](docs/screenshots/street_siege-power.png)
+<sub>Screenshots drawn by the app on a PC (`tools/screenshots.js`), played by an autopilot.</sub>
+
 ---
 
 ## 🚀 Installation
@@ -136,7 +152,7 @@ The car apps (Engine Care, Hybrid Cost) are in [aurelmarius/bmw-apps](https://gi
    github.com/aurelmarius/bmw-games
    ```
 4. Select **Releases** as the source type.
-5. Tap **Install** next to **Snake**, **Track Defender**, **Pit Wall**, **Lucky Sevens**, **Blackjack**, **Solitaire** or **Apex Chase**.
+5. Tap **Install** next to **Snake**, **Track Defender**, **Pit Wall**, **Lucky Sevens**, **Blackjack**, **Solitaire**, **Apex Chase** or **Street Siege**.
 
 The games run smoothest with the **mgu-render** GPU renderer, installed from the same Store. Without it they still run, as images handed to the HMI a few times a second.
 
@@ -144,7 +160,7 @@ The games run smoothest with the **mgu-render** GPU renderer, installed from the
 1. Download the `<game>@<version>.tgz` files from [Releases](https://github.com/aurelmarius/bmw-games/releases).
 2. Copy the files onto a USB stick or build a USB repository:
    ```powershell
-   node mgu-install.js usb-repo E:\ snake@1.0.0.tgz track_defender@1.0.0.tgz pit_wall@1.0.0.tgz lucky_sevens@1.1.0.tgz blackjack@1.0.1.tgz solitaire@1.0.0.tgz apex_chase@1.0.0.tgz
+   node mgu-install.js usb-repo E:\ snake@1.0.0.tgz track_defender@1.0.0.tgz pit_wall@1.0.0.tgz lucky_sevens@1.1.0.tgz blackjack@1.0.1.tgz solitaire@1.0.0.tgz apex_chase@1.0.0.tgz street_siege@1.0.0.tgz
    ```
 3. Insert the USB drive into your car and install from the **USB** page of the Store.
 
@@ -158,6 +174,7 @@ Copy the package to the head unit and run `mgu-deploy.sh`:
 /var/opt/mgu-deploy/mgu-deploy.sh install --artifact blackjack@1.0.1.tgz --yes
 /var/opt/mgu-deploy/mgu-deploy.sh install --artifact solitaire@1.0.0.tgz --yes
 /var/opt/mgu-deploy/mgu-deploy.sh install --artifact apex_chase@1.0.0.tgz --yes
+/var/opt/mgu-deploy/mgu-deploy.sh install --artifact street_siege@1.0.0.tgz --yes
 ```
 
 ---
@@ -175,7 +192,7 @@ Copy the package to the head unit and run `mgu-deploy.sh`:
 ## 🧪 Development
 
 ```bash
-python3 kit/tools/build.py snake track_defender pit_wall lucky_sevens blackjack solitaire apex_chase  # -> dist/<id>@<version>.tgz
+python3 kit/tools/build.py snake track_defender pit_wall lucky_sevens blackjack solitaire apex_chase street_siege  # -> dist/<id>@<version>.tgz
 node kit/tools/preview.js dist/blackjack preview        # a game on a simulated head unit, as PNGs
 node tests/snake.test.js                                # Snake's rules
 node tests/track_defender.test.js                       # Track Defender's rules
@@ -184,6 +201,7 @@ node tests/lucky_sevens.test.js                         # Lucky Sevens' rules
 node tests/blackjack.test.js                            # Blackjack's rules
 node tests/solitaire.test.js                            # Solitaire's rules
 node tests/apex_chase.test.js                           # Apex Chase's rules
+node tests/street_siege.test.js                         # Street Siege's rules
 node tools/screenshots.js                               # the README's screenshots (after a build)
 ```
 

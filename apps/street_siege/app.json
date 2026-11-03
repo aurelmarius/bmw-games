@@ -1,0 +1,169 @@
+{
+  "id": "street_siege",
+  "title": "Street Siege",
+  "description": "Defend the M garage: cars storm an industrial yard at night and the M car stops them with its roof cannon. Tyre walls that fall apart, concrete, a canal, trees, oil, power-ups; drawn by the GPU renderer at 60 fps. Parked only.",
+  "version": "1.0.0",
+  "vendor": "custom",
+  "loggingId": "OA9G",
+  "iconGlyph": "siege",
+  "signals": {
+    "de.bmw.infotainment.vehicle.Vehicle2": {
+      "statusCarSpeed2": "rs"
+    }
+  },
+  "screens": [
+    {
+      "name": "MAIN",
+      "kind": "canvas",
+      "title": "Street Siege",
+      "buttons": [
+        [
+          "BTN_PLAY",
+          "Start"
+        ],
+        [
+          "BTN_UP",
+          "Up"
+        ],
+        [
+          "BTN_DOWN",
+          "Down"
+        ],
+        [
+          "BTN_LEFT",
+          "Left"
+        ],
+        [
+          "BTN_RIGHT",
+          "Right"
+        ],
+        [
+          "BTN_SETTINGS",
+          "Settings"
+        ]
+      ]
+    }
+  ],
+  "settings": [
+    {
+      "key": "difficulty",
+      "label": "Difficulty",
+      "type": "choice",
+      "default": "normal",
+      "options": [
+        [
+          "easy",
+          "Easy"
+        ],
+        [
+          "normal",
+          "Normal"
+        ],
+        [
+          "hard",
+          "Hard"
+        ]
+      ]
+    },
+    {
+      "key": "autoFire",
+      "label": "Automatic fire",
+      "type": "choice",
+      "default": "on",
+      "options": [
+        [
+          "on",
+          "On"
+        ],
+        [
+          "off",
+          "Off"
+        ]
+      ]
+    },
+    {
+      "key": "paint",
+      "label": "Your car's paint",
+      "type": "choice",
+      "default": "white",
+      "options": [
+        [
+          "white",
+          "White"
+        ],
+        [
+          "blue",
+          "Blue"
+        ],
+        [
+          "green",
+          "Green"
+        ],
+        [
+          "red",
+          "Red"
+        ],
+        [
+          "yellow",
+          "Yellow"
+        ]
+      ]
+    },
+    {
+      "key": "theme",
+      "label": "Colour theme",
+      "type": "choice",
+      "default": "m_tricolour",
+      "options": [
+        [
+          "m_red",
+          "M Red"
+        ],
+        [
+          "m_tricolour",
+          "M Tricolour"
+        ],
+        [
+          "ice",
+          "Ice White"
+        ],
+        [
+          "amber",
+          "Night Amber"
+        ]
+      ]
+    },
+    {
+      "key": "layout",
+      "label": "Screen layout",
+      "type": "choice",
+      "default": "full",
+      "options": [
+        [
+          "full",
+          "Full screen"
+        ],
+        [
+          "standard",
+          "Standard"
+        ]
+      ]
+    },
+    {
+      "key": "renderer",
+      "label": "Renderer",
+      "type": "choice",
+      "default": "auto",
+      "options": [
+        [
+          "auto",
+          "GPU 60 fps (default)"
+        ],
+        [
+          "software",
+          "Software"
+        ]
+      ]
+    }
+  ]
+}

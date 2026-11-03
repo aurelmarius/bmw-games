@@ -4,7 +4,7 @@
  * screenshots.js - the README's screenshots (docs/screenshots/*.png), drawn by the built games on a
  * PC: seeded games played by an autopilot, a car that stands still (a fake SOME/IP). No head unit needed.
  *
- *   python3 kit/tools/build.py snake track_defender pit_wall lucky_sevens blackjack solitaire apex_chase && node tools/screenshots.js
+ *   python3 kit/tools/build.py snake track_defender pit_wall lucky_sevens blackjack solitaire apex_chase street_siege && node tools/screenshots.js
  *
  * Each game runs in its own process (the fake clock replaces Date.now and the timers).
  */
@@ -18,7 +18,7 @@ const OUT = path.join(ROOT, 'docs', 'screenshots');
 
 if (!process.argv[2]) {
     fs.mkdirSync(OUT, { recursive: true });
-    for (const app of ['snake', 'track_defender', 'pit_wall', 'lucky_sevens', 'blackjack', 'solitaire', 'apex_chase']) {
+    for (const app of ['snake', 'track_defender', 'pit_wall', 'lucky_sevens', 'blackjack', 'solitaire', 'apex_chase', 'street_siege']) {
         process.stdout.write(execFileSync(process.execPath, [__filename, app], { encoding: 'utf8' }));
     }
     process.exit(0);
@@ -333,6 +333,50 @@ if (which === 'apex_chase') {
         await frames(7000, () => g.fright > 2100 && g.evs.some((e) => e.state === 'back') && g.evs.some((e) => e.state === 'scared'));
         await frames(250);
         shot('apex_chase-nitro', lastFrame);
+        process.exit(0);
+    })().catch((e) => { console.error(e); process.exit(1); });
+    return;
+}
+
+/* ---------- Street Siege: an autopilot that lines up under the car nearest the garage and fires ---------- */
+if (which === 'street_siege') {
+    let seed = 23;
+    Math.random = () => { seed = (seed * 1103515245 + 12345) % 2147483648; return seed / 2147483648; };
+    fs.writeFileSync(path.join(DATA, 'street_siege_best.json'), JSON.stringify({ normal: 12600 }));
+    const M = require(path.join(APP, 'model'));
+    let g = null;
+    const Game = M.Game;
+    M.Game = class extends Game { constructor(o) { super(o); g = this; } };
+    const pilot = () => {
+        const c = g.car;
+        if (!c.alive) return;
+        const es = g.cars.filter((e) => e.state === 'on');
+        if (!es.length) { g.drive(null); return; }
+        const e = es.sort((a, b) => Math.hypot(a.x - M.BASE.x, a.y - M.BASE.y) - Math.hypot(b.x - M.BASE.x, b.y - M.BASE.y))[0];
+        const dx = e.x - c.x, dy = e.y - c.y;
+        if (Math.abs(dx) < 1 && dy < 0) { g.drive(null); c.dir = 'U'; g.fire(); return; }
+        if (Math.abs(dy) < 1) { g.drive(null); c.dir = dx < 0 ? 'L' : 'R'; g.fire(); return; }
+        g.drive(Math.abs(dx) < 1 ? (dy > 0 ? 'D' : 'U') : dx < 0 ? 'L' : 'R');
+        if (c.x === c._lx && c.y === c._ly) { g.drive(Math.random() < 0.5 ? 'U' : 'D'); g.fire(); }
+        c._lx = c.x; c._ly = c.y;
+    };
+    (async () => {
+        require(path.join(APP, 'app.js'));
+        ctx.display = { own: () => true };          // as where the kit runs the screen (mgu-render): touch hints
+        await global.__app.start(ctx);
+        const frames = async (ms, until) => { for (let t = 0; t < ms; t += 16) { now += 16; pilot(); await ctx.draw(); if (until && until()) return true; } return false; };
+        clicks.BTN_PLAY();
+        // the siege under way: four cars in, shots flying, a car just blown up
+        g.car.shield = 1e9;                         // (the autopilot only defends; for the pictures it can't lose)
+        await frames(90000, () => { return g.t > 20000 && g.cars.filter((e) => e.state === 'on').length >= 3 && g.shots.length >= 2 && g.killed >= 2; });
+        g.car.shield = 0;
+        shot('street_siege-game', lastFrame);
+        // a power-up taken: the shield on the car, the others frozen by NITRO
+        g.car.shield = 8000; g.nitro = 6000; g.power = 2;
+        g._drop();
+        await frames(900);
+        await frames(600, () => Math.floor(now / 250) % 2 === 0);   // (the power-up blinks: shown)
+        shot('street_siege-power', lastFrame);
         process.exit(0);
     })().catch((e) => { console.error(e); process.exit(1); });
     return;

@@ -4,7 +4,7 @@
  * screenshots.js - the README's screenshots (docs/screenshots/*.png), drawn by the built games on a
  * PC: seeded games played by an autopilot, a car that stands still (a fake SOME/IP). No head unit needed.
  *
- *   python3 kit/tools/build.py snake track_defender pit_wall lucky_sevens blackjack && node tools/screenshots.js
+ *   python3 kit/tools/build.py snake track_defender pit_wall lucky_sevens blackjack solitaire && node tools/screenshots.js
  *
  * Each game runs in its own process (the fake clock replaces Date.now and the timers).
  */
@@ -18,7 +18,7 @@ const OUT = path.join(ROOT, 'docs', 'screenshots');
 
 if (!process.argv[2]) {
     fs.mkdirSync(OUT, { recursive: true });
-    for (const app of ['snake', 'track_defender', 'pit_wall', 'lucky_sevens', 'blackjack']) {
+    for (const app of ['snake', 'track_defender', 'pit_wall', 'lucky_sevens', 'blackjack', 'solitaire']) {
         process.stdout.write(execFileSync(process.execPath, [__filename, app], { encoding: 'utf8' }));
     }
     process.exit(0);
@@ -235,6 +235,52 @@ if (which === 'blackjack') {
         }
         await frames(300);
         shot('blackjack-split', lastFrame);
+        process.exit(0);
+    })().catch((e) => { console.error(e); process.exit(1); });
+    return;
+}
+
+/* ---------- Solitaire: seeded deals played by the hint, through the bar buttons; mid-game, then a win ---------- */
+if (which === 'solitaire') {
+    let seed = 31;
+    Math.random = () => { seed = (seed * 1103515245 + 12345) % 2147483648; return seed / 2147483648; };
+    fs.writeFileSync(path.join(DATA, 'solitaire.json'), JSON.stringify({ stats: { played: 41, won: 17, bestTime: 214, bestScore: 5630, streak: 2, bestStreak: 4 } }));
+    const M = require(path.join(APP, 'model'));
+    let g = null;
+    const Game = M.Game;
+    M.Game = class extends Game { constructor(o) { super(o); g = this; } };
+    const PL = ['s', 'w', 'f0', 'f1', 'f2', 'f3', 't0', 't1', 't2', 't3', 't4', 't5', 't6'];
+    let cur = 1;
+    (async () => {
+        require(path.join(APP, 'app.js'));
+        ctx.display = { own: () => true };          // as where the kit runs the screen (mgu-render): touch hints
+        await global.__app.start(ctx);
+        const frames = async (ms) => { for (let t = 0; t < ms; t += 16) { now += 16; await ctx.draw(); } };
+        /** one step of the hint, played the way a player would: to the pile, then "Move" (or "Draw") */
+        const step = async (ms) => {
+            const h = g.hint();
+            if (!h) return false;
+            if (h.draw) { if (g.recycles > 12) return false; clicks.BTN_DRAW(); } else {
+                const want = PL.indexOf(h.from.k + (h.from.i === undefined ? '' : h.from.i));
+                while (cur !== want) { clicks.BTN_NEXT(); cur = (cur + 1) % PL.length; }
+                clicks.BTN_MOVE();
+            }
+            await frames(ms);
+            return true;
+        };
+        await frames(2500);                         // the deal
+        for (let i = 0; i < 46; i++) if (!(await step(300))) break;
+        g.ms = 154000;
+        await frames(600);
+        shot('solitaire-game', lastFrame);
+        // deals until one is won (the cards go up by themselves at the end)
+        for (let d = 0; d < 60 && !g.won(); d++) {
+            for (let i = 0; i < 1500 && !g.won() && !g.canFinish(); i++) if (!(await step(16))) break;
+            if (g.canFinish()) { g.ms = 263000; for (let t = 0; t < 600 && !g.won(); t++) await frames(16); }
+            if (!g.won()) { clicks.BTN_NEW(); clicks.BTN_NEW(); cur = 1; await frames(2500); }
+        }
+        await frames(3800);
+        shot('solitaire-win', lastFrame);
         process.exit(0);
     })().catch((e) => { console.error(e); process.exit(1); });
     return;

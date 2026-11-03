@@ -91,6 +91,23 @@ The car apps (Engine Care, Hybrid Cost) are in [aurelmarius/bmw-apps](https://gi
 ![Blackjack - a split of sixes, the dealer busts](docs/screenshots/blackjack-split.png)
 <sub>Screenshots drawn by the app on a PC (`tools/screenshots.js`), seeded hands played by basic strategy.</sub>
 
+### 6. ♠️ Solitaire (`solitaire`)
+*Klondike, the classic patience, on a card table. GPU renderer at 60 fps. Parked only.*
+
+* **The table**: felt lit from above in a dark wooden frame with a brass inlay, the places for the piles printed on it (each foundation with its suit), the same cards as Blackjack.
+* **Cards that move like cards**: every card slides to where it belongs, so a deal, a move, a draw or an undo flies by itself; a card turned over flips; a won game sends the cards bouncing off the foundations, leaving a trail.
+* **One move at a time, the best one**: tap a card (or press on a pile with the controller) and it goes where it plays best: to its foundation, onto a column so a hidden card turns over, a king to an empty column. Or drag cards where you want them.
+* **Draw one or three**, the waste goes back over as often as you like; **undo** as far back as you like; **hint** (the cards to move and where, in cyan); when nothing is hidden any more the cards **go up by themselves**.
+* **Score** as the classic game has it (waste to tableau 5, to a foundation 10, a card turned over 5, a card back from a foundation -15, the waste over again -100 / -20, a time bonus on a win), **time** and **moves**.
+* **Statistics**: games played and won, win rate, best time, best score, winning streak.
+* **iDrive controller**: turn = from pile to pile, press = the best move (on the stock: draw), push up = undo, down = hint, right = draw. **Touchscreen**: tap or drag; the panel's keys.
+* **The game in progress is kept** between drives; the clock runs only while the game is on screen and the car stands still.
+* **Settings**: draw one / three, table felt (green / blue / red / black), card backs (red / blue).
+
+![Solitaire - a game in progress](docs/screenshots/solitaire-game.png)
+![Solitaire - won: the cards bounce off the foundations](docs/screenshots/solitaire-win.png)
+<sub>Screenshots drawn by the app on a PC (`tools/screenshots.js`), seeded deals played by the hint.</sub>
+
 ---
 
 ## 🚀 Installation
@@ -103,7 +120,7 @@ The car apps (Engine Care, Hybrid Cost) are in [aurelmarius/bmw-apps](https://gi
    github.com/aurelmarius/bmw-games
    ```
 4. Select **Releases** as the source type.
-5. Tap **Install** next to **Snake**, **Track Defender**, **Pit Wall**, **Lucky Sevens** or **Blackjack**.
+5. Tap **Install** next to **Snake**, **Track Defender**, **Pit Wall**, **Lucky Sevens**, **Blackjack** or **Solitaire**.
 
 The games run smoothest with the **mgu-render** GPU renderer, installed from the same Store. Without it they still run, as images handed to the HMI a few times a second.
 
@@ -111,7 +128,7 @@ The games run smoothest with the **mgu-render** GPU renderer, installed from the
 1. Download the `<game>@<version>.tgz` files from [Releases](https://github.com/aurelmarius/bmw-games/releases).
 2. Copy the files onto a USB stick or build a USB repository:
    ```powershell
-   node mgu-install.js usb-repo E:\ snake@1.0.0.tgz track_defender@1.0.0.tgz pit_wall@1.0.0.tgz lucky_sevens@1.1.0.tgz blackjack@1.0.0.tgz
+   node mgu-install.js usb-repo E:\ snake@1.0.0.tgz track_defender@1.0.0.tgz pit_wall@1.0.0.tgz lucky_sevens@1.1.0.tgz blackjack@1.0.0.tgz solitaire@1.0.0.tgz
    ```
 3. Insert the USB drive into your car and install from the **USB** page of the Store.
 
@@ -123,6 +140,7 @@ Copy the package to the head unit and run `mgu-deploy.sh`:
 /var/opt/mgu-deploy/mgu-deploy.sh install --artifact pit_wall@1.0.0.tgz --yes
 /var/opt/mgu-deploy/mgu-deploy.sh install --artifact lucky_sevens@1.1.0.tgz --yes
 /var/opt/mgu-deploy/mgu-deploy.sh install --artifact blackjack@1.0.0.tgz --yes
+/var/opt/mgu-deploy/mgu-deploy.sh install --artifact solitaire@1.0.0.tgz --yes
 ```
 
 ---
@@ -140,13 +158,14 @@ Copy the package to the head unit and run `mgu-deploy.sh`:
 ## 🧪 Development
 
 ```bash
-python3 kit/tools/build.py snake track_defender pit_wall lucky_sevens blackjack  # -> dist/<id>@<version>.tgz
+python3 kit/tools/build.py snake track_defender pit_wall lucky_sevens blackjack solitaire  # -> dist/<id>@<version>.tgz
 node kit/tools/preview.js dist/blackjack preview        # a game on a simulated head unit, as PNGs
 node tests/snake.test.js                                # Snake's rules
 node tests/track_defender.test.js                       # Track Defender's rules
 node tests/pit_wall.test.js                             # Pit Wall's rules
 node tests/lucky_sevens.test.js                         # Lucky Sevens' rules
 node tests/blackjack.test.js                            # Blackjack's rules
+node tests/solitaire.test.js                            # Solitaire's rules
 node tools/screenshots.js                               # the README's screenshots (after a build)
 ```
 

@@ -42,6 +42,13 @@
       "icon": "solitaire.png",
       "iconSha256": "1effec6c194696f547afd63ee87201c65a59f54fb4cbfa652fafa4eeb027bdc1"
     },
+    "street_siege": {
+      "title": "Street Siege",
+      "description": "Defend the M garage: cars storm an industrial yard at night and the M car stops them with its roof cannon. Tyre walls that fall apart, concrete, a canal, trees, oil, power-ups; drawn by the GPU renderer at 60 fps. Parked only.",
+      "author": "custom",
+      "icon": "street_siege.png",
+      "iconSha256": "4e43bb80493533e2d3ed224b7e2904edfc505116d8f2ca1ac8ab042246bcdb25"
+    },
     "track_defender": {
       "title": "Track Defender",
       "description": "Arcade shooter on the central display, drawn by the GPU renderer at 60 fps: drones attack the track in waves, the M car shoots them down. iDrive controller or touch. Parked only.",

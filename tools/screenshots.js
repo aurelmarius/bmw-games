@@ -4,7 +4,7 @@
  * screenshots.js - the README's screenshots (docs/screenshots/*.png), drawn by the built games on a
  * PC: seeded games played by an autopilot, a car that stands still (a fake SOME/IP). No head unit needed.
  *
- *   python3 kit/tools/build.py aurelm_snake aurelm_track_defender aurelm_pit_wall aurelm_lucky_sevens aurelm_blackjack aurelm_solitaire aurelm_apex_chase aurelm_street_siege && node tools/screenshots.js
+ *   python3 kit/tools/build.py aurelm_snake aurelm_track_defender aurelm_pit_wall aurelm_lucky_sevens aurelm_blackjack aurelm_solitaire aurelm_apex_chase aurelm_street_siege aurelm_pinball && node tools/screenshots.js
  *
  * Each game runs in its own process (the fake clock replaces Date.now and the timers).
  */
@@ -18,7 +18,7 @@ const OUT = path.join(ROOT, 'docs', 'screenshots');
 
 if (!process.argv[2]) {
     fs.mkdirSync(OUT, { recursive: true });
-    for (const app of ['snake', 'track_defender', 'pit_wall', 'lucky_sevens', 'blackjack', 'solitaire', 'apex_chase', 'street_siege']) {
+    for (const app of ['snake', 'track_defender', 'pit_wall', 'lucky_sevens', 'blackjack', 'solitaire', 'apex_chase', 'street_siege', 'pinball']) {
         process.stdout.write(execFileSync(process.execPath, [__filename, app], { encoding: 'utf8' }));
     }
     process.exit(0);
@@ -334,6 +334,56 @@ if (which === 'apex_chase') {
         await frames(7000, () => g.fright > 2100 && g.evs.some((e) => e.state === 'back') && g.evs.some((e) => e.state === 'scared'));
         await frames(250);
         shot('apex_chase-nitro', lastFrame);
+        process.exit(0);
+    })().catch((e) => { console.error(e); process.exit(1); });
+    return;
+}
+
+/* ---------- M Pinball: an autopilot on the flippers ---------- */
+if (which === 'pinball') {
+    let seed = 31;
+    Math.random = () => { seed = (seed * 1103515245 + 12345) % 2147483648; return seed / 2147483648; };
+    fs.writeFileSync(path.join(DATA, 'pinball_best.json'), JSON.stringify({ 'normal-3': 2384150 }));
+    const M = require(path.join(APP, 'model'));
+    let g = null;
+    const Game = M.Game;
+    M.Game = class extends Game { constructor(o) { super(o); g = this; } };
+    const held = [0, 0];
+    const pilot = () => {
+        for (let s = 0; s < 2; s++) {
+            const p = M.PIVOTS[s], tip = g.flipperTip(s, M.FLIP.rest);
+            const flip = (up) => Game.prototype.flipper.call(g, s, up);
+            if (held[s] > 0) { held[s] -= 16; if (held[s] <= 0) { flip(false); held[s] = -220; } else flip(true); continue; }
+            if (held[s] < 0) { held[s] = Math.min(0, held[s] + 16); continue; }
+            const near = g.balls.some((b) => { if (b.plunger || b.ramp || b.hold) return false; const q = M.closest([p.u, p.v], tip, b.u + b.vu * 0.03, b.v + b.vv * 0.03); return Math.hypot(b.u + b.vu * 0.03 - q[0], b.v + b.vv * 0.03 - q[1]) < 30 && q[2] > 0.3; });
+            if (near) { held[s] = 200; flip(true); }
+        }
+        if (g.onPlunger() && g.ms - g.waitSince > 900) { g.setPull(0.55 + Math.random() * 0.4); g.launch(); }
+        g.saveUntil = 1e12;
+    };
+    (async () => {
+        require(path.join(APP, 'app.js'));
+        ctx.display = { own: () => true };          // as where the kit runs the screen (mgu-render): touch hints
+        await global.__app.start(ctx);
+        const frames = async (ms, until) => { for (let t = 0; t < ms; t += 16) { now += 16; pilot(); await ctx.draw(); if (until && until()) return true; } return false; };
+        await frames(400);
+        clicks.BTN_PLAY();
+        g.flipper = () => {};                       // (the autopilot holds the flippers, not the controller)
+        g.saveUntil = 1e12;                         // (the autopilot isn't good: for the pictures it can't lose)
+        // a ball in play among the wheels, some lamps lit, a flipper up
+        g.lanes = [true, false, true]; g.gear = 3; g.targets = [true, true, true, false, true, false];
+        await frames(120000, () => g.score > 60000 && g.balls.some((b) => !b.plunger && !b.ramp && b.u > 150 && b.u < 420 && b.v > 380 && b.v < 560 && Math.hypot(b.vu, b.vv) > 500));
+        shot('pinball-game', lastFrame);
+        // SAFETY CAR MULTIBALL: a ball on the ramp, two on the table
+        g.pitLit = true;
+        const b0 = g.balls.find((b) => !b.plunger) || g.balls[0];
+        b0.plunger = false; b0.u = M.PIT.u; b0.v = M.PIT.v; b0.vu = b0.vv = 0;
+        await frames(30000, () => g.balls.length >= 3 && g.balls.every((b) => !b.plunger && !b.hold && !b.inLane));
+        await frames(700);
+        const r = g.balls.find((b) => b.v > 300) || g.balls[0];
+        r.ramp = { s: M.RAMP_S[M.RAMP_TOP] * 0.7, sp: 900 };
+        await frames(200);
+        shot('pinball-multiball', lastFrame);
         process.exit(0);
     })().catch((e) => { console.error(e); process.exit(1); });
     return;

@@ -140,6 +140,22 @@ The car apps (Engine Care, Hybrid Cost) are in [aurelmarius/bmw-apps](https://gi
 ![Street Siege - shield and NITRO on, a power-up on the yard](docs/screenshots/street_siege-power.png)
 <sub>Screenshots drawn by the app on a PC (`tools/screenshots.js`), played by an autopilot.</sub>
 
+### 9. 🕹️ M Pinball (`aurelm_pinball`)
+*A pinball table on the circuit, seen in perspective so the whole table fits the wide screen. GPU renderer at 60 fps. Parked only.*
+
+* **Real ball physics**: a steel ball rolling under gravity, stepped 480 times a second; walls, posts, rubbers and flippers it bounces off as it should. A ball batted near the flipper's tip goes across the table, one near its pivot goes straight up.
+* **The table**: three **wheels** for bumpers (1 000), two slingshots, the **GEARS** lanes 1 2 3 at the top (all three lit: the bonus gears up to x5; the flippers move the lit lanes along), the **M-POWER** targets, the **PIT LANE** saucer, the **CHICANE** ramp in clear blue plastic with red and white kerbs and a wire that brings the ball back to the left flipper.
+* **Shots**: the CHICANE from the left flipper (a lap: 25 000, a combo up to x4 within 4 s; every 5th lap: FASTEST LAP and an extra ball lit at the pit), the PIT LANE from the right flipper. All six M-POWER letters open the pit: **SAFETY CAR MULTIBALL**, three balls, every lap a **JACKPOT** (500 000, +100 000 each).
+* **Skill shot**: the lane blinking while the ball waits on the plunger, 100 000 when the launched ball rolls through it. **Ball save** after each launch (SHOOT AGAIN lit), **NUDGE** (the third within 6 s: TILT), an end-of-ball **bonus** times the gear.
+* **A dot-matrix display** in the panel (score, ball, gear, what's lit, the big moments), the M-POWER lamps, the plunger's power.
+* **iDrive controller**: push left / right and hold = that flipper, press and hold = both. **Launching, three ways**: hold the press and let go (the longer, the stronger), turn the knob to pull the plunger a notch at a time and press to let go, or push down and hold, let go. Push up = nudge. **Touchscreen**: a finger on the left half of the table = the left flipper while it's down, the right half = the right one; hold LAUNCH and let go, or pull the plunger down with a finger.
+* **Settings**: difficulty (easy: a slower ball and a long ball save; hard: faster, a short one), 3 or 5 balls. Best score kept for each.
+* An original table: its own layout, rules and art; no make's badge on it.
+
+![M Pinball - a ball among the wheels, lanes and letters lit](docs/screenshots/pinball-game.png)
+![M Pinball - SAFETY CAR MULTIBALL, a ball on the CHICANE](docs/screenshots/pinball-multiball.png)
+<sub>Screenshots drawn by the app on a PC (`tools/screenshots.js`), played by an autopilot.</sub>
+
 ---
 
 ## 🚀 Installation
@@ -152,7 +168,7 @@ The car apps (Engine Care, Hybrid Cost) are in [aurelmarius/bmw-apps](https://gi
    aurelmarius/bmw-games
    ```
 4. Select **Releases** as the source type.
-5. Tap **Install** next to **Snake**, **Track Defender**, **Pit Wall**, **Lucky Sevens**, **Blackjack**, **Solitaire**, **Apex Chase** or **Street Siege**.
+5. Tap **Install** next to **Snake**, **Track Defender**, **Pit Wall**, **Lucky Sevens**, **Blackjack**, **Solitaire**, **Apex Chase**, **Street Siege** or **M Pinball**.
 
 The games run smoothest with the **mgu-render** GPU renderer, installed from the same Store. Without it they still run, as images handed to the HMI a few times a second.
 
@@ -194,7 +210,7 @@ Copy the package to the head unit and run `mgu-deploy.sh`:
 ## 🧪 Development
 
 ```bash
-python3 kit/tools/build.py aurelm_snake aurelm_track_defender aurelm_pit_wall aurelm_lucky_sevens aurelm_blackjack aurelm_solitaire aurelm_apex_chase aurelm_street_siege  # -> dist/<id>@<version>.tgz
+python3 kit/tools/build.py aurelm_snake aurelm_track_defender aurelm_pit_wall aurelm_lucky_sevens aurelm_blackjack aurelm_solitaire aurelm_apex_chase aurelm_street_siege aurelm_pinball  # -> dist/<id>@<version>.tgz
 node kit/tools/preview.js dist/aurelm_blackjack preview        # a game on a simulated head unit, as PNGs
 node tests/snake.test.js                                # Snake's rules
 node tests/track_defender.test.js                       # Track Defender's rules
@@ -204,6 +220,7 @@ node tests/blackjack.test.js                            # Blackjack's rules
 node tests/solitaire.test.js                            # Solitaire's rules
 node tests/apex_chase.test.js                           # Apex Chase's rules
 node tests/street_siege.test.js                         # Street Siege's rules
+node tests/pinball.test.js                              # M Pinball's rules and physics
 node tools/screenshots.js                               # the README's screenshots (after a build)
 ```
 

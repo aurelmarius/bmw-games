@@ -1,0 +1,141 @@
+{
+  "id": "aurelm_pinball",
+  "title": "M Pinball",
+  "description": "A pinball table on the circuit: wheels for bumpers, the CHICANE ramp, the PIT LANE, the M-POWER targets and SAFETY CAR MULTIBALL, seen in perspective with real ball physics; drawn by the GPU renderer at 60 fps. Flippers on the controller or a finger on each half of the table. Parked only.",
+  "version": "1.0.0",
+  "vendor": "custom",
+  "loggingId": "OA9P",
+  "iconGlyph": "pinball",
+  "signals": {
+    "de.bmw.infotainment.vehicle.Vehicle2": {
+      "statusCarSpeed2": "rs"
+    }
+  },
+  "screens": [
+    {
+      "name": "MAIN",
+      "kind": "canvas",
+      "title": "M Pinball",
+      "buttons": [
+        [
+          "BTN_PLAY",
+          "Start"
+        ],
+        [
+          "BTN_LEFT",
+          "Left"
+        ],
+        [
+          "BTN_RIGHT",
+          "Right"
+        ],
+        [
+          "BTN_LAUNCH",
+          "Launch"
+        ],
+        [
+          "BTN_NUDGE",
+          "Nudge"
+        ],
+        [
+          "BTN_SETTINGS",
+          "Settings"
+        ]
+      ]
+    }
+  ],
+  "settings": [
+    {
+      "key": "difficulty",
+      "label": "Difficulty",
+      "type": "choice",
+      "default": "normal",
+      "options": [
+        [
+          "easy",
+          "Easy (slower ball, long ball save)"
+        ],
+        [
+          "normal",
+          "Normal"
+        ],
+        [
+          "hard",
+          "Hard (faster ball, short ball save)"
+        ]
+      ]
+    },
+    {
+      "key": "balls",
+      "label": "Balls per game",
+      "type": "choice",
+      "default": "3",
+      "options": [
+        [
+          "3",
+          "3"
+        ],
+        [
+          "5",
+          "5"
+        ]
+      ]
+    },
+    {
+      "key": "theme",
+      "label": "Colour theme",
+      "type": "choice",
+      "default": "m_tricolour",
+      "options": [
+        [
+          "m_red",
+          "M Red"
+        ],
+        [
+          "m_tricolour",
+          "M Tricolour"
+        ],
+        [
+          "ice",
+          "Ice White"
+        ],
+        [
+          "amber",
+          "Night Amber"
+        ]
+      ]
+    },
+    {
+      "key": "layout",
+      "label": "Screen layout",
+      "type": "choice",
+      "default": "full",
+      "options": [
+        [
+          "full",
+          "Full screen"
+        ],
+        [
+          "standard",
+          "Standard"
+        ]
+      ]
+    },
+    {
+      "key": "renderer",
+      "label": "Renderer",
+      "type": "choice",
+      "default": "auto",
+      "options": [
+        [
+          "auto",
+          "GPU 60 fps (default)"
+        ],
+        [
+          "software",
+          "Software"
+        ]
+      ]
+    }
+  ]
+}

@@ -2,7 +2,7 @@
 /**
  * make_icon.js <glyph> <out.png> - 140x140 app tile icon in the HMI's style
  * (white line art on transparent, one accent element). Glyphs: gauge, flag,
- * engine, battery, service, doom, snake, drone, wall, seven, cards, solitaire, chase, siege, ..., or any 1-3 characters (drawn as text).
+ * engine, battery, service, doom, snake, drone, wall, seven, cards, solitaire, chase, siege, pinball, ..., or any 1-3 characters (drawn as text).
  */
 const fs = require('fs');
 const path = require('path');
@@ -152,6 +152,13 @@ if (glyph === 'gauge') {
     c.circle(70, 84, 6, '#000000'); c.fillRect(68, 60, 4, 18, '#000000');
     c.fillRect(66, 62, 8, 4, W);
     c.convex([[40, 120], [70, 108], [100, 120]], W); c.fillRect(46, 120, 48, 14, W);
+} else if (glyph === 'pinball') {
+    // two flippers under a ball, a bumper above
+    c.arc(70, 40, 14, 22, 0, 360, W); c.circle(70, 40, 7, A);
+    c.circle(92, 78, 10, W); c.circle(89, 75, 3, '#000000');
+    c.convex([[18, 96], [26, 88], [64, 112], [60, 120]], W); c.circle(22, 92, 8, W);
+    c.convex([[122, 96], [114, 88], [76, 112], [80, 120]], W); c.circle(118, 92, 8, W);
+    c.fillRect(30, 128, 80, 5, B);
 } else if (glyph === 'drone') {
     // a drone in the crosshair, a shot coming up at it
     for (const [sx, sy] of [[-1, -1], [1, -1], [-1, 1], [1, 1]]) {

@@ -21,6 +21,11 @@
       "icon": "aurelm_lucky_sevens.png",
       "iconSha256": "2c446e07e482a3f68a463578ec7d28307b6bb3b997e6d15a9b0ba4f90b7c7815"
     },
+    "aurelm_pinball": {
+      "title": "M Pinball",
+      "description": "A pinball table on the circuit: wheels for bumpers, the CHICANE ramp, the PIT LANE, the M-POWER targets and SAFETY CAR MULTIBALL, seen in perspective with real ball physics; drawn by the GPU renderer at 60 fps. Flippers on the controller or a finger on each half of the table. Parked only.",
+      "author": "custom"
+    },
     "aurelm_pit_wall": {
       "title": "Pit Wall",
       "description": "Break the advertising panels off the pit wall: a night race scene drawn by the GPU renderer at 60 fps, the ball on an M front wing, start lights, combos and power-ups. iDrive controller or touch. Parked only.",

@@ -1,11 +1,11 @@
 {
-  "id": "pit_wall",
-  "title": "Pit Wall",
-  "description": "Break the advertising panels off the pit wall: a night race scene drawn by the GPU renderer at 60 fps, the ball on an M front wing, start lights, combos and power-ups. iDrive controller or touch. Parked only.",
-  "version": "1.0.0",
+  "id": "aurelm_lucky_sevens",
+  "title": "Lucky Sevens",
+  "description": "A five reel slot machine for play credits, drawn by the GPU renderer at 60 fps: glossy symbols, reels that bounce to a stop, ten paylines, WILD, free spins, a progressive jackpot, statistics. iDrive controller or touch. Parked only.",
+  "version": "1.1.0",
   "vendor": "custom",
-  "loggingId": "OA9W",
-  "iconGlyph": "wall",
+  "loggingId": "OA9L",
+  "iconGlyph": "seven",
   "signals": {
     "de.bmw.infotainment.vehicle.Vehicle2": {
       "statusCarSpeed2": "rs"
@@ -15,27 +15,23 @@
     {
       "name": "MAIN",
       "kind": "canvas",
-      "title": "Pit Wall",
+      "title": "Lucky Sevens",
       "buttons": [
         [
-          "BTN_PLAY",
-          "Start"
+          "BTN_SPIN",
+          "Spin"
         ],
         [
-          "BTN_LEFT",
-          "Left"
+          "BTN_BET",
+          "Bet +"
         ],
         [
-          "BTN_RIGHT",
-          "Right"
+          "BTN_AUTO",
+          "Auto"
         ],
         [
-          "BTN_LAUNCH",
-          "Launch"
-        ],
-        [
-          "BTN_NEW",
-          "New Game"
+          "BTN_STATS",
+          "Stats"
         ],
         [
           "BTN_SETTINGS",
@@ -46,15 +42,35 @@
   ],
   "settings": [
     {
-      "key": "speed",
-      "label": "Ball speed",
+      "key": "cabinet",
+      "label": "Cabinet colour",
+      "type": "choice",
+      "default": "ruby",
+      "options": [
+        [
+          "ruby",
+          "Ruby"
+        ],
+        [
+          "sapphire",
+          "Sapphire"
+        ],
+        [
+          "emerald",
+          "Emerald"
+        ],
+        [
+          "onyx",
+          "Onyx"
+        ]
+      ]
+    },
+    {
+      "key": "reelSpeed",
+      "label": "Reel speed",
       "type": "choice",
       "default": "normal",
       "options": [
-        [
-          "relaxed",
-          "Relaxed"
-        ],
         [
           "normal",
           "Normal"

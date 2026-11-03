@@ -1,10 +1,10 @@
 'use strict';
-/** Lucky Sevens' rules (apps/lucky_sevens/model.js): node tests/lucky_sevens.test.js */
+/** Lucky Sevens' rules (apps/aurelm_lucky_sevens/model.js): node tests/lucky_sevens.test.js */
 const assert = require('assert');
 const fs = require('fs');
 const os = require('os');
 const path = require('path');
-const { Game, DT, REELS, LINES, PAYS, COINS, SYMBOLS, STRIPS, START_CREDITS, TIMING, FREE_SPINS, FREE_MULT, JP_SEED, JP_RATE, evaluate, windowAt, scatters, outcome, loadState, saveState } = require('../apps/lucky_sevens/model');
+const { Game, DT, REELS, LINES, PAYS, COINS, SYMBOLS, STRIPS, START_CREDITS, TIMING, FREE_SPINS, FREE_MULT, JP_SEED, JP_RATE, evaluate, windowAt, scatters, outcome, loadState, saveState } = require('../apps/aurelm_lucky_sevens/model');
 
 const tests = [];
 const test = (name, fn) => tests.push({ name, fn });

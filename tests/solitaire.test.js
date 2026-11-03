@@ -1,10 +1,10 @@
 'use strict';
-/** Solitaire's rules (apps/solitaire/model.js): node tests/solitaire.test.js */
+/** Solitaire's rules (apps/aurelm_solitaire/model.js): node tests/solitaire.test.js */
 const assert = require('assert');
 const fs = require('fs');
 const os = require('os');
 const path = require('path');
-const { Game, POINTS, RECYCLE, record, loadState, saveState } = require('../apps/solitaire/model');
+const { Game, POINTS, RECYCLE, record, loadState, saveState } = require('../apps/aurelm_solitaire/model');
 
 const tests = [];
 const test = (name, fn) => tests.push({ name, fn });

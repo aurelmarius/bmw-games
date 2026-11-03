@@ -1,10 +1,10 @@
 'use strict';
-/** Track Defender's rules (apps/track_defender/model.js): node tests/track_defender.test.js */
+/** Track Defender's rules (apps/aurelm_track_defender/model.js): node tests/track_defender.test.js */
 const assert = require('assert');
 const fs = require('fs');
 const os = require('os');
 const path = require('path');
-const { Game, FW, FH, DT, PULSE_MS, LIVES, loadBest, saveBest } = require('../apps/track_defender/model');
+const { Game, FW, FH, DT, PULSE_MS, LIVES, loadBest, saveBest } = require('../apps/aurelm_track_defender/model');
 
 const tests = [];
 const test = (name, fn) => tests.push({ name, fn });

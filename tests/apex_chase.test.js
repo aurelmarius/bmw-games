@@ -1,10 +1,10 @@
 'use strict';
-/** Apex Chase's rules (apps/apex_chase/model.js): node tests/apex_chase.test.js */
+/** Apex Chase's rules (apps/aurelm_apex_chase/model.js): node tests/apex_chase.test.js */
 const assert = require('assert');
 const fs = require('fs');
 const os = require('os');
 const path = require('path');
-const { Game, DT, W, H, DIRS, LIVES, POINTS, CITIES, OUTSIDE, city, distances, isRoad, wrapX, loadBest, saveBest } = require('../apps/apex_chase/model');
+const { Game, DT, W, H, DIRS, LIVES, POINTS, CITIES, OUTSIDE, city, distances, isRoad, wrapX, loadBest, saveBest } = require('../apps/aurelm_apex_chase/model');
 
 const tests = [];
 const test = (name, fn) => tests.push({ name, fn });

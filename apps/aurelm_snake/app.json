@@ -1,11 +1,11 @@
 {
-  "id": "solitaire",
-  "title": "Solitaire",
-  "description": "Klondike solitaire drawn by the GPU renderer at 60 fps: a felt card table, cards that fly, flip and bounce home. Tap or press for the best move, drag cards, draw one or three, undo, hint, auto finish, statistics. Parked only.",
+  "id": "aurelm_snake",
+  "title": "Snake",
+  "description": "Snake on the central display, drawn by the GPU renderer at 60 fps: steer with the iDrive controller (push or turn) or swipe on the screen. Parked only.",
   "version": "1.0.0",
   "vendor": "custom",
-  "loggingId": "OA9K",
-  "iconGlyph": "solitaire",
+  "loggingId": "OA9S",
+  "iconGlyph": "snake",
   "signals": {
     "de.bmw.infotainment.vehicle.Vehicle2": {
       "statusCarSpeed2": "rs"
@@ -15,27 +15,23 @@
     {
       "name": "MAIN",
       "kind": "canvas",
-      "title": "Solitaire",
+      "title": "Snake",
       "buttons": [
         [
-          "BTN_NEXT",
-          "Next pile"
+          "BTN_PLAY",
+          "Start"
         ],
         [
-          "BTN_MOVE",
-          "Move"
+          "BTN_LEFT",
+          "Turn Left"
         ],
         [
-          "BTN_DRAW",
-          "Draw"
-        ],
-        [
-          "BTN_UNDO",
-          "Undo"
+          "BTN_RIGHT",
+          "Turn Right"
         ],
         [
           "BTN_NEW",
-          "New game"
+          "New Game"
         ],
         [
           "BTN_SETTINGS",
@@ -46,62 +42,38 @@
   ],
   "settings": [
     {
-      "key": "draw",
-      "label": "Draw",
+      "key": "speed",
+      "label": "Speed",
       "type": "choice",
-      "default": "1",
+      "default": "normal",
       "options": [
         [
-          "1",
-          "One card"
+          "slow",
+          "Slow"
         ],
         [
-          "3",
-          "Three cards"
+          "normal",
+          "Normal"
+        ],
+        [
+          "fast",
+          "Fast"
         ]
       ]
     },
     {
-      "key": "felt",
-      "label": "Table felt",
+      "key": "walls",
+      "label": "Edges",
       "type": "choice",
-      "default": "green",
+      "default": "wrap",
       "options": [
         [
-          "green",
-          "Green"
+          "wrap",
+          "Wrap around"
         ],
         [
-          "blue",
-          "Blue"
-        ],
-        [
-          "red",
-          "Red"
-        ],
-        [
-          "black",
-          "Black"
-        ]
-      ]
-    },
-    {
-      "key": "cardBack",
-      "label": "Card backs",
-      "type": "choice",
-      "default": "m",
-      "options": [
-        [
-          "m",
-          "M Tricolour"
-        ],
-        [
-          "red",
-          "Red"
-        ],
-        [
-          "blue",
-          "Blue"
+          "solid",
+          "Solid walls"
         ]
       ]
     },

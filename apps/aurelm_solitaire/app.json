@@ -1,11 +1,11 @@
 {
-  "id": "street_siege",
-  "title": "Street Siege",
-  "description": "Defend the M garage: cars storm an industrial yard at night and the M car stops them with its roof cannon. Tyre walls that fall apart, concrete, a canal, trees, oil, power-ups; drawn by the GPU renderer at 60 fps. Parked only.",
+  "id": "aurelm_solitaire",
+  "title": "Solitaire",
+  "description": "Klondike solitaire drawn by the GPU renderer at 60 fps: a felt card table, cards that fly, flip and bounce home. Tap or press for the best move, drag cards, draw one or three, undo, hint, auto finish, statistics. Parked only.",
   "version": "1.0.0",
   "vendor": "custom",
-  "loggingId": "OA9G",
-  "iconGlyph": "siege",
+  "loggingId": "OA9K",
+  "iconGlyph": "solitaire",
   "signals": {
     "de.bmw.infotainment.vehicle.Vehicle2": {
       "statusCarSpeed2": "rs"
@@ -15,27 +15,27 @@
     {
       "name": "MAIN",
       "kind": "canvas",
-      "title": "Street Siege",
+      "title": "Solitaire",
       "buttons": [
         [
-          "BTN_PLAY",
-          "Start"
+          "BTN_NEXT",
+          "Next pile"
         ],
         [
-          "BTN_UP",
-          "Up"
+          "BTN_MOVE",
+          "Move"
         ],
         [
-          "BTN_DOWN",
-          "Down"
+          "BTN_DRAW",
+          "Draw"
         ],
         [
-          "BTN_LEFT",
-          "Left"
+          "BTN_UNDO",
+          "Undo"
         ],
         [
-          "BTN_RIGHT",
-          "Right"
+          "BTN_NEW",
+          "New game"
         ],
         [
           "BTN_SETTINGS",
@@ -46,66 +46,62 @@
   ],
   "settings": [
     {
-      "key": "difficulty",
-      "label": "Difficulty",
+      "key": "draw",
+      "label": "Draw",
       "type": "choice",
-      "default": "normal",
+      "default": "1",
       "options": [
         [
-          "easy",
-          "Easy"
+          "1",
+          "One card"
         ],
         [
-          "normal",
-          "Normal"
-        ],
-        [
-          "hard",
-          "Hard"
+          "3",
+          "Three cards"
         ]
       ]
     },
     {
-      "key": "autoFire",
-      "label": "Automatic fire",
+      "key": "felt",
+      "label": "Table felt",
       "type": "choice",
-      "default": "on",
+      "default": "green",
       "options": [
         [
-          "on",
-          "On"
-        ],
-        [
-          "off",
-          "Off"
-        ]
-      ]
-    },
-    {
-      "key": "paint",
-      "label": "Your car's paint",
-      "type": "choice",
-      "default": "white",
-      "options": [
-        [
-          "white",
-          "White"
+          "green",
+          "Green"
         ],
         [
           "blue",
           "Blue"
         ],
         [
-          "green",
-          "Green"
+          "red",
+          "Red"
+        ],
+        [
+          "black",
+          "Black"
+        ]
+      ]
+    },
+    {
+      "key": "cardBack",
+      "label": "Card backs",
+      "type": "choice",
+      "default": "m",
+      "options": [
+        [
+          "m",
+          "M Tricolour"
         ],
         [
           "red",
           "Red"
         ],
         [
-          "yellow",
-          "Yellow"
+          "blue",
+          "Blue"
         ]
       ]
     },

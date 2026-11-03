@@ -4,7 +4,7 @@
  * screenshots.js - the README's screenshots (docs/screenshots/*.png), drawn by the built games on a
  * PC: seeded games played by an autopilot, a car that stands still (a fake SOME/IP). No head unit needed.
  *
- *   python3 kit/tools/build.py snake track_defender pit_wall lucky_sevens blackjack solitaire apex_chase street_siege && node tools/screenshots.js
+ *   python3 kit/tools/build.py aurelm_snake aurelm_track_defender aurelm_pit_wall aurelm_lucky_sevens aurelm_blackjack aurelm_solitaire aurelm_apex_chase aurelm_street_siege && node tools/screenshots.js
  *
  * Each game runs in its own process (the fake clock replaces Date.now and the timers).
  */
@@ -25,8 +25,9 @@ if (!process.argv[2]) {
 }
 
 const which = process.argv[2];
-const stage = path.join(ROOT, 'dist', which, 'source', 'javascript');
-if (!fs.existsSync(stage)) { console.error('build it first: python3 kit/tools/build.py ' + which); process.exit(1); }
+// (the games' ids carry the aurelm_ prefix; the arguments and the pictures' names don't)
+const stage = path.join(ROOT, 'dist', 'aurelm_' + which, 'source', 'javascript');
+if (!fs.existsSync(stage)) { console.error('build it first: python3 kit/tools/build.py aurelm_' + which); process.exit(1); }
 const { Canvas } = require(path.join(stage, 'kit', 'canvas'));
 const { theme } = require(path.join(stage, 'kit', 'themes'));
 const shot = (name, cv) => { fs.writeFileSync(path.join(OUT, name + '.png'), cv.png()); console.log('docs/screenshots/' + name + '.png'); };

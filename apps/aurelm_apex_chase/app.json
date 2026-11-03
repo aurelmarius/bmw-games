@@ -1,11 +1,11 @@
 {
-  "id": "blackjack",
-  "title": "Blackjack",
-  "description": "Casino blackjack for play credits, drawn by the GPU renderer at 60 fps: a felt table with a leather rail, cards dealt from the shoe, chips, six decks, 3 to 2, double, split, insurance, a strategy hint, statistics. iDrive controller or touch. Parked only.",
-  "version": "1.0.1",
+  "id": "aurelm_apex_chase",
+  "title": "Apex Chase",
+  "description": "A maze chase in a city at night, drawn by the GPU renderer at 60 fps: the M car collects the fuel drops while four electric cars hunt it; a NITRO can drains their batteries. iDrive controller or swipes. Parked only.",
+  "version": "1.0.0",
   "vendor": "custom",
-  "loggingId": "OA9B",
-  "iconGlyph": "cards",
+  "loggingId": "OA9A",
+  "iconGlyph": "chase",
   "signals": {
     "de.bmw.infotainment.vehicle.Vehicle2": {
       "statusCarSpeed2": "rs"
@@ -15,27 +15,27 @@
     {
       "name": "MAIN",
       "kind": "canvas",
-      "title": "Blackjack",
+      "title": "Apex Chase",
       "buttons": [
         [
-          "BTN_MAIN",
-          "Deal"
+          "BTN_PLAY",
+          "Start"
         ],
         [
-          "BTN_STAND",
-          "Stats"
+          "BTN_UP",
+          "Up"
         ],
         [
-          "BTN_DOUBLE",
-          "Double"
+          "BTN_DOWN",
+          "Down"
         ],
         [
-          "BTN_SPLIT",
-          "Split"
+          "BTN_LEFT",
+          "Left"
         ],
         [
-          "BTN_BET",
-          "Bet +"
+          "BTN_RIGHT",
+          "Right"
         ],
         [
           "BTN_SETTINGS",
@@ -46,78 +46,50 @@
   ],
   "settings": [
     {
-      "key": "felt",
-      "label": "Table felt",
-      "type": "choice",
-      "default": "green",
-      "options": [
-        [
-          "green",
-          "Green"
-        ],
-        [
-          "blue",
-          "Blue"
-        ],
-        [
-          "red",
-          "Red"
-        ],
-        [
-          "black",
-          "Black"
-        ]
-      ]
-    },
-    {
-      "key": "cardBack",
-      "label": "Card backs",
-      "type": "choice",
-      "default": "m",
-      "options": [
-        [
-          "m",
-          "M Tricolour"
-        ],
-        [
-          "red",
-          "Red"
-        ],
-        [
-          "blue",
-          "Blue"
-        ]
-      ]
-    },
-    {
-      "key": "dealSpeed",
-      "label": "Dealing speed",
+      "key": "difficulty",
+      "label": "Difficulty",
       "type": "choice",
       "default": "normal",
       "options": [
+        [
+          "easy",
+          "Easy"
+        ],
         [
           "normal",
           "Normal"
         ],
         [
-          "fast",
-          "Fast"
+          "hard",
+          "Hard"
         ]
       ]
     },
     {
-      "key": "hints",
-      "label": "Strategy hint",
+      "key": "paint",
+      "label": "Your car's paint",
       "type": "choice",
-      "default": "on",
+      "default": "white",
       "options": [
         [
-          "on",
-          "On"
+          "white",
+          "White"
         ],
         [
-          "off",
-          "Off"
+          "blue",
+          "Blue"
+        ],
+        [
+          "green",
+          "Green"
+        ],
+        [
+          "red",
+          "Red"
+        ],
+        [
+          "yellow",
+          "Yellow"
         ]
       ]
     },

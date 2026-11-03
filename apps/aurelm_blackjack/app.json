@@ -1,11 +1,11 @@
 {
-  "id": "snake",
-  "title": "Snake",
-  "description": "Snake on the central display, drawn by the GPU renderer at 60 fps: steer with the iDrive controller (push or turn) or swipe on the screen. Parked only.",
-  "version": "1.0.0",
+  "id": "aurelm_blackjack",
+  "title": "Blackjack",
+  "description": "Casino blackjack for play credits, drawn by the GPU renderer at 60 fps: a felt table with a leather rail, cards dealt from the shoe, chips, six decks, 3 to 2, double, split, insurance, a strategy hint, statistics. iDrive controller or touch. Parked only.",
+  "version": "1.0.1",
   "vendor": "custom",
-  "loggingId": "OA9S",
-  "iconGlyph": "snake",
+  "loggingId": "OA9B",
+  "iconGlyph": "cards",
   "signals": {
     "de.bmw.infotainment.vehicle.Vehicle2": {
       "statusCarSpeed2": "rs"
@@ -15,23 +15,27 @@
     {
       "name": "MAIN",
       "kind": "canvas",
-      "title": "Snake",
+      "title": "Blackjack",
       "buttons": [
         [
-          "BTN_PLAY",
-          "Start"
+          "BTN_MAIN",
+          "Deal"
         ],
         [
-          "BTN_LEFT",
-          "Turn Left"
+          "BTN_STAND",
+          "Stats"
         ],
         [
-          "BTN_RIGHT",
-          "Turn Right"
+          "BTN_DOUBLE",
+          "Double"
         ],
         [
-          "BTN_NEW",
-          "New Game"
+          "BTN_SPLIT",
+          "Split"
+        ],
+        [
+          "BTN_BET",
+          "Bet +"
         ],
         [
           "BTN_SETTINGS",
@@ -42,15 +46,55 @@
   ],
   "settings": [
     {
-      "key": "speed",
-      "label": "Speed",
+      "key": "felt",
+      "label": "Table felt",
+      "type": "choice",
+      "default": "green",
+      "options": [
+        [
+          "green",
+          "Green"
+        ],
+        [
+          "blue",
+          "Blue"
+        ],
+        [
+          "red",
+          "Red"
+        ],
+        [
+          "black",
+          "Black"
+        ]
+      ]
+    },
+    {
+      "key": "cardBack",
+      "label": "Card backs",
+      "type": "choice",
+      "default": "m",
+      "options": [
+        [
+          "m",
+          "M Tricolour"
+        ],
+        [
+          "red",
+          "Red"
+        ],
+        [
+          "blue",
+          "Blue"
+        ]
+      ]
+    },
+    {
+      "key": "dealSpeed",
+      "label": "Dealing speed",
       "type": "choice",
       "default": "normal",
       "options": [
-        [
-          "slow",
-          "Slow"
-        ],
         [
           "normal",
           "Normal"
@@ -62,18 +106,18 @@
       ]
     },
     {
-      "key": "walls",
-      "label": "Edges",
+      "key": "hints",
+      "label": "Strategy hint",
       "type": "choice",
-      "default": "wrap",
+      "default": "on",
       "options": [
         [
-          "wrap",
-          "Wrap around"
+          "on",
+          "On"
         ],
         [
-          "solid",
-          "Solid walls"
+          "off",
+          "Off"
         ]
       ]
     },

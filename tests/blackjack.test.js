@@ -1,10 +1,10 @@
 'use strict';
-/** Blackjack's rules (apps/blackjack/model.js): node tests/blackjack.test.js */
+/** Blackjack's rules (apps/aurelm_blackjack/model.js): node tests/blackjack.test.js */
 const assert = require('assert');
 const fs = require('fs');
 const os = require('os');
 const path = require('path');
-const { Game, Shoe, START_CREDITS, BETS, DECKS, total, isBlackjack, advice, loadState, saveState } = require('../apps/blackjack/model');
+const { Game, Shoe, START_CREDITS, BETS, DECKS, total, isBlackjack, advice, loadState, saveState } = require('../apps/aurelm_blackjack/model');
 
 const tests = [];
 const test = (name, fn) => tests.push({ name, fn });

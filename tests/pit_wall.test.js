@@ -1,10 +1,10 @@
 'use strict';
-/** Pit Wall's rules (apps/pit_wall/model.js): node tests/pit_wall.test.js */
+/** Pit Wall's rules (apps/aurelm_pit_wall/model.js): node tests/pit_wall.test.js */
 const assert = require('assert');
 const fs = require('fs');
 const os = require('os');
 const path = require('path');
-const { Game, FW, FH, DT, WING, LIGHTS_MS, LAYOUTS, LIVES, layout, loadBest, saveBest } = require('../apps/pit_wall/model');
+const { Game, FW, FH, DT, WING, LIGHTS_MS, LAYOUTS, LIVES, layout, loadBest, saveBest } = require('../apps/aurelm_pit_wall/model');
 
 const tests = [];
 const test = (name, fn) => tests.push({ name, fn });

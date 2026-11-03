@@ -10,7 +10,7 @@ The car apps (Engine Care, Hybrid Cost) are in [aurelmarius/bmw-apps](https://gi
 
 ## 🎮 Games
 
-### 1. 🐍 Snake (`snake`)
+### 1. 🐍 Snake (`aurelm_snake`)
 *The classic game, drawn by the GPU renderer at 60 fps. Parked only.*
 
 * **Smooth at any speed**: the snake slides between cells every frame (mgu-render); without the renderer it still runs as HMI images, a few frames a second.
@@ -23,7 +23,7 @@ The car apps (Engine Care, Hybrid Cost) are in [aurelmarius/bmw-apps](https://gi
 ![Snake - a game on the central display](docs/screenshots/snake-game.png)
 <sub>Screenshot drawn by the app on a PC (`tools/screenshots.js`), a game played by an autopilot.</sub>
 
-### 2. 🚀 Track Defender (`track_defender`)
+### 2. 🚀 Track Defender (`aurelm_track_defender`)
 *An arcade shooter: drones attack the track in waves, the M car shoots them down. GPU renderer at 60 fps. Parked only.*
 
 * **Waves of drones**: they fly in on curves to a formation that sways and slowly sinks towards the track; some dive at the car and fire on the way. Heavy drones take two hits, every fifth wave is a boss drone.
@@ -37,7 +37,7 @@ The car apps (Engine Care, Hybrid Cost) are in [aurelmarius/bmw-apps](https://gi
 ![Track Defender - wave 3, double fire](docs/screenshots/track_defender-game.png)
 <sub>Screenshot drawn by the app on a PC (`tools/screenshots.js`), a game played by an autopilot.</sub>
 
-### 3. 🏁 Pit Wall (`pit_wall`)
+### 3. 🏁 Pit Wall (`aurelm_pit_wall`)
 *Break the advertising panels off the pit wall, catching the ball on an M front wing. A night race scene at 60 fps. Parked only.*
 
 * **The scene**: floodlights over a grandstand full of camera flashes, glossy sponsor panels that shatter into shards, carbon panels that crack before they go, fuel cans that explode and take their neighbours with them (the screen shakes).
@@ -53,7 +53,7 @@ The car apps (Engine Care, Hybrid Cost) are in [aurelmarius/bmw-apps](https://gi
 ![Pit Wall - level 4, a combo x3, DRS open](docs/screenshots/pit_wall-game.png)
 <sub>Screenshot drawn by the app on a PC (`tools/screenshots.js`), a game played by an autopilot.</sub>
 
-### 4. 🎰 Lucky Sevens (`lucky_sevens`)
+### 4. 🎰 Lucky Sevens (`aurelm_lucky_sevens`)
 *A five reel slot machine for play credits, drawn by the GPU renderer at 60 fps. Parked only.*
 
 * **The machine**: a lacquered cabinet in a gold moulding with marquee bulbs, reels behind curved glass in a chrome bezel, glossy symbols lit from the top left (an extruded 7 with a gold rim, cherries, lemon, bell, BAR, a cut diamond, the WILD star), a control panel with LCD read-outs and a domed SPIN button.
@@ -74,7 +74,7 @@ The car apps (Engine Care, Hybrid Cost) are in [aurelmarius/bmw-apps](https://gi
 ![Lucky Sevens - statistics](docs/screenshots/lucky_sevens-stats.png)
 <sub>Screenshots drawn by the app on a PC (`tools/screenshots.js`), seeded spins.</sub>
 
-### 5. 🃏 Blackjack (`blackjack`)
+### 5. 🃏 Blackjack (`aurelm_blackjack`)
 *Casino blackjack for play credits, drawn by the GPU renderer at 60 fps. Parked only.*
 
 * **The table**: felt lit from above, a padded leather rail along its curved edge, the table's printing in gold along the arc, the dealer's chip rack, the shoe and the discard tray. Cards with real pips and court cards in a gold frame, casino chips in perspective.
@@ -91,7 +91,7 @@ The car apps (Engine Care, Hybrid Cost) are in [aurelmarius/bmw-apps](https://gi
 ![Blackjack - a split of sixes, the dealer busts](docs/screenshots/blackjack-split.png)
 <sub>Screenshots drawn by the app on a PC (`tools/screenshots.js`), seeded hands played by basic strategy.</sub>
 
-### 6. ♠️ Solitaire (`solitaire`)
+### 6. ♠️ Solitaire (`aurelm_solitaire`)
 *Klondike, the classic patience, on a card table. GPU renderer at 60 fps. Parked only.*
 
 * **The table**: felt lit from above in a dark wooden frame with a brass inlay, the places for the piles printed on it (each foundation with its suit), the same cards as Blackjack.
@@ -108,7 +108,7 @@ The car apps (Engine Care, Hybrid Cost) are in [aurelmarius/bmw-apps](https://gi
 ![Solitaire - won: the cards bounce off the foundations](docs/screenshots/solitaire-win.png)
 <sub>Screenshots drawn by the app on a PC (`tools/screenshots.js`), seeded deals played by the hint.</sub>
 
-### 7. 🏎️ Apex Chase (`apex_chase`)
+### 7. 🏎️ Apex Chase (`aurelm_apex_chase`)
 *A maze chase in a city at night: the M car against four electric cars. GPU renderer at 60 fps. Parked only.*
 
 * **The city from above**: asphalt streets with lane marks and pools of street-lamp light, blocks of buildings with lit windows and rooftop plant, parks with trees, tunnels at both ends of the middle avenue, the charging station in the middle. Two cities, in turns from level to level.
@@ -124,7 +124,7 @@ The car apps (Engine Care, Hybrid Cost) are in [aurelmarius/bmw-apps](https://gi
 ![Apex Chase - NITRO: a car caught, the others fleeing](docs/screenshots/apex_chase-nitro.png)
 <sub>Screenshots drawn by the app on a PC (`tools/screenshots.js`), played by an autopilot.</sub>
 
-### 8. 🛡️ Street Siege (`street_siege`)
+### 8. 🛡️ Street Siege (`aurelm_street_siege`)
 *Defend the M garage: cars storm an industrial yard at night, the M car stops them with its roof cannon. GPU renderer at 60 fps. Parked only.*
 
 * **The yard from above**: asphalt with painted bays, cracks, drains and pools of lamp light; stacks of race tyres (red and white) that fall apart brick by brick when shot, concrete barriers with hazard stripes, a canal (cars can't cross it, shots can), trees whose crowns hide the cars under them, oil patches that make a car slide on. Every level its own yard (symmetric, reachable everywhere).
@@ -154,27 +154,29 @@ The car apps (Engine Care, Hybrid Cost) are in [aurelmarius/bmw-apps](https://gi
 4. Select **Releases** as the source type.
 5. Tap **Install** next to **Snake**, **Track Defender**, **Pit Wall**, **Lucky Sevens**, **Blackjack**, **Solitaire**, **Apex Chase** or **Street Siege**.
 
-The games run smoothest with the **mgu-render** GPU renderer, installed from the same Store. Without it they still run, as images handed to the HMI a few times a second.
+The games run smoothest with the **mgu-render** GPU renderer, installed from the same Store.
+
+**Installed a game before v1.2.0?** The games' ids now carry the `aurelm_` prefix (`aurelm_snake`, …), as the Store's publishing guide asks, so the Store sees them as new apps: install them again, then remove the old ones (without the prefix) from the Store. Best scores, credits and statistics start afresh. Without it they still run, as images handed to the HMI a few times a second.
 
 ### Method 2: Via USB Stick
 1. Download the `<game>@<version>.tgz` files from [Releases](https://github.com/aurelmarius/bmw-games/releases).
 2. Copy the files onto a USB stick or build a USB repository:
    ```powershell
-   node mgu-install.js usb-repo E:\ snake@1.0.0.tgz track_defender@1.0.0.tgz pit_wall@1.0.0.tgz lucky_sevens@1.1.0.tgz blackjack@1.0.1.tgz solitaire@1.0.0.tgz apex_chase@1.0.0.tgz street_siege@1.0.0.tgz
+   node mgu-install.js usb-repo E:\ aurelm_snake@1.0.0.tgz aurelm_track_defender@1.0.0.tgz aurelm_pit_wall@1.0.0.tgz aurelm_lucky_sevens@1.1.0.tgz aurelm_blackjack@1.0.1.tgz aurelm_solitaire@1.0.0.tgz aurelm_apex_chase@1.0.0.tgz aurelm_street_siege@1.0.0.tgz
    ```
 3. Insert the USB drive into your car and install from the **USB** page of the Store.
 
 ### Method 3: Manual Deployment via SSH
 Copy the package to the head unit and run `mgu-deploy.sh`:
 ```bash
-/var/opt/mgu-deploy/mgu-deploy.sh install --artifact snake@1.0.0.tgz --yes
-/var/opt/mgu-deploy/mgu-deploy.sh install --artifact track_defender@1.0.0.tgz --yes
-/var/opt/mgu-deploy/mgu-deploy.sh install --artifact pit_wall@1.0.0.tgz --yes
-/var/opt/mgu-deploy/mgu-deploy.sh install --artifact lucky_sevens@1.1.0.tgz --yes
-/var/opt/mgu-deploy/mgu-deploy.sh install --artifact blackjack@1.0.1.tgz --yes
-/var/opt/mgu-deploy/mgu-deploy.sh install --artifact solitaire@1.0.0.tgz --yes
-/var/opt/mgu-deploy/mgu-deploy.sh install --artifact apex_chase@1.0.0.tgz --yes
-/var/opt/mgu-deploy/mgu-deploy.sh install --artifact street_siege@1.0.0.tgz --yes
+/var/opt/mgu-deploy/mgu-deploy.sh install --artifact aurelm_snake@1.0.0.tgz --yes
+/var/opt/mgu-deploy/mgu-deploy.sh install --artifact aurelm_track_defender@1.0.0.tgz --yes
+/var/opt/mgu-deploy/mgu-deploy.sh install --artifact aurelm_pit_wall@1.0.0.tgz --yes
+/var/opt/mgu-deploy/mgu-deploy.sh install --artifact aurelm_lucky_sevens@1.1.0.tgz --yes
+/var/opt/mgu-deploy/mgu-deploy.sh install --artifact aurelm_blackjack@1.0.1.tgz --yes
+/var/opt/mgu-deploy/mgu-deploy.sh install --artifact aurelm_solitaire@1.0.0.tgz --yes
+/var/opt/mgu-deploy/mgu-deploy.sh install --artifact aurelm_apex_chase@1.0.0.tgz --yes
+/var/opt/mgu-deploy/mgu-deploy.sh install --artifact aurelm_street_siege@1.0.0.tgz --yes
 ```
 
 ---
@@ -192,8 +194,8 @@ Copy the package to the head unit and run `mgu-deploy.sh`:
 ## 🧪 Development
 
 ```bash
-python3 kit/tools/build.py snake track_defender pit_wall lucky_sevens blackjack solitaire apex_chase street_siege  # -> dist/<id>@<version>.tgz
-node kit/tools/preview.js dist/blackjack preview        # a game on a simulated head unit, as PNGs
+python3 kit/tools/build.py aurelm_snake aurelm_track_defender aurelm_pit_wall aurelm_lucky_sevens aurelm_blackjack aurelm_solitaire aurelm_apex_chase aurelm_street_siege  # -> dist/<id>@<version>.tgz
+node kit/tools/preview.js dist/aurelm_blackjack preview        # a game on a simulated head unit, as PNGs
 node tests/snake.test.js                                # Snake's rules
 node tests/track_defender.test.js                       # Track Defender's rules
 node tests/pit_wall.test.js                             # Pit Wall's rules
@@ -205,7 +207,7 @@ node tests/street_siege.test.js                         # Street Siege's rules
 node tools/screenshots.js                               # the README's screenshots (after a build)
 ```
 
-Each game keeps its rules in `apps/<id>/model.js` (no drawing, no car: that's what the tests run), its look in `art.js` where it has one, and the screen, the controller and the timing in `main.js`.
+Each game (its id: `aurelm_` and its name) keeps its rules in `apps/<id>/model.js` (no drawing, no car: that's what the tests run), its look in `art.js` where it has one, and the screen, the controller and the timing in `main.js`.
 
 **Releasing**: build, copy the new `dist/*.tgz` into `packages/` (remove the old version of that game) and push. The push of `packages/` runs the *Prepare Draft Release* workflow, which updates `catalog.json` and creates a draft release; publish it with the *Publish Release* workflow (tag as input) or GitHub's "Publish release" button to make it visible in the Store.
 

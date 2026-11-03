@@ -1,11 +1,11 @@
 {
-  "id": "track_defender",
-  "title": "Track Defender",
-  "description": "Arcade shooter on the central display, drawn by the GPU renderer at 60 fps: drones attack the track in waves, the M car shoots them down. iDrive controller or touch. Parked only.",
+  "id": "aurelm_pit_wall",
+  "title": "Pit Wall",
+  "description": "Break the advertising panels off the pit wall: a night race scene drawn by the GPU renderer at 60 fps, the ball on an M front wing, start lights, combos and power-ups. iDrive controller or touch. Parked only.",
   "version": "1.0.0",
   "vendor": "custom",
-  "loggingId": "OA9T",
-  "iconGlyph": "drone",
+  "loggingId": "OA9W",
+  "iconGlyph": "wall",
   "signals": {
     "de.bmw.infotainment.vehicle.Vehicle2": {
       "statusCarSpeed2": "rs"
@@ -15,7 +15,7 @@
     {
       "name": "MAIN",
       "kind": "canvas",
-      "title": "Track Defender",
+      "title": "Pit Wall",
       "buttons": [
         [
           "BTN_PLAY",
@@ -30,8 +30,8 @@
           "Right"
         ],
         [
-          "BTN_PULSE",
-          "Pulse"
+          "BTN_LAUNCH",
+          "Launch"
         ],
         [
           "BTN_NEW",
@@ -46,22 +46,22 @@
   ],
   "settings": [
     {
-      "key": "difficulty",
-      "label": "Difficulty",
+      "key": "speed",
+      "label": "Ball speed",
       "type": "choice",
       "default": "normal",
       "options": [
         [
-          "easy",
-          "Easy"
+          "relaxed",
+          "Relaxed"
         ],
         [
           "normal",
           "Normal"
         ],
         [
-          "hard",
-          "Hard"
+          "fast",
+          "Fast"
         ]
       ]
     },

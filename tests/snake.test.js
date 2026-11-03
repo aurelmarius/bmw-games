@@ -1,10 +1,10 @@
 'use strict';
-/** Snake's rules (apps/snake/model.js): node tests/snake.test.js */
+/** Snake's rules (apps/aurelm_snake/model.js): node tests/snake.test.js */
 const assert = require('assert');
 const fs = require('fs');
 const os = require('os');
 const path = require('path');
-const { Game, loadBest, saveBest } = require('../apps/snake/model');
+const { Game, loadBest, saveBest } = require('../apps/aurelm_snake/model');
 
 const tests = [];
 const test = (name, fn) => tests.push({ name, fn });

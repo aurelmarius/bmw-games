@@ -1,10 +1,10 @@
 'use strict';
-/** Street Siege's rules (apps/street_siege/model.js): node tests/street_siege.test.js */
+/** Street Siege's rules (apps/aurelm_street_siege/model.js): node tests/street_siege.test.js */
 const assert = require('assert');
 const fs = require('fs');
 const os = require('os');
 const path = require('path');
-const { Game, DT, BW, BH, TW, TH, DIRS, LIVES, GARAGE_HP, PER_LEVEL, ON_YARD, TYPES, BASE, RING, SPAWNS, PLAYER, build, convoy, loadBest, saveBest } = require('../apps/street_siege/model');
+const { Game, DT, BW, BH, TW, TH, DIRS, LIVES, GARAGE_HP, PER_LEVEL, ON_YARD, TYPES, BASE, RING, SPAWNS, PLAYER, build, convoy, loadBest, saveBest } = require('../apps/aurelm_street_siege/model');
 
 const tests = [];
 const test = (name, fn) => tests.push({ name, fn });

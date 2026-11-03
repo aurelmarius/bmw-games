@@ -1,11 +1,11 @@
 {
-  "id": "apex_chase",
-  "title": "Apex Chase",
-  "description": "A maze chase in a city at night, drawn by the GPU renderer at 60 fps: the M car collects the fuel drops while four electric cars hunt it; a NITRO can drains their batteries. iDrive controller or swipes. Parked only.",
+  "id": "aurelm_street_siege",
+  "title": "Street Siege",
+  "description": "Defend the M garage: cars storm an industrial yard at night and the M car stops them with its roof cannon. Tyre walls that fall apart, concrete, a canal, trees, oil, power-ups; drawn by the GPU renderer at 60 fps. Parked only.",
   "version": "1.0.0",
   "vendor": "custom",
-  "loggingId": "OA9A",
-  "iconGlyph": "chase",
+  "loggingId": "OA9G",
+  "iconGlyph": "siege",
   "signals": {
     "de.bmw.infotainment.vehicle.Vehicle2": {
       "statusCarSpeed2": "rs"
@@ -15,7 +15,7 @@
     {
       "name": "MAIN",
       "kind": "canvas",
-      "title": "Apex Chase",
+      "title": "Street Siege",
       "buttons": [
         [
           "BTN_PLAY",
@@ -62,6 +62,22 @@
         [
           "hard",
           "Hard"
+        ]
+      ]
+    },
+    {
+      "key": "autoFire",
+      "label": "Automatic fire",
+      "type": "choice",
+      "default": "on",
+      "options": [
+        [
+          "on",
+          "On"
+        ],
+        [
+          "off",
+          "Off"
         ]
       ]
     },

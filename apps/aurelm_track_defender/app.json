@@ -1,11 +1,11 @@
 {
-  "id": "lucky_sevens",
-  "title": "Lucky Sevens",
-  "description": "A five reel slot machine for play credits, drawn by the GPU renderer at 60 fps: glossy symbols, reels that bounce to a stop, ten paylines, WILD, free spins, a progressive jackpot, statistics. iDrive controller or touch. Parked only.",
-  "version": "1.1.0",
+  "id": "aurelm_track_defender",
+  "title": "Track Defender",
+  "description": "Arcade shooter on the central display, drawn by the GPU renderer at 60 fps: drones attack the track in waves, the M car shoots them down. iDrive controller or touch. Parked only.",
+  "version": "1.0.0",
   "vendor": "custom",
-  "loggingId": "OA9L",
-  "iconGlyph": "seven",
+  "loggingId": "OA9T",
+  "iconGlyph": "drone",
   "signals": {
     "de.bmw.infotainment.vehicle.Vehicle2": {
       "statusCarSpeed2": "rs"
@@ -15,23 +15,27 @@
     {
       "name": "MAIN",
       "kind": "canvas",
-      "title": "Lucky Sevens",
+      "title": "Track Defender",
       "buttons": [
         [
-          "BTN_SPIN",
-          "Spin"
+          "BTN_PLAY",
+          "Start"
         ],
         [
-          "BTN_BET",
-          "Bet +"
+          "BTN_LEFT",
+          "Left"
         ],
         [
-          "BTN_AUTO",
-          "Auto"
+          "BTN_RIGHT",
+          "Right"
         ],
         [
-          "BTN_STATS",
-          "Stats"
+          "BTN_PULSE",
+          "Pulse"
+        ],
+        [
+          "BTN_NEW",
+          "New Game"
         ],
         [
           "BTN_SETTINGS",
@@ -42,42 +46,22 @@
   ],
   "settings": [
     {
-      "key": "cabinet",
-      "label": "Cabinet colour",
-      "type": "choice",
-      "default": "ruby",
-      "options": [
-        [
-          "ruby",
-          "Ruby"
-        ],
-        [
-          "sapphire",
-          "Sapphire"
-        ],
-        [
-          "emerald",
-          "Emerald"
-        ],
-        [
-          "onyx",
-          "Onyx"
-        ]
-      ]
-    },
-    {
-      "key": "reelSpeed",
-      "label": "Reel speed",
+      "key": "difficulty",
+      "label": "Difficulty",
       "type": "choice",
       "default": "normal",
       "options": [
+        [
+          "easy",
+          "Easy"
+        ],
         [
           "normal",
           "Normal"
         ],
         [
-          "fast",
-          "Fast"
+          "hard",
+          "Hard"
         ]
       ]
     },

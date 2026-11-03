@@ -3,6 +3,23 @@
   "name": "Aurel Marius BMW Games",
   "components": [
     {
+      "id": "apex_chase",
+      "kind": "app",
+      "version": "1.0.0",
+      "title": "Apex Chase",
+      "description": "A maze chase in a city at night, drawn by the GPU renderer at 60 fps: the M car collects the fuel drops while four electric cars hunt it; a NITRO can drains their batteries. iDrive controller or swipes. Parked only.",
+      "mguHmi": [
+        "ID7"
+      ],
+      "artifact": {
+        "name": "apex_chase@1.0.0.tgz",
+        "size": 569994,
+        "sha256": "c071751093a318811d9159013f55d027178c1e54ad1b75dc715487af6d7cc06d",
+        "url": "packages/apex_chase@1.0.0.tgz"
+      },
+      "uninstallable": true
+    },
+    {
       "id": "blackjack",
       "kind": "app",
       "version": "1.0.1",

@@ -1,5 +1,12 @@
 {
   "apps": {
+    "apex_chase": {
+      "title": "Apex Chase",
+      "description": "A maze chase in a city at night, drawn by the GPU renderer at 60 fps: the M car collects the fuel drops while four electric cars hunt it; a NITRO can drains their batteries. iDrive controller or swipes. Parked only.",
+      "author": "custom",
+      "icon": "apex_chase.png",
+      "iconSha256": "2def54864ab5f2f35ec6aeabf45dbe83e5ee463bbb5518191bf06a8dbe4b5a80"
+    },
     "blackjack": {
       "title": "Blackjack",
       "description": "Casino blackjack for play credits, drawn by the GPU renderer at 60 fps: a felt table with a leather rail, cards dealt from the shoe, chips, six decks, 3 to 2, double, split, insurance, a strategy hint, statistics. iDrive controller or touch. Parked only.",

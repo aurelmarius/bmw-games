@@ -28,6 +28,13 @@
       "icon": "snake.png",
       "iconSha256": "19bceca073c4d63c2cceae959171571eea55432471bfb569d5bf33cb947a6a03"
     },
+    "solitaire": {
+      "title": "Solitaire",
+      "description": "Klondike solitaire drawn by the GPU renderer at 60 fps: a felt card table, cards that fly, flip and bounce home. Tap or press for the best move, drag cards, draw one or three, undo, hint, auto finish, statistics. Parked only.",
+      "author": "custom",
+      "icon": "solitaire.png",
+      "iconSha256": "1effec6c194696f547afd63ee87201c65a59f54fb4cbfa652fafa4eeb027bdc1"
+    },
     "track_defender": {
       "title": "Track Defender",
       "description": "Arcade shooter on the central display, drawn by the GPU renderer at 60 fps: drones attack the track in waves, the M car shoots them down. iDrive controller or touch. Parked only.",

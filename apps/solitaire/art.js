@@ -148,7 +148,56 @@ function drawFace(c, card) {
         suit(c, card.s, fx + fw - 9, fy + fh - 10, 8, col);
     }
 }
+/* ---------- the M back: carbon fibre, the three M stripes across it ---------- */
+const M_STRIPES = ['#81c4ff', '#16588e', '#e7222e'];
+/** a convex polygon cut to a rectangle (Sutherland-Hodgman): the stripes stay on the carbon */
+function clipRect(pts, x0, y0, x1, y1) {
+    const edges = [[(p) => p[0] >= x0, (a, b) => [x0, a[1] + (b[1] - a[1]) * (x0 - a[0]) / (b[0] - a[0])]],
+        [(p) => p[0] <= x1, (a, b) => [x1, a[1] + (b[1] - a[1]) * (x1 - a[0]) / (b[0] - a[0])]],
+        [(p) => p[1] >= y0, (a, b) => [a[0] + (b[0] - a[0]) * (y0 - a[1]) / (b[1] - a[1]), y0]],
+        [(p) => p[1] <= y1, (a, b) => [a[0] + (b[0] - a[0]) * (y1 - a[1]) / (b[1] - a[1]), y1]]];
+    let out = pts;
+    for (const [inside, cut] of edges) {
+        const src = out; out = [];
+        for (let i = 0; i < src.length; i++) {
+            const a = src[i], b = src[(i + 1) % src.length];
+            if (inside(b)) { if (!inside(a)) out.push(cut(a, b)); out.push(b); } else if (inside(a)) out.push(cut(a, b));
+        }
+        if (!out.length) break;
+    }
+    return out;
+}
+function drawMBack(c, w, h) {
+    c.roundRect(2, 3, w, h, CARD.r, withAlpha('#000000', 0.35));
+    c.card(0, 0, w, h, CARD.r, [[0, '#ffffff'], [1, '#ece8de']]);
+    const m = Math.round(w * 0.065), iw = w - 2 * m, ih = h - 2 * m;
+    c.card(m, m, iw, ih, 5, [[0, '#26292f'], [1, '#0b0c0f']]);
+    // the weave: a twill of small cells, lit across in one, along in the next
+    const s = Math.max(4, Math.round(w / 16));
+    for (let y = 0; y < ih; y += s) for (let x = 0; x < iw; x += s) {
+        const i = Math.floor(x / s), j = Math.floor(y / s), cw = Math.min(s, iw - x), ch = Math.min(s, ih - y);
+        if ((i + j) % 2) c.gradientRect(m + x, m + y, cw, ch, [[0, withAlpha('#ffffff', 0.13)], [1, withAlpha('#ffffff', 0)]]);
+        else c.rampRect(m + x, m + y, cw, ch, 0, [withAlpha('#ffffff', 0.07), withAlpha('#000000', 0.18)]);
+    }
+    // the stripes: light blue, dark blue, red, rising to the right through the middle
+    const a = -62 * Math.PI / 180, dx = Math.cos(a), dy = Math.sin(a), nx = -dy, ny = dx;
+    const sw = w * 0.1, L = w + h, cx = w / 2, cy = h / 2;
+    const band = (o, wd, col) => {
+        const p = (t, u) => [cx + dx * t + nx * u, cy + dy * t + ny * u];
+        const q = clipRect([p(-L, o - wd / 2), p(L, o - wd / 2), p(L, o + wd / 2), p(-L, o + wd / 2)], m, m, m + iw, m + ih);
+        if (q.length >= 3) poly(c, q, col);
+    };
+    band(0, sw * 3 + 6, withAlpha('#000000', 0.35));                    // a shadow under them
+    M_STRIPES.forEach((col, k) => band((k - 1) * sw, sw, col));
+    M_STRIPES.forEach((col, k) => band((k - 1) * sw - sw * 0.3, sw * 0.18, withAlpha('#ffffff', 0.18)));   // their gloss
+    // a sheen across the card, a chrome line inside the white border
+    band(-w * 0.32, w * 0.22, withAlpha('#ffffff', 0.05));
+    c.gradientRect(m, m, iw, ih * 0.35, [[0, withAlpha('#ffffff', 0.08)], [1, withAlpha('#ffffff', 0)]]);
+    c.strokeRoundRect(m - 3, m - 3, iw + 6, ih + 6, 8, 4, '#f4f2ec');    // (covers the weave's square corners)
+    c.strokeRoundRect(m + 3, m + 3, iw - 6, ih - 6, 4, 1, withAlpha('#c3c9d2', 0.55));
+}
 function drawBack(c, w, h, colour) {
+    if (colour === 'm') return drawMBack(c, w, h);
     const b = colour === 'blue' ? ['#1f4fa8', '#0c2a66'] : ['#a3132a', '#5c0714'];
     c.roundRect(2, 3, w, h, CARD.r, withAlpha('#000000', 0.35));
     c.card(0, 0, w, h, CARD.r, [[0, '#ffffff'], [1, '#ece8de']]);
@@ -169,7 +218,7 @@ function drawFlip(cv, card, x, y, k, colour) {
     const w = CARD.w * Math.abs(Math.cos(k * Math.PI)), cx = x + CARD.w / 2;
     if (w < 2) return;
     if (k < 0.5) {
-        const b = colour === 'blue' ? ['#1f4fa8', '#0c2a66'] : ['#a3132a', '#5c0714'];
+        const b = colour === 'm' ? ['#26292f', '#0b0c0f'] : colour === 'blue' ? ['#1f4fa8', '#0c2a66'] : ['#a3132a', '#5c0714'];
         cv.card(cx - w / 2, y, w, CARD.h, Math.min(CARD.r, w / 2), [[0, '#ffffff'], [1, '#ece8de']]);
         if (w > 12) cv.card(cx - w / 2 + 5 * w / CARD.w, y + 5, w - 10 * w / CARD.w, CARD.h - 10, 4, [[0, b[0]], [1, b[1]]]);
     } else {

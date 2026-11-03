@@ -311,8 +311,8 @@ mgu.run({
             else cv.blit(o.down ? A.backLayer(back) : A.cardLayer(o.c), o.x, o.y);
         }
         function drawTable(cv, now, dt) {
-            const back = S('cardBack', 'red');
-            cv.blit(A.tableLayer(S('felt', 'green')), A.TABLE.x, A.TABLE.y);
+            const back = S('cardBack', 'm');
+            cv.blit(A.tableLayer(S('felt', 'green'), S('cardBack', 'm')), A.TABLE.x, A.TABLE.y);
             // cards on their way to the discard tray
             discards = discards.filter((o) => Math.hypot(o.x - A.DISCARD.x - 6, o.y - A.DISCARD.y - 2) > 6);
             for (const o of discards) { ease(o, A.DISCARD.x + 6, A.DISCARD.y + 2, dt, 60); cv.blit(A.backLayer(back), o.x, o.y); }

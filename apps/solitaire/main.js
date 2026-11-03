@@ -295,7 +295,7 @@ mgu.run({
         }
         const allCards = () => game.stock.concat(game.waste, ...game.found, ...game.tab);
         function drawCards(cv, now, dt) {
-            const back = S('cardBack', 'red'), T = targets(), flying = [], dragged = new Set(drag && drag.moved && drag.ids ? drag.ids : []);
+            const back = S('cardBack', 'm'), T = targets(), flying = [], dragged = new Set(drag && drag.moved && drag.ids ? drag.ids : []);
             const cards = allCards().sort((a, b) => T.get(a.id).z - T.get(b.id).z);
             if (!game.stock.length) A.drawRecycle(cv, A.colX(0), A.TOP_Y, game.waste.length > 0);
             for (const c of cards) {

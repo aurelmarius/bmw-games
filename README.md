@@ -84,7 +84,7 @@ The car apps (Engine Care, Hybrid Cost) are in [aurelmarius/bmw-apps](https://gi
 * **Statistics** (STATS key, or push the controller down): hands, won, lost, pushes, blackjacks, win rate, best win, longest winning streak, doubles and splits, paid back %.
 * **iDrive controller**: betting: press = deal, turn = bet; playing: turn to choose HIT / STAND / DOUBLE / SPLIT and press, or push up = hit, down = stand, right = double, left = split. **Touchscreen**: the panel's keys.
 * **Play credits only**: nothing to buy, nothing to win. Out of credits, DEAL gives 1 000 new ones. Credits, bet and statistics are kept between drives.
-* **Settings**: table felt (green / blue / red / black), card backs (red / blue), dealing speed, strategy hint on / off.
+* **Settings**: table felt (green / blue / red / black), card backs (M Tricolour: carbon fibre with the three M stripes / red / blue), dealing speed, strategy hint on / off.
 * **Parked only**: no new hand while the car moves (above 3 km/h); a hand in play waits.
 
 ![Blackjack - 11 against a 5: the hint says double](docs/screenshots/blackjack-play.png)
@@ -102,7 +102,7 @@ The car apps (Engine Care, Hybrid Cost) are in [aurelmarius/bmw-apps](https://gi
 * **Statistics**: games played and won, win rate, best time, best score, winning streak.
 * **iDrive controller**: turn = from pile to pile, press = the best move (on the stock: draw), push up = undo, down = hint, right = draw. **Touchscreen**: tap or drag; the panel's keys.
 * **The game in progress is kept** between drives; the clock runs only while the game is on screen and the car stands still.
-* **Settings**: draw one / three, table felt (green / blue / red / black), card backs (red / blue).
+* **Settings**: draw one / three, table felt (green / blue / red / black), card backs (M Tricolour: carbon fibre with the three M stripes / red / blue).
 
 ![Solitaire - a game in progress](docs/screenshots/solitaire-game.png)
 ![Solitaire - won: the cards bounce off the foundations](docs/screenshots/solitaire-win.png)
@@ -128,7 +128,7 @@ The games run smoothest with the **mgu-render** GPU renderer, installed from the
 1. Download the `<game>@<version>.tgz` files from [Releases](https://github.com/aurelmarius/bmw-games/releases).
 2. Copy the files onto a USB stick or build a USB repository:
    ```powershell
-   node mgu-install.js usb-repo E:\ snake@1.0.0.tgz track_defender@1.0.0.tgz pit_wall@1.0.0.tgz lucky_sevens@1.1.0.tgz blackjack@1.0.0.tgz solitaire@1.0.0.tgz
+   node mgu-install.js usb-repo E:\ snake@1.0.0.tgz track_defender@1.0.0.tgz pit_wall@1.0.0.tgz lucky_sevens@1.1.0.tgz blackjack@1.0.1.tgz solitaire@1.0.0.tgz
    ```
 3. Insert the USB drive into your car and install from the **USB** page of the Store.
 
@@ -139,7 +139,7 @@ Copy the package to the head unit and run `mgu-deploy.sh`:
 /var/opt/mgu-deploy/mgu-deploy.sh install --artifact track_defender@1.0.0.tgz --yes
 /var/opt/mgu-deploy/mgu-deploy.sh install --artifact pit_wall@1.0.0.tgz --yes
 /var/opt/mgu-deploy/mgu-deploy.sh install --artifact lucky_sevens@1.1.0.tgz --yes
-/var/opt/mgu-deploy/mgu-deploy.sh install --artifact blackjack@1.0.0.tgz --yes
+/var/opt/mgu-deploy/mgu-deploy.sh install --artifact blackjack@1.0.1.tgz --yes
 /var/opt/mgu-deploy/mgu-deploy.sh install --artifact solitaire@1.0.0.tgz --yes
 ```
 

@@ -2,7 +2,7 @@
   "id": "blackjack",
   "title": "Blackjack",
   "description": "Casino blackjack for play credits, drawn by the GPU renderer at 60 fps: a felt table with a leather rail, cards dealt from the shoe, chips, six decks, 3 to 2, double, split, insurance, a strategy hint, statistics. iDrive controller or touch. Parked only.",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "vendor": "custom",
   "loggingId": "OA9B",
   "iconGlyph": "cards",
@@ -73,8 +73,12 @@
       "key": "cardBack",
       "label": "Card backs",
       "type": "choice",
-      "default": "red",
+      "default": "m",
       "options": [
+        [
+          "m",
+          "M Tricolour"
+        ],
         [
           "red",
           "Red"

@@ -56,17 +56,17 @@
     {
       "id": "aurelm_pinball",
       "kind": "app",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "title": "M Pinball",
       "description": "A pinball table on the circuit: wheels for bumpers, the CHICANE ramp, the PIT LANE, the M-POWER targets and SAFETY CAR MULTIBALL, seen in perspective with real ball physics; drawn by the GPU renderer at 60 fps. Flippers on the controller or a finger on each half of the table. Parked only.",
       "mguHmi": [
         "ID7"
       ],
       "artifact": {
-        "name": "aurelm_pinball@1.0.0.tgz",
-        "size": 577603,
-        "sha256": "ebfe64e9c608e058f1f9d196acc498ade1012ffe4d902648986c3337a5007aa9",
-        "url": "packages/aurelm_pinball@1.0.0.tgz"
+        "name": "aurelm_pinball@1.0.1.tgz",
+        "size": 577802,
+        "sha256": "3be0eccdcb00e908dc45d4c9597a56a3cd2e3be1a5d35218c2782aba8e50a374",
+        "url": "packages/aurelm_pinball@1.0.1.tgz"
       },
       "uninstallable": true
     },

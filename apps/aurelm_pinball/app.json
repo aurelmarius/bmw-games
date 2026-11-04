@@ -2,7 +2,7 @@
   "id": "aurelm_pinball",
   "title": "M Pinball",
   "description": "A pinball table on the circuit: wheels for bumpers, the CHICANE ramp, the PIT LANE, the M-POWER targets and SAFETY CAR MULTIBALL, seen in perspective with real ball physics; drawn by the GPU renderer at 60 fps. Flippers on the controller or a finger on each half of the table. Parked only.",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "vendor": "custom",
   "loggingId": "OA9P",
   "iconGlyph": "pinball",

@@ -148,7 +148,7 @@ The car apps (Engine Care, Hybrid Cost) are in [aurelmarius/bmw-apps](https://gi
 * **Shots**: the CHICANE from the left flipper (a lap: 25 000, a combo up to x4 within 4 s; every 5th lap: FASTEST LAP and an extra ball lit at the pit), the PIT LANE from the right flipper. All six M-POWER letters open the pit: **SAFETY CAR MULTIBALL**, three balls, every lap a **JACKPOT** (500 000, +100 000 each).
 * **Skill shot**: the lane blinking while the ball waits on the plunger, 100 000 when the launched ball rolls through it. **Ball save** after each launch (SHOOT AGAIN lit), **NUDGE** (the third within 6 s: TILT), an end-of-ball **bonus** times the gear.
 * **A dot-matrix display** in the panel (score, ball, gear, what's lit, the big moments), the M-POWER lamps, the plunger's power.
-* **iDrive controller**: push left / right and hold = that flipper, press and hold = both. **Launching, three ways**: hold the press and let go (the longer, the stronger), turn the knob to pull the plunger a notch at a time and press to let go, or push down and hold, let go. Push up = nudge. **Touchscreen**: a finger on the left half of the table = the left flipper while it's down, the right half = the right one; hold LAUNCH and let go, or pull the plunger down with a finger.
+* **iDrive controller**: push left / right and hold = that flipper, press and hold = both. **Launching, three ways**: hold the press and let go (the longer, the stronger), turn the knob to pull the plunger a notch at a time and press to let go, or push down and hold, let go. Push up = nudge. A small turn of the knob while the ball is in play does nothing (it happens by accident while flipping); a big turn pauses. **Touchscreen**: a finger on the left half of the table = the left flipper while it's down, the right half = the right one; hold LAUNCH and let go, or pull the plunger down with a finger.
 * **Settings**: difficulty (easy: a slower ball and a long ball save; hard: faster, a short one), 3 or 5 balls. Best score kept for each.
 * An original table: its own layout, rules and art; no make's badge on it.
 
@@ -178,7 +178,7 @@ The games run smoothest with the **mgu-render** GPU renderer, installed from the
 1. Download the `<game>@<version>.tgz` files from [Releases](https://github.com/aurelmarius/bmw-games/releases).
 2. Copy the files onto a USB stick or build a USB repository:
    ```powershell
-   node mgu-install.js usb-repo E:\ aurelm_snake@1.0.0.tgz aurelm_track_defender@1.0.0.tgz aurelm_pit_wall@1.0.0.tgz aurelm_lucky_sevens@1.1.0.tgz aurelm_blackjack@1.0.1.tgz aurelm_solitaire@1.0.0.tgz aurelm_apex_chase@1.0.0.tgz aurelm_street_siege@1.0.0.tgz aurelm_pinball@1.0.0.tgz
+   node mgu-install.js usb-repo E:\ aurelm_snake@1.0.0.tgz aurelm_track_defender@1.0.0.tgz aurelm_pit_wall@1.0.0.tgz aurelm_lucky_sevens@1.1.0.tgz aurelm_blackjack@1.0.1.tgz aurelm_solitaire@1.0.0.tgz aurelm_apex_chase@1.0.0.tgz aurelm_street_siege@1.0.0.tgz aurelm_pinball@1.0.1.tgz
    ```
 3. Insert the USB drive into your car and install from the **USB** page of the Store.
 
@@ -193,7 +193,7 @@ Copy the package to the head unit and run `mgu-deploy.sh`:
 /var/opt/mgu-deploy/mgu-deploy.sh install --artifact aurelm_solitaire@1.0.0.tgz --yes
 /var/opt/mgu-deploy/mgu-deploy.sh install --artifact aurelm_apex_chase@1.0.0.tgz --yes
 /var/opt/mgu-deploy/mgu-deploy.sh install --artifact aurelm_street_siege@1.0.0.tgz --yes
-/var/opt/mgu-deploy/mgu-deploy.sh install --artifact aurelm_pinball@1.0.0.tgz --yes
+/var/opt/mgu-deploy/mgu-deploy.sh install --artifact aurelm_pinball@1.0.1.tgz --yes
 ```
 
 ---

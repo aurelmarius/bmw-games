@@ -12,7 +12,8 @@
  *     push left / right and hold = that flipper up (let go: down); press and hold = both flippers
  *     the ball on the plunger: press and hold to pull it, let go to launch; or turn to pull it a notch
  *       at a time and press to let go; or push down and hold, let go to launch
- *     push up = nudge; a turn with no ball to launch = pause
+ *     push up = nudge; a small turn while the ball is in play does nothing (it happens by accident while
+ *       holding a flipper); a big one (PAUSE_NOTCHES within a second) pauses
  *     not playing: press starts / goes on, push left leaves, a turn lets go of the controller
  *   touchscreen (where the kit runs the screen): a finger on the left half of the table = the left
  *     flipper while it's down, the right half = the right one; LAUNCH (hold, let go), or pull the
@@ -36,6 +37,8 @@ const BEST_FILE = 'pinball_best.json';
 const PARKED_MS = 500;
 const CHARGE_MS = 1300;              // a full pull of the plunger
 const KNOB_STEP = 0.1;               // a notch of the knob
+const PAUSE_NOTCHES = 8;             // a turn this big within PAUSE_MS pauses the game (a small one: nothing)
+const PAUSE_MS = 1000;
 const GOLD = '#ffd36e', CYAN = '#7fe8ff', RED = '#e7222e', GREEN = '#5ff0a6', ORANGE = '#ff8a1a';
 const LABEL = { ready: 'START', playing: 'LAUNCH', paused: 'GO ON', over: 'AGAIN' };
 
@@ -63,6 +66,7 @@ mgu.run({
         const hold = { ccu: [false, false], press: false, touch: [false, false], pulse: [0, 0] };
         let charge = null;             // { from: ms } while a press / push / LAUNCH pulls the plunger
         let knob = 0;                  // the pull set by turning the knob
+        let turns = [];                // the knob's notches while the ball is in play: [ms, n]
         let drag = null;               // a finger pulling the plunger: { y0 }
         let launchDown = 0, nudgeAt = 0;
         // effects
@@ -152,7 +156,14 @@ mgu.run({
                     if (game.onPlunger()) { if (knob > 0) launchNow(); else startCharge(); } else hold.press = true;
                 }
                 if (let_go) { hold.press = false; releaseCharge(); }
-                if (d) { if (game.onPlunger() && !charge) turnKnob(d); else if (!game.onPlunger()) pause(); }
+                if (d && game.onPlunger() && !charge) turnKnob(d);
+                else if (d && !game.onPlunger()) {
+                    // turned while flipping by accident: ignored; a deliberate big turn pauses
+                    const now = Date.now();
+                    turns = turns.filter((x) => now - x[0] < PAUSE_MS);
+                    turns.push([now, Math.abs(d)]);
+                    if (turns.reduce((a, x) => a + x[1], 0) >= PAUSE_NOTCHES) { turns = []; pause(); }
+                }
                 return;
             }
             hold.ccu = [false, false]; hold.press = false;
@@ -344,7 +355,7 @@ mgu.run({
             if (moving) { title = 'PARKED ONLY'; lines = ['The table waits while the car is moving.', 'It opens when you stop.']; } else if (state === 'ready') {
                 title = 'M PINBALL';
                 lines = touch ? ['Press, or touch START to play', 'Flippers: push left / right, or a finger on each half', 'Launch: hold the press and let go, turn and press, or pull down'] : ['Press "Start" to play', 'Smooth only with mgu-render'];
-            } else if (state === 'paused') { title = 'PAUSED'; lines = touch ? ['Press or tap to go on', 'Push left to leave  ·  turn for the menu'] : ['Press "Go on"']; } else {
+            } else if (state === 'paused') { title = 'PAUSED'; lines = touch ? ['Press or tap to go on', 'Push left to leave  ·  turn for the menu', 'While playing, a big turn of the knob pauses'] : ['Press "Go on"']; } else {
                 title = 'GAME OVER';
                 lines = [newBest ? 'New best: ' + fmt(game.score) : 'Score ' + fmt(game.score), touch ? 'Press or tap to play again' : 'Press "Again"'];
             }

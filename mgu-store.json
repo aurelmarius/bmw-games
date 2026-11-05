@@ -35,6 +35,13 @@
       "icon": "aurelm_pit_wall.png",
       "iconSha256": "bb29f663abcb1a14203087f26224b2f6b55debd6f529b38229f91319f94fad0b"
     },
+    "aurelm_ridge_duel": {
+      "title": "Ridge Duel",
+      "description": "Two armed cars on hills at dusk, a turn each: aim with the knob, hold for power, fire. Ground that shells bite into, wind, four kinds of shell, a rival aimed by the game. Your car: a sport sedan (agile) or a performance SUV (armoured), in your colour. GPU renderer. Parked only.",
+      "author": "custom",
+      "icon": "aurelm_ridge_duel.png",
+      "iconSha256": "a6ef827a9aa82dd0b81879f4a66e8bb5b6f09b04e981ce2520708a3e137a7bf7"
+    },
     "aurelm_snake": {
       "title": "Snake",
       "description": "Snake on the central display, drawn by the GPU renderer at 60 fps: steer with the iDrive controller (push or turn) or swipe on the screen. Parked only.",

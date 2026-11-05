@@ -88,6 +88,23 @@
       "uninstallable": true
     },
     {
+      "id": "aurelm_ridge_duel",
+      "kind": "app",
+      "version": "1.0.0",
+      "title": "Ridge Duel",
+      "description": "Two armed cars on hills at dusk, a turn each: aim with the knob, hold for power, fire. Ground that shells bite into, wind, four kinds of shell, a rival aimed by the game. Your car: a sport sedan (agile) or a performance SUV (armoured), in your colour. GPU renderer. Parked only.",
+      "mguHmi": [
+        "ID7"
+      ],
+      "artifact": {
+        "name": "aurelm_ridge_duel@1.0.0.tgz",
+        "size": 577658,
+        "sha256": "a2559dba9837ddef76312624f4090bab2b63d4d5c39c0b1e0a3eba9b4fb4017f",
+        "url": "packages/aurelm_ridge_duel@1.0.0.tgz"
+      },
+      "uninstallable": true
+    },
+    {
       "id": "aurelm_snake",
       "kind": "app",
       "version": "1.0.0",

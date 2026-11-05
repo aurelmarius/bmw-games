@@ -37,6 +37,23 @@
       "uninstallable": true
     },
     {
+      "id": "aurelm_lap_record",
+      "kind": "app",
+      "version": "1.0.0",
+      "title": "Lap Record",
+      "description": "Time trial on a circuit seen from above, the camera on the car: the knob is the steering wheel, lap after lap against your best and its ghost, the gap live, sectors in purple, green and yellow. Two circuits, kerbs, gravel, tyre walls, grandstands, tyre smoke and marks. GPU renderer. Parked only.",
+      "mguHmi": [
+        "ID7"
+      ],
+      "artifact": {
+        "name": "aurelm_lap_record@1.0.0.tgz",
+        "size": 574607,
+        "sha256": "f3923efc0a55b9b08a1feb34ff8583de2a320d64a6472e26ce6e37539bef0b31",
+        "url": "packages/aurelm_lap_record@1.0.0.tgz"
+      },
+      "uninstallable": true
+    },
+    {
       "id": "aurelm_lucky_sevens",
       "kind": "app",
       "version": "1.1.0",

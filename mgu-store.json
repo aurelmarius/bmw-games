@@ -14,6 +14,13 @@
       "icon": "aurelm_blackjack.png",
       "iconSha256": "a13dd922338503c5d022f9a19bad0eb207453f942a8739975e29bec908aca7c7"
     },
+    "aurelm_lap_record": {
+      "title": "Lap Record",
+      "description": "Time trial on a circuit seen from above, the camera on the car: the knob is the steering wheel, lap after lap against your best and its ghost, the gap live, sectors in purple, green and yellow. Two circuits, kerbs, gravel, tyre walls, grandstands, tyre smoke and marks. GPU renderer. Parked only.",
+      "author": "custom",
+      "icon": "aurelm_lap_record.png",
+      "iconSha256": "c56387907ca3dbe3dd874125b86e3b87938922dbf52bcac159603d6bdbc133ae"
+    },
     "aurelm_lucky_sevens": {
       "title": "Lucky Sevens",
       "description": "A five reel slot machine for play credits, drawn by the GPU renderer at 60 fps: glossy symbols, reels that bounce to a stop, ten paylines, WILD, free spins, a progressive jackpot, statistics. iDrive controller or touch. Parked only.",

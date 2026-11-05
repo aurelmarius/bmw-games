@@ -159,14 +159,15 @@ The car apps (Engine Care, Hybrid Cost) are in [aurelmarius/bmw-apps](https://gi
 ### 10. 💥 Ridge Duel (`aurelm_ridge_duel`)
 *Two armed cars on hills at dusk, a turn each: aim, power, fire. GPU renderer. Parked only.*
 
-* **Your car** (a setting): a **sport sedan** - *agile*: drives almost twice as far in a turn, low and narrow so it's harder to hit, no armour; or a **performance SUV** - *armoured*: takes 20 % less damage, climbs steeper slopes, fires from higher up, but drives less. Drawn as real silhouettes (the kink in the last side window, the gill behind the front wheel, four tailpipes, big wheels with blue calipers) in the **paint** you choose: blue, white, black, grey, green, red or yellow. No make's grille or badge on them.
+* **Your car**, chosen in the **garage** before every match (the two side by side with five ratings each: mobility, armour, climbing, how hard to hit, gun height; and the paint): a **sport sedan** - *agile*: drives almost twice as far in a turn, low and narrow so it's harder to hit, no armour; or a **performance SUV** - *armoured*: takes 20 % less damage, climbs steeper slopes, fires from higher up, but drives less. Drawn as real silhouettes (the kink in the last side window, the gill behind the front wheel, four tailpipes, big wheels with blue calipers) in the **paint** you choose: blue, white, black, grey, green, red or yellow. No make's grille or badge on them.
 * **The rival**: a full-size pick-up with its gun in the bed (10 % armour). The game works its shot out and misses by a little: by less on harder levels, and by less with every shot while you stay where you are, so it pays to move.
 * **Ground that shells bite into**: layers of earth and rock under the grass, round craters, scorched earth, firs that burn; the cars settle into the holes. **Wind** (a flag on the hill and the readout) pushes the shells and changes a little every turn.
 * **Four shells**: STANDARD (as many as you like), CLUSTER (splits in three at the top of its flight), BOUNCER (bounces twice before it goes off), HEAVY (a big blast). A direct hit does 15 % more; the blast does less the further it is.
 * **A match**: new hills every round, first to win three rounds. Statistics for each difficulty: matches won, the best run, hits and shots.
 * **iDrive controller**: turn = aim (faster when turned quickly), press and hold = power, let go = fire, push left / right and hold = drive (the turn's fuel), push up / down = the shell, hold up = pause. **Touchscreen**: a finger on the hills aims the gun at it, FIRE (hold for power, let go), the shells, the DRIVE arrows. An **aim guide** (a setting) shows the shell's first metres.
-* **Settings**: your car, its paint, difficulty (easy / normal / hard), the aim guide.
+* **Settings**: difficulty (easy / normal / hard), the aim guide; your car and its paint too (the garage keeps them there).
 
+![Ridge Duel - the garage: which car, which paint](docs/screenshots/ridge_duel-choose.png)
 ![Ridge Duel - your turn: the sport sedan aims over the hill, a CLUSTER shell chosen](docs/screenshots/ridge_duel-aim.png)
 ![Ridge Duel - the performance SUV in white, a HEAVY shell's direct hit on the pick-up](docs/screenshots/ridge_duel-hit.png)
 <sub>Screenshots drawn by the app on a PC (`tools/screenshots.js`).</sub>

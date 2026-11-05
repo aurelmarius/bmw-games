@@ -232,7 +232,62 @@ function driveLayer(dir, state) {
     });
 }
 
+/* ---------- the garage: the two cars side by side, what each is good at, the paint ---------- */
+const CARDS = [{ body: 'sedan', x: 44, y: 112, w: 520, h: 314 }, { body: 'suv', x: 600, y: 112, w: 520, h: 314 }];
+const SWATCHES = Object.keys(PAINTS).map((p, i, all) => ({ paint: p, x: BOARD.x + BOARD.w / 2 - (all.length - 1) * 23 + i * 46 + 40, y: 462, r: 14 }));
+const TAGS = { sedan: ['AGILE', 'Drives almost twice as far in a turn; low and narrow, harder to hit. No armour.'], suv: ['ARMOURED', 'Takes 20 % less damage, climbs steep slopes, fires over hills. Drives less.'] };
+/** five pips for each of what a car is good at (out of the two of ours) */
+function carStats(body) {
+    const B = M.BODIES[body], area = (b) => M.BODIES[b].half * M.BODIES[b].height;
+    const minArea = Math.min(area('sedan'), area('suv')), maxGun = Math.max(-M.BODIES.sedan.gun[1], -M.BODIES.suv.gun[1]);
+    return [
+        ['MOBILITY', Math.round(B.fuel / M.BODIES.sedan.fuel * 5), B.fuel + ' m a turn'],
+        ['ARMOUR', Math.round(B.armour / 0.25 * 5), B.armour ? Math.round(B.armour * 100) + ' % off the damage' : 'none'],
+        ['CLIMBING', Math.round(B.climb / 1.4 * 5), Math.round(Math.atan(B.climb) * 180 / Math.PI) + ' degree slopes'],
+        ['HARD TO HIT', Math.round(minArea / area(body) * 5), body === 'sedan' ? 'low and narrow' : 'tall'],
+        ['GUN HEIGHT', Math.round(-B.gun[1] / maxGun * 5), body === 'sedan' ? 'low' : 'high: over the hills'],
+    ];
+}
+function bigCarLayer(body, paint) {
+    return lay('rd-big|' + body + '|' + paint, 250, 124, (c) => CARS[body](c, { x: 125, y: 112, a: 0, s: 1, paint: PAINTS[paint] || PAINTS.blue }));
+}
+function drawGarage(cv, pick, now, touch) {
+    cv.roundRect(BOARD.x, BOARD.y, BOARD.w, BOARD.h, 16, withAlpha('#05060a', 0.78));
+    outlined(cv, 'CHOOSE YOUR CAR', BOARD.x + BOARD.w / 2, BOARD.y + 36, 26, '#ffffff', '#05060a', 2, { spacing: 4 });
+    cv.text(touch ? 'Turn or push left / right: the car  ·  push up / down: the paint  ·  press: drive out' : 'Aim up / down: the car  ·  Start: drive out', BOARD.x + BOARD.w / 2, BOARD.y + 58, 13, withAlpha('#ffffff', 0.55), { align: 'center', literal: true });
+    for (const C of CARDS) {
+        const on = pick.body === C.body, x = BOARD.x + C.x, y = BOARD.y + C.y - 46;
+        if (on) for (let k = 6; k >= 1; k--) cv.roundRect(x - k * 2, y - k * 2, C.w + k * 4, C.h + k * 4, 18 + k * 2, withAlpha('#81c4ff', 0.03 + 0.012 * Math.sin(now / 260)));
+        cv.card(x, y, C.w, C.h, 16, on ? [[0, '#1c2534'], [1, '#0c1018']] : [[0, '#15171c'], [1, '#0a0b0e']]);
+        cv.strokeRoundRect(x, y, C.w, C.h, 16, on ? 2 : 1, on ? '#81c4ff' : withAlpha('#ffffff', 0.12));
+        // the car on a turntable
+        const cx = x + C.w / 2;
+        for (let k = 0; k < 4; k++) { const e = []; for (let i = 0; i < 28; i++) { const t = i / 28 * Math.PI * 2; e.push([cx + Math.cos(t) * (150 - k * 8), y + 128 + Math.sin(t) * (14 - k)]); } convex(cv, e, k === 0 ? withAlpha('#81c4ff', on ? 0.25 : 0.08) : withAlpha('#000000', 0.25)); }
+        cv.blit(bigCarLayer(C.body, pick.paint), cx - 125, y + 12);
+        // its name, what it is, its numbers
+        cv.text(M.BODIES[C.body].label, x + 24, y + 166, 22, on ? '#ffffff' : withAlpha('#ffffff', 0.6), { font: 'bold', spacing: 2, literal: true });
+        const tag = TAGS[C.body][0], tw = cv.textWidth(tag, 13, { font: 'bold', spacing: 2, literal: true }) + 22;
+        cv.roundRect(x + C.w - 24 - tw, y + 148, tw, 24, 12, withAlpha(C.body === 'sedan' ? '#5ff0a6' : '#ffd36e', on ? 0.22 : 0.08));
+        cv.text(tag, x + C.w - 24 - tw / 2, y + 165, 13, C.body === 'sedan' ? '#5ff0a6' : '#ffd36e', { font: 'bold', spacing: 2, align: 'center', literal: true });
+        carStats(C.body).forEach(([n, v, t], i) => {
+            const ry = y + 182 + i * 22;
+            cv.text(n, x + 24, ry + 12, 12, withAlpha('#ffffff', 0.6), { font: 'label', spacing: 1, literal: true });
+            for (let k = 0; k < 5; k++) cv.roundRect(x + 150 + k * 30, ry + 3, 26, 9, 3, k < v ? (on ? '#81c4ff' : withAlpha('#81c4ff', 0.45)) : withAlpha('#ffffff', 0.08));
+            cv.text(t, x + 312, ry + 12, 12, withAlpha('#ffffff', on ? 0.7 : 0.45), { font: 'label', literal: true });
+        });
+        cv.text(TAGS[C.body][1], x + 24, y + C.h - 14, 12, withAlpha('#ffffff', on ? 0.6 : 0.35), { font: 'label', literal: true });
+    }
+    // the paint
+    cv.text('PAINT', SWATCHES[0].x - 34, BOARD.y + SWATCHES[0].y - 46 + 5, 13, withAlpha('#ffffff', 0.55), { font: 'label', spacing: 2, align: 'right', literal: true });
+    for (const S of SWATCHES) {
+        const x = S.x, y = BOARD.y + S.y - 46, on = pick.paint === S.paint, P = PAINTS[S.paint];
+        if (on) cv.arc(x, y, S.r + 3, S.r + 6, 0, 360, '#ffffff');
+        ball(cv, x, y, S.r, [[0, P[3]], [0.5, P[1]], [1, P[0]]]);
+    }
+}
+
 module.exports = {
+    CARDS, SWATCHES, carStats, drawGarage, bigCarLayer,
     setTextScale, BOARD, PANEL, FIRE_BTN, DRIVE_BTNS, TILES, PAINTS, SHELL_C, M3,
     skyLayer, groundLayer, carLayer, drawCar, drawHealth, drawShell, drawFlag, panelLayer, fireLayer, tileLayer, driveLayer, glow, outlined, ball, convex,
 };

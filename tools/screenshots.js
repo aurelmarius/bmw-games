@@ -360,6 +360,9 @@ if (which === 'ridge_duel') {
         await global.__app.start(ctx);
         const frames = async (ms, until) => { for (let t = 0; t < ms; t += 16) { now += 16; await ctx.draw(); if (until && until()) return true; } return false; };
         clicks.BTN_PLAY();
+        await frames(600);
+        shot('ridge_duel-choose', lastFrame);       // the garage: which car, which paint
+        clicks.BTN_PLAY();
         await frames(2000);
         // a few shots each way: craters, damage
         for (let k = 0; k < 3; k++) {

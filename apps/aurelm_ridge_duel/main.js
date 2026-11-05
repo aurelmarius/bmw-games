@@ -34,7 +34,7 @@ const STATS_FILE = 'ridge_duel_stats.json';
 const PARKED_MS = 500;
 const FAST_TURN_MS = 140;            // notches closer than this turn the gun 3 degrees each
 const GOLD = '#ffd36e', CYAN = '#7fe8ff', RED = '#e7222e', GREEN = '#5ff0a6';
-const LABEL = { ready: 'START', playing: 'FIRE', paused: 'GO ON', over: 'AGAIN' };
+const LABEL = { ready: 'START', choose: 'GO', playing: 'FIRE', paused: 'GO ON', over: 'AGAIN' };
 const ABILITY = {
     sedan: ['AGILE', 'Drives almost twice as far in a turn; low and narrow: harder to hit'],
     suv: ['ARMOURED', 'Takes 20 % less damage, climbs steep slopes, fires from higher up'],
@@ -75,10 +75,25 @@ mgu.run({
         function syncGrab() { if (ctx.controller) ctx.controller.grab(visible && !menu); }
         function play() {
             if (parked.moving()) { showToast('Parked only: the duel starts when the car stands still'); return; }
-            if (state === 'over') newGame();
+            if (state === 'ready' || state === 'over') { openGarage(); return; }
+            if (state === 'choose') { driveOut(); return; }
             if (state === 'playing') return;
             lastT = Date.now();
-            if (state === 'ready') bannerRound();
+            setState('playing');
+        }
+        /* ---------- the garage: which car, which paint ---------- */
+        let pick = { body: body(), paint: paint() }, applying = false;
+        const PAINT_KEYS = Object.keys(A.PAINTS);
+        function openGarage() { pick = { body: body(), paint: paint() }; setState('choose'); }
+        function pickBody(b) { if (state === 'choose') pick.body = b; }
+        function pickPaint(d) { if (state === 'choose') pick.paint = PAINT_KEYS[(PAINT_KEYS.indexOf(pick.paint) + d + PAINT_KEYS.length) % PAINT_KEYS.length]; }
+        function driveOut() {
+            // kept as the settings, so the next match starts from them
+            applying = true;
+            try { if (body() !== pick.body) settings.set('car', pick.body); if (paint() !== pick.paint) settings.set('paint', pick.paint); } finally { applying = false; }
+            game = fresh(); acc = 0; parts = []; pops = []; rings = []; charge = null;
+            lastT = Date.now();
+            bannerRound();
             setState('playing');
         }
         function pause() { if (state === 'playing') { setState('paused'); charge = null; driveSrc = { ccu: 0, touch: 0 }; } }
@@ -101,8 +116,8 @@ mgu.run({
 
         /* ---------- input ---------- */
         ui.onClick('BTN_PLAY', () => { if (state === 'playing') pause(); else play(); });
-        ui.onClick('BTN_UP', () => { if (state !== 'playing') play(); game.turnAim(5); });
-        ui.onClick('BTN_DOWN', () => { if (state !== 'playing') play(); game.turnAim(-5); });
+        ui.onClick('BTN_UP', () => { if (state === 'choose') { pickBody('sedan'); return; } if (state !== 'playing') play(); game.turnAim(5); });
+        ui.onClick('BTN_DOWN', () => { if (state === 'choose') { pickBody('suv'); return; } if (state !== 'playing') play(); game.turnAim(-5); });
         ui.onClick('BTN_POWER', () => { const c = game.cars[0]; if (game.mine()) c.power = c.power >= 0.99 ? 0.3 : Math.min(1, Math.round(c.power * 10 + 1) / 10); });
         ui.onClick('BTN_FIRE', () => { if (state !== 'playing') { play(); return; } if (game.mine()) game.fire(0, game.cars[0].power); });
         if (ctx.hideButton) for (const b of ['BTN_UP', 'BTN_DOWN', 'BTN_POWER', 'BTN_FIRE']) ctx.hideButton(b);
@@ -130,6 +145,15 @@ mgu.run({
                 return;
             }
             driveSrc.ccu = 0;
+            if (state === 'choose') {
+                if (d) pickBody(d > 0 ? 'suv' : 'sedan');
+                if (tilt === 'W') pickBody('sedan');
+                if (tilt === 'E') pickBody('suv');
+                if (tilt === 'N') pickPaint(-1);
+                if (tilt === 'S') pickPaint(1);
+                if (pressed) play();
+                return;
+            }
             if (pressed) play();
             else if (tilt === 'W') Promise.resolve(ui.close('MAIN')).catch((e) => log.warn('leave: ' + e));
             else if (d) { menu = true; syncGrab(); }
@@ -144,6 +168,14 @@ mgu.run({
                 const dv = A.DRIVE_BTNS.find((q) => x >= q.x - 4 && x <= q.x + q.w + 4 && y >= q.y - 4 && y <= q.y + q.h + 4);
                 if (dv) { driveSrc.touch = dv.dir; finger = { kind: 'drive' }; return; }
                 if (x >= A.PANEL.x) { finger = null; return; }
+                if (state === 'choose') {
+                    finger = null;
+                    const sw = A.SWATCHES.find((q) => Math.hypot(x - q.x, y - (A.BOARD.y + q.y - 46)) < q.r + 8);
+                    if (sw) { pick.paint = sw.paint; return; }
+                    const cd = A.CARDS.find((q) => x >= A.BOARD.x + q.x && x <= A.BOARD.x + q.x + q.w && y >= A.BOARD.y + q.y - 46 && y <= A.BOARD.y + q.y - 46 + q.h);
+                    if (cd) { if (pick.body === cd.body) play(); else pick.body = cd.body; }
+                    return;
+                }
                 if (state !== 'playing') { play(); finger = null; return; }
                 finger = { kind: 'aim' };
             }
@@ -168,7 +200,7 @@ mgu.run({
         });
         visible = !!(ui.isVisible && ui.isVisible('MAIN'));
         syncGrab();
-        settings.onChange((k) => { if (k === 'difficulty' || k === 'car') newGame(); });
+        settings.onChange((k) => { if (applying) return; if (k === 'difficulty' || k === 'car') newGame(); });
         setInterval(() => { if (state === 'playing' && parked.moving()) { pause(); showToast('Paused: parked only', 4000); } }, PARKED_MS);
 
         /* ---------- the clock ---------- */
@@ -255,6 +287,7 @@ mgu.run({
             for (const s of game.shells) A.drawShell(cv, s);
             drawEffects(cv, dt, now);
             // the wind
+            if (state === 'choose') return;
             const wx = A.BOARD.x + A.BOARD.w / 2, wy = A.BOARD.y + 14;
             cv.roundRect(wx - 92, wy, 184, 34, 17, withAlpha('#05060a', 0.72));
             const w = game.wind, dir = w < 0 ? -1 : 1, ax = wx - 62;
@@ -297,20 +330,20 @@ mgu.run({
                 return;
             }
             if (state === 'playing') return;
+            if (state === 'choose' && !parked.moving()) { A.drawGarage(cv, pick, now, touch); return; }
             if (state === 'over' && now - overAt < 1200) return;
             const moving = parked.moving();
             let title, lines, col = '#ffffff';
-            const ab = ABILITY[body()];
             if (moving) { title = 'PARKED ONLY'; col = '#ffb020'; lines = ['The duel waits while the car is moving.', 'It goes on when you stop.']; } else if (state === 'ready') {
                 title = 'RIDGE DUEL';
-                lines = [M.BODIES[body()].label + ' · ' + ab[0] + ': ' + ab[1],
+                lines = ['Two armed cars, a turn each, first to win three rounds',
                     touch ? 'Turn: aim · hold the press: power, let go: fire · push left / right: drive · up / down: shell' : 'Aim up / down, Power and Fire in the bar',
-                    'First to win three rounds. Press to start'];
+                    'Press to choose your car'];
             } else if (state === 'paused') { title = 'PAUSED'; lines = [touch ? 'Press or tap to go on' : 'Press "Go on"', 'Push left to leave  ·  turn for the menu']; } else {
                 const won = game.wins[0] >= M.WINS, s = stats[game.difficulty] || {};
                 title = won ? 'VICTORY' : 'DEFEAT'; col = won ? GREEN : RED;
                 lines = ['You ' + game.wins[0] + ' : ' + game.wins[1] + ' Rival  ·  hits ' + game.stats.hits + ' of ' + game.stats.shots + ' shots',
-                    'Matches won ' + (s.won || 0) + ' of ' + (s.played || 0) + (s.best ? '  ·  best run ' + s.best : ''), touch ? 'Press or tap to play again' : 'Press "Again"'];
+                    'Matches won ' + (s.won || 0) + ' of ' + (s.played || 0) + (s.best ? '  ·  best run ' + s.best : ''), touch ? 'Press or tap to choose your car for the next match' : 'Press "Again"'];
             }
             const w = 860, h = 86 + lines.length * 30;
             cv.roundRect(cx - w / 2, cy - 62, w, h, 18, withAlpha('#05060a', 0.8));

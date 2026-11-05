@@ -172,6 +172,20 @@ The car apps (Engine Care, Hybrid Cost) are in [aurelmarius/bmw-apps](https://gi
 ![Ridge Duel - the performance SUV in white, a HEAVY shell's direct hit on the pick-up](docs/screenshots/ridge_duel-hit.png)
 <sub>Screenshots drawn by the app on a PC (`tools/screenshots.js`).</sub>
 
+### 11. ⏱️ Lap Record (`aurelm_lap_record`)
+*Time trial on a circuit seen from above, the camera on the car. GPU renderer. Parked only.*
+
+* **The knob is the steering wheel**: turn it and the front wheels turn; let it be and the wheel comes back to the middle by itself. Push left / right and hold for full lock. **Throttle**: automatic (the car accelerates by itself, hold the press to brake) or manual (hold the press for throttle, push down to brake).
+* **Physics**: the tyres turn the car as hard as the ground lets them (asphalt, kerbs, grass, gravel): too fast into a corner it slides wide, smokes and leaves its marks, and scrubs off speed. Off the track it's slow; into the barrier it bounces off.
+* **Timing**: five red lights, then out; laps from the line in three sectors, coloured as on TV (purple: the best ever, green: better than your best lap, yellow: slower). The gap to your best lap live, a lap with too long off the track doesn't count. The best lap of each circuit is kept, and its **ghost** drives with you.
+* **Two circuits**: Riverside GP (2.1 km, fast, a long main straight and a hairpin) and Hillside Ring (2.1 km, twisty).
+* **The look**: mown grass in stripes, asphalt with its grain and the dark rubbered racing line, red and white kerbs, gravel traps on the outside of the corners, tyre walls with their catch fence, armco and boards, braking markers, marshals' posts, the pit building, grandstands full of people, trees with their shadows; the start gantry. The panel: lap time, best, gap, sectors, speed, gear and revs, the circuit's map with you and the ghost on it.
+* **Settings**: the circuit, the throttle, the paint (seven), the ghost on or off.
+
+![Lap Record - on the grid, the lights coming on](docs/screenshots/lap_record-start.png)
+![Lap Record - a fast corner, tyre marks behind, the first sector yellow](docs/screenshots/lap_record-corner.png)
+<sub>Screenshots drawn by the app on a PC (`tools/screenshots.js`), driven by an autopilot.</sub>
+
 ---
 
 ## 🚀 Installation
@@ -184,7 +198,7 @@ The car apps (Engine Care, Hybrid Cost) are in [aurelmarius/bmw-apps](https://gi
    aurelmarius/bmw-games
    ```
 4. Select **Releases** as the source type.
-5. Tap **Install** next to **Snake**, **Track Defender**, **Pit Wall**, **Lucky Sevens**, **Blackjack**, **Solitaire**, **Apex Chase**, **Street Siege**, **M Pinball** or **Ridge Duel**.
+5. Tap **Install** next to **Snake**, **Track Defender**, **Pit Wall**, **Lucky Sevens**, **Blackjack**, **Solitaire**, **Apex Chase**, **Street Siege**, **M Pinball**, **Ridge Duel** or **Lap Record**.
 
 The games run smoothest with the **mgu-render** GPU renderer, installed from the same Store. Without it they still run, as images handed to the HMI a few times a second.
 
@@ -194,7 +208,7 @@ The games run smoothest with the **mgu-render** GPU renderer, installed from the
 1. Download the `<game>@<version>.tgz` files from [Releases](https://github.com/aurelmarius/bmw-games/releases).
 2. Copy the files onto a USB stick or build a USB repository:
    ```powershell
-   node mgu-install.js usb-repo E:\ aurelm_snake@1.0.0.tgz aurelm_track_defender@1.0.0.tgz aurelm_pit_wall@1.0.0.tgz aurelm_lucky_sevens@1.1.0.tgz aurelm_blackjack@1.0.1.tgz aurelm_solitaire@1.0.0.tgz aurelm_apex_chase@1.0.0.tgz aurelm_street_siege@1.0.0.tgz aurelm_pinball@1.0.1.tgz aurelm_ridge_duel@1.0.0.tgz
+   node mgu-install.js usb-repo E:\ aurelm_snake@1.0.0.tgz aurelm_track_defender@1.0.0.tgz aurelm_pit_wall@1.0.0.tgz aurelm_lucky_sevens@1.1.0.tgz aurelm_blackjack@1.0.1.tgz aurelm_solitaire@1.0.0.tgz aurelm_apex_chase@1.0.0.tgz aurelm_street_siege@1.0.0.tgz aurelm_pinball@1.0.1.tgz aurelm_ridge_duel@1.0.0.tgz aurelm_lap_record@1.0.0.tgz
    ```
 3. Insert the USB drive into your car and install from the **USB** page of the Store.
 
@@ -211,6 +225,7 @@ Copy the package to the head unit and run `mgu-deploy.sh`:
 /var/opt/mgu-deploy/mgu-deploy.sh install --artifact aurelm_street_siege@1.0.0.tgz --yes
 /var/opt/mgu-deploy/mgu-deploy.sh install --artifact aurelm_pinball@1.0.1.tgz --yes
 /var/opt/mgu-deploy/mgu-deploy.sh install --artifact aurelm_ridge_duel@1.0.0.tgz --yes
+/var/opt/mgu-deploy/mgu-deploy.sh install --artifact aurelm_lap_record@1.0.0.tgz --yes
 ```
 
 ---
@@ -228,7 +243,7 @@ Copy the package to the head unit and run `mgu-deploy.sh`:
 ## 🧪 Development
 
 ```bash
-python3 kit/tools/build.py aurelm_snake aurelm_track_defender aurelm_pit_wall aurelm_lucky_sevens aurelm_blackjack aurelm_solitaire aurelm_apex_chase aurelm_street_siege aurelm_pinball aurelm_ridge_duel  # -> dist/<id>@<version>.tgz
+python3 kit/tools/build.py aurelm_snake aurelm_track_defender aurelm_pit_wall aurelm_lucky_sevens aurelm_blackjack aurelm_solitaire aurelm_apex_chase aurelm_street_siege aurelm_pinball aurelm_ridge_duel aurelm_lap_record  # -> dist/<id>@<version>.tgz
 node kit/tools/preview.js dist/aurelm_blackjack preview        # a game on a simulated head unit, as PNGs
 node tests/snake.test.js                                # Snake's rules
 node tests/track_defender.test.js                       # Track Defender's rules
@@ -240,6 +255,7 @@ node tests/apex_chase.test.js                           # Apex Chase's rules
 node tests/street_siege.test.js                         # Street Siege's rules
 node tests/pinball.test.js                              # M Pinball's rules and physics
 node tests/ridge_duel.test.js                           # Ridge Duel's rules
+node tests/lap_record.test.js                           # Lap Record's physics and timing
 node tools/screenshots.js                               # the README's screenshots (after a build)
 ```
 

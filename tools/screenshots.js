@@ -4,7 +4,7 @@
  * screenshots.js - the README's screenshots (docs/screenshots/*.png), drawn by the built games on a
  * PC: seeded games played by an autopilot, a car that stands still (a fake SOME/IP). No head unit needed.
  *
- *   python3 kit/tools/build.py aurelm_snake aurelm_track_defender aurelm_pit_wall aurelm_lucky_sevens aurelm_blackjack aurelm_solitaire aurelm_apex_chase aurelm_street_siege aurelm_pinball aurelm_ridge_duel && node tools/screenshots.js
+ *   python3 kit/tools/build.py aurelm_snake aurelm_track_defender aurelm_pit_wall aurelm_lucky_sevens aurelm_blackjack aurelm_solitaire aurelm_apex_chase aurelm_street_siege aurelm_pinball aurelm_ridge_duel aurelm_lap_record && node tools/screenshots.js
  *
  * Each game runs in its own process (the fake clock replaces Date.now and the timers).
  */
@@ -18,7 +18,7 @@ const OUT = path.join(ROOT, 'docs', 'screenshots');
 
 if (!process.argv[2]) {
     fs.mkdirSync(OUT, { recursive: true });
-    for (const app of ['snake', 'track_defender', 'pit_wall', 'lucky_sevens', 'blackjack', 'solitaire', 'apex_chase', 'street_siege', 'pinball', 'ridge_duel']) {
+    for (const app of ['snake', 'track_defender', 'pit_wall', 'lucky_sevens', 'blackjack', 'solitaire', 'apex_chase', 'street_siege', 'pinball', 'ridge_duel', 'lap_record']) {
         process.stdout.write(execFileSync(process.execPath, [__filename, app], { encoding: 'utf8' }));
     }
     process.exit(0);
@@ -334,6 +334,51 @@ if (which === 'apex_chase') {
         await frames(7000, () => g.fright > 2100 && g.evs.some((e) => e.state === 'back') && g.evs.some((e) => e.state === 'scared'));
         await frames(250);
         shot('apex_chase-nitro', lastFrame);
+        process.exit(0);
+    })().catch((e) => { console.error(e); process.exit(1); });
+    return;
+}
+
+/* ---------- Lap Record: an autopilot on the racing line, a best lap (and its ghost) in the file ---------- */
+if (which === 'lap_record') {
+    let seed = 17;
+    Math.random = () => { seed = (seed * 1103515245 + 12345) % 2147483648; return seed / 2147483648; };
+    const M = require(path.join(APP, 'model'));
+    let g = null;
+    const Game = M.Game;
+    M.Game = class extends Game { constructor(o) { super(o); g = this; } };
+    // the autopilot: aims down the track, brakes for what the corners ahead allow (k: how hard it pushes)
+    const pilot = (k) => {
+        const c = g.car, T = g.track;
+        const ahead = T.at(c.i + Math.round((6 + c.v * 0.45) / M.STEP));
+        const err = M.wrapA(Math.atan2(ahead.y - c.y, ahead.x - c.x) - c.h);
+        let vt = M.PHYS.vmax;
+        for (let d = 0; d < 160; d += 4) {
+            let cv = 0; for (let j = -4; j <= 4; j++) cv += Math.abs(T.at(c.i + d / M.STEP + j).curv);
+            const lim = Math.sqrt(M.GRIP.asphalt * k / Math.max(1e-4, cv / 9));
+            vt = Math.min(vt, Math.sqrt(lim * lim + 2 * M.PHYS.brake * 0.8 * d));
+        }
+        Game.prototype.control.call(g, Math.max(-1, Math.min(1, err * 3)), c.v < vt ? 1 : 0, c.v > vt + 1.5 ? 1 : 0);
+    };
+    // a best lap to chase: driven by the autopilot a little slower, before the pictures
+    {
+        const r = new Game({ circuit: 'riverside' });
+        g = r;
+        for (let t = 0; t < 200000 && !(r.best && r.lap >= 3); t += M.DT) { pilot(0.8); r.step(); r.events = []; }
+        fs.writeFileSync(path.join(DATA, 'lap_record_best.json'), JSON.stringify({ riverside: { best: r.best, sectors: r.bestSectors } }));
+    }
+    (async () => {
+        require(path.join(APP, 'app.js'));
+        ctx.display = { own: () => true };          // as where the kit runs the screen (mgu-render): touch hints
+        await global.__app.start(ctx);
+        g.control = () => {};                       // (the autopilot drives, not the controller)
+        const frames = async (ms, until) => { for (let t = 0; t < ms; t += 16) { now += 16; pilot(0.9); await ctx.draw(); if (until && until()) return true; } return false; };
+        clicks.BTN_PLAY();
+        await frames(2600);
+        shot('lap_record-start', lastFrame);        // on the grid, the lights coming on
+        // a lap and a half in: through the hairpin at the far end, the ghost close by
+        await frames(200000, () => g.lap >= 2 && g.track.s[g.car.i].d > 600 && Math.abs(g.track.s[g.car.i].curv) > 0.02 && g.car.sliding);
+        shot('lap_record-corner', lastFrame);
         process.exit(0);
     })().catch((e) => { console.error(e); process.exit(1); });
     return;

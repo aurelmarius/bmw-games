@@ -156,6 +156,21 @@ The car apps (Engine Care, Hybrid Cost) are in [aurelmarius/bmw-apps](https://gi
 ![M Pinball - SAFETY CAR MULTIBALL, a ball on the CHICANE](docs/screenshots/pinball-multiball.png)
 <sub>Screenshots drawn by the app on a PC (`tools/screenshots.js`), played by an autopilot.</sub>
 
+### 10. 💥 Ridge Duel (`aurelm_ridge_duel`)
+*Two armed cars on hills at dusk, a turn each: aim, power, fire. GPU renderer. Parked only.*
+
+* **Your car** (a setting): a **sport sedan** - *agile*: drives almost twice as far in a turn, low and narrow so it's harder to hit, no armour; or a **performance SUV** - *armoured*: takes 20 % less damage, climbs steeper slopes, fires from higher up, but drives less. Drawn as real silhouettes (the kink in the last side window, the gill behind the front wheel, four tailpipes, big wheels with blue calipers) in the **paint** you choose: blue, white, black, grey, green, red or yellow. No make's grille or badge on them.
+* **The rival**: a full-size pick-up with its gun in the bed (10 % armour). The game works its shot out and misses by a little: by less on harder levels, and by less with every shot while you stay where you are, so it pays to move.
+* **Ground that shells bite into**: layers of earth and rock under the grass, round craters, scorched earth, firs that burn; the cars settle into the holes. **Wind** (a flag on the hill and the readout) pushes the shells and changes a little every turn.
+* **Four shells**: STANDARD (as many as you like), CLUSTER (splits in three at the top of its flight), BOUNCER (bounces twice before it goes off), HEAVY (a big blast). A direct hit does 15 % more; the blast does less the further it is.
+* **A match**: new hills every round, first to win three rounds. Statistics for each difficulty: matches won, the best run, hits and shots.
+* **iDrive controller**: turn = aim (faster when turned quickly), press and hold = power, let go = fire, push left / right and hold = drive (the turn's fuel), push up / down = the shell, hold up = pause. **Touchscreen**: a finger on the hills aims the gun at it, FIRE (hold for power, let go), the shells, the DRIVE arrows. An **aim guide** (a setting) shows the shell's first metres.
+* **Settings**: your car, its paint, difficulty (easy / normal / hard), the aim guide.
+
+![Ridge Duel - your turn: the sport sedan aims over the hill, a CLUSTER shell chosen](docs/screenshots/ridge_duel-aim.png)
+![Ridge Duel - the performance SUV in white, a HEAVY shell's direct hit on the pick-up](docs/screenshots/ridge_duel-hit.png)
+<sub>Screenshots drawn by the app on a PC (`tools/screenshots.js`).</sub>
+
 ---
 
 ## 🚀 Installation
@@ -168,7 +183,7 @@ The car apps (Engine Care, Hybrid Cost) are in [aurelmarius/bmw-apps](https://gi
    aurelmarius/bmw-games
    ```
 4. Select **Releases** as the source type.
-5. Tap **Install** next to **Snake**, **Track Defender**, **Pit Wall**, **Lucky Sevens**, **Blackjack**, **Solitaire**, **Apex Chase**, **Street Siege** or **M Pinball**.
+5. Tap **Install** next to **Snake**, **Track Defender**, **Pit Wall**, **Lucky Sevens**, **Blackjack**, **Solitaire**, **Apex Chase**, **Street Siege**, **M Pinball** or **Ridge Duel**.
 
 The games run smoothest with the **mgu-render** GPU renderer, installed from the same Store. Without it they still run, as images handed to the HMI a few times a second.
 
@@ -178,7 +193,7 @@ The games run smoothest with the **mgu-render** GPU renderer, installed from the
 1. Download the `<game>@<version>.tgz` files from [Releases](https://github.com/aurelmarius/bmw-games/releases).
 2. Copy the files onto a USB stick or build a USB repository:
    ```powershell
-   node mgu-install.js usb-repo E:\ aurelm_snake@1.0.0.tgz aurelm_track_defender@1.0.0.tgz aurelm_pit_wall@1.0.0.tgz aurelm_lucky_sevens@1.1.0.tgz aurelm_blackjack@1.0.1.tgz aurelm_solitaire@1.0.0.tgz aurelm_apex_chase@1.0.0.tgz aurelm_street_siege@1.0.0.tgz aurelm_pinball@1.0.1.tgz
+   node mgu-install.js usb-repo E:\ aurelm_snake@1.0.0.tgz aurelm_track_defender@1.0.0.tgz aurelm_pit_wall@1.0.0.tgz aurelm_lucky_sevens@1.1.0.tgz aurelm_blackjack@1.0.1.tgz aurelm_solitaire@1.0.0.tgz aurelm_apex_chase@1.0.0.tgz aurelm_street_siege@1.0.0.tgz aurelm_pinball@1.0.1.tgz aurelm_ridge_duel@1.0.0.tgz
    ```
 3. Insert the USB drive into your car and install from the **USB** page of the Store.
 
@@ -194,6 +209,7 @@ Copy the package to the head unit and run `mgu-deploy.sh`:
 /var/opt/mgu-deploy/mgu-deploy.sh install --artifact aurelm_apex_chase@1.0.0.tgz --yes
 /var/opt/mgu-deploy/mgu-deploy.sh install --artifact aurelm_street_siege@1.0.0.tgz --yes
 /var/opt/mgu-deploy/mgu-deploy.sh install --artifact aurelm_pinball@1.0.1.tgz --yes
+/var/opt/mgu-deploy/mgu-deploy.sh install --artifact aurelm_ridge_duel@1.0.0.tgz --yes
 ```
 
 ---
@@ -211,7 +227,7 @@ Copy the package to the head unit and run `mgu-deploy.sh`:
 ## 🧪 Development
 
 ```bash
-python3 kit/tools/build.py aurelm_snake aurelm_track_defender aurelm_pit_wall aurelm_lucky_sevens aurelm_blackjack aurelm_solitaire aurelm_apex_chase aurelm_street_siege aurelm_pinball  # -> dist/<id>@<version>.tgz
+python3 kit/tools/build.py aurelm_snake aurelm_track_defender aurelm_pit_wall aurelm_lucky_sevens aurelm_blackjack aurelm_solitaire aurelm_apex_chase aurelm_street_siege aurelm_pinball aurelm_ridge_duel  # -> dist/<id>@<version>.tgz
 node kit/tools/preview.js dist/aurelm_blackjack preview        # a game on a simulated head unit, as PNGs
 node tests/snake.test.js                                # Snake's rules
 node tests/track_defender.test.js                       # Track Defender's rules
@@ -222,6 +238,7 @@ node tests/solitaire.test.js                            # Solitaire's rules
 node tests/apex_chase.test.js                           # Apex Chase's rules
 node tests/street_siege.test.js                         # Street Siege's rules
 node tests/pinball.test.js                              # M Pinball's rules and physics
+node tests/ridge_duel.test.js                           # Ridge Duel's rules
 node tools/screenshots.js                               # the README's screenshots (after a build)
 ```
 

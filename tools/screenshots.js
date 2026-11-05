@@ -4,7 +4,7 @@
  * screenshots.js - the README's screenshots (docs/screenshots/*.png), drawn by the built games on a
  * PC: seeded games played by an autopilot, a car that stands still (a fake SOME/IP). No head unit needed.
  *
- *   python3 kit/tools/build.py aurelm_snake aurelm_track_defender aurelm_pit_wall aurelm_lucky_sevens aurelm_blackjack aurelm_solitaire aurelm_apex_chase aurelm_street_siege aurelm_pinball && node tools/screenshots.js
+ *   python3 kit/tools/build.py aurelm_snake aurelm_track_defender aurelm_pit_wall aurelm_lucky_sevens aurelm_blackjack aurelm_solitaire aurelm_apex_chase aurelm_street_siege aurelm_pinball aurelm_ridge_duel && node tools/screenshots.js
  *
  * Each game runs in its own process (the fake clock replaces Date.now and the timers).
  */
@@ -18,7 +18,7 @@ const OUT = path.join(ROOT, 'docs', 'screenshots');
 
 if (!process.argv[2]) {
     fs.mkdirSync(OUT, { recursive: true });
-    for (const app of ['snake', 'track_defender', 'pit_wall', 'lucky_sevens', 'blackjack', 'solitaire', 'apex_chase', 'street_siege', 'pinball']) {
+    for (const app of ['snake', 'track_defender', 'pit_wall', 'lucky_sevens', 'blackjack', 'solitaire', 'apex_chase', 'street_siege', 'pinball', 'ridge_duel']) {
         process.stdout.write(execFileSync(process.execPath, [__filename, app], { encoding: 'utf8' }));
     }
     process.exit(0);
@@ -334,6 +334,50 @@ if (which === 'apex_chase') {
         await frames(7000, () => g.fright > 2100 && g.evs.some((e) => e.state === 'back') && g.evs.some((e) => e.state === 'scared'));
         await frames(250);
         shot('apex_chase-nitro', lastFrame);
+        process.exit(0);
+    })().catch((e) => { console.error(e); process.exit(1); });
+    return;
+}
+
+/* ---------- Ridge Duel: a seeded match, your shots worked out (and missed by a little) ---------- */
+if (which === 'ridge_duel') {
+    let seed = 41;
+    Math.random = () => { seed = (seed * 1103515245 + 12345) % 2147483648; return seed / 2147483648; };
+    fs.writeFileSync(path.join(DATA, 'ridge_duel_stats.json'), JSON.stringify({ normal: { played: 6, won: 4, streak: 2, best: 3, shots: 40, hits: 17 } }));
+    const M = require(path.join(APP, 'model'));
+    let g = null;
+    const Game = M.Game;
+    M.Game = class extends Game { constructor(o) { super(Object.assign({}, o, { rng: M.seeded(7) })); g = this; } };
+    const best = () => {
+        const me = g.cars[0], you = g.cars[1];
+        let b = null;
+        for (let a = 15; a <= 80; a += 2.5) for (let p = 0.35; p <= 1.001; p += 0.025) { const l = g.landing(me, a, p), d = l.car ? 0 : Math.abs(l.x - you.x); if (!b || d < b.d) b = { a, p, d }; }
+        return b;
+    };
+    (async () => {
+        require(path.join(APP, 'app.js'));
+        ctx.display = { own: () => true };          // as where the kit runs the screen (mgu-render): touch hints
+        await global.__app.start(ctx);
+        const frames = async (ms, until) => { for (let t = 0; t < ms; t += 16) { now += 16; await ctx.draw(); if (until && until()) return true; } return false; };
+        clicks.BTN_PLAY();
+        await frames(2000);
+        // a few shots each way: craters, damage
+        for (let k = 0; k < 3; k++) {
+            await frames(20000, () => g.mine());
+            const b = best(); g.cars[0].aim = b.a + (k < 2 ? 4 : 0); g.fire(0, b.p);
+            await frames(20000, () => !g.mine() && g.phase === 'aim' && g.turn === 1);
+        }
+        // your turn: the gun up, the guide out, power being held
+        await frames(20000, () => g.mine());
+        g.cars[0].aim = 52; g.cars[0].power = 0.72; g.cars[0].shell = 'cluster';
+        await frames(300);
+        shot('ridge_duel-aim', lastFrame);
+        // the SUV in white: a heavy shell going off on the rival
+        g.cars[0].body = 'suv'; g.cars[0].settle(g.ground); values.paint = 'white'; values.car = 'suv';
+        const b = best(); g.cars[0].shell = 'heavy'; g.cars[0].ammo.heavy = 1; g.cars[0].aim = b.a; g.fire(0, b.p);
+        await frames(20000, () => g.events.some((e) => e.type === 'boom') || g.phase !== 'flight');
+        await frames(90);
+        shot('ridge_duel-hit', lastFrame);
         process.exit(0);
     })().catch((e) => { console.error(e); process.exit(1); });
     return;

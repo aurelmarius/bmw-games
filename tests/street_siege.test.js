@@ -13,7 +13,8 @@ const run = (g, ms) => { for (let t = 0; t < ms; t += DT) g.step(DT); };
 /** a game on an empty yard (but the garage and its ring), no cars coming in */
 function empty(o) {
     const g = new Game(Object.assign({ rng: seeded(1), autoFire: false }, o || {}));
-    for (let y = 0; y < BH; y++) for (let x = 0; x < BW; x++) if (!'tG'.includes(g.grid[y][x]) || y < RING.y) g.grid[y][x] = '.';
+    // (all but the garage and its ring)
+    for (let y = 0; y < BH; y++) for (let x = 0; x < BW; x++) if (y < RING.y || x < RING.x || x >= RING.x + RING.w) g.grid[y][x] = '.';
     g.spawnAt = 1e12;
     return g;
 }

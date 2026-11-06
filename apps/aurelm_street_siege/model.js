@@ -40,66 +40,99 @@ const BASE = { x: 31, y: 24, w: 4, h: 4 };
 const RING = { x: 29, y: 22, w: 8, h: 6 };              // the tyres round the garage
 const SPAWNS = [{ x: 22, y: 0 }, { x: 42, y: 0 }, { x: 64, y: 0 }, { x: 0, y: 0 }];      // (none over the garage)
 const SHOT_SPEED = [16, 24, 24, 24];                    // bricks a second, by cannon level
-const BLOCKS_CAR = 'tcwG', BLOCKS_SHOT = 'tcG';
+// what stops a car, what stops a shot (fences let shots through), what a shot breaks (concrete and wrecks: the heavy one)
+const BLOCKS_CAR = 'tcwGkhnpx', BLOCKS_SHOT = 'tcGkhpx', BREAKS = 'tp', BREAKS_HEAVY = 'tpcx';
 
 /* ---------- the yards ---------- */
 /** a small random generator that a level's number makes the same every time */
 function seeded(s) { return () => { s = (s * 1103515245 + 12345) % 2147483648; return s / 2147483648; }; }
 /** tiles (2 x 2 bricks) the yard keeps clear: the way in at the top, the garage, the M car's start */
 function reserved(tx, ty) {
-    if (ty <= 2 && (tx <= 2 || tx >= TW - 3 || (tx >= 10 && tx <= 12) || (tx >= 20 && tx <= 22))) return true;
-    if (ty >= 10 && tx >= 10 && tx <= 22) return true;
+    if (ty <= 1 && (tx <= 2 || tx >= TW - 3 || (tx >= 10 && tx <= 12) || (tx >= 20 && tx <= 22))) return true;
+    if (ty >= 11 && tx >= 12 && tx <= 20) return true;
     return false;
 }
+/** each level is in a district of its own, in turn */
+const THEMES = ['yard', 'docks', 'warehouses', 'parking', 'scrapyard'];
+const theme = (n) => THEMES[(Math.max(1, n) - 1) % THEMES.length];
+// what blocks the way in a yard (fences: cars, not shots), what counts towards a yard's fill
+const SOLID_TILE = 'cwkhnx', FILLS = 'tcwkhnpx';
+/** a piece for a district: [[dx, dy, ch], ...] in tiles */
+function piece(th, rnd) {
+    const R = (a, b) => a + Math.floor(rnd() * (b - a + 1)), out = [];
+    const rect = (w, h, ch) => { for (let i = 0; i < w; i++) for (let j = 0; j < h; j++) out.push([i, j, ch]); };
+    const line = (len, across, ch) => { for (let i = 0; i < len; i++) out.push(across ? [i, 0, ch] : [0, i, ch]); };
+    const r = rnd();
+    if (th === 'docks') {
+        if (r < 0.5) { const across = rnd() < 0.6; rect(across ? R(2, 4) : R(1, 2), across ? R(1, 2) : R(2, 4), 'k'); }       // containers, in rows
+        else if (r < 0.65) rect(R(2, 4), R(1, 2), 'w');                                                                         // a dock basin
+        else if (r < 0.85) line(R(3, 6), rnd() < 0.5, 'n');                                                                     // a fence
+        else line(R(2, 4), rnd() < 0.5, 't');                                                                                   // fenders
+    } else if (th === 'warehouses') {
+        if (r < 0.4) rect(R(2, 4), R(2, 3), 'h');                                                                               // a warehouse
+        else if (r < 0.7) rect(R(1, 2), R(1, 2), 'p');                                                                          // pallets
+        else if (r < 0.88) line(R(3, 6), rnd() < 0.5, 'n');
+        else line(R(2, 3), rnd() < 0.5, 'c');                                                                                   // bollards
+    } else if (th === 'parking') {
+        if (r < 0.55) line(2 * R(1, 3), true, 'x');                                                                             // a row of wrecks
+        else if (r < 0.7) { line(2 * R(1, 2), false, 'x'); }
+        else if (r < 0.85) { rect(R(2, 3), 1, 'c'); out.push([0, -1, 'f'], [1, -1, 'f']); }                                     // an island with trees
+        else line(R(3, 5), rnd() < 0.5, 't');
+    } else if (th === 'scrapyard') {
+        if (r < 0.3) rect(R(1, 2), R(1, 2), 't');                                                                               // a heap of tyres
+        else if (r < 0.55) line(2, rnd() < 0.5, 'x');
+        else if (r < 0.7) rect(R(2, 3), 1, 'k');
+        else if (r < 0.85) rect(R(1, 2), 1, 'p');
+        else { out.push([0, 0, 'o'], [1, 0, 'o']); }
+    } else {
+        if (r < 0.34) line(R(2, 6), rnd() < 0.55, 't');                                                                         // a wall of tyres
+        else if (r < 0.48) { const a = R(2, 4), b = R(2, 4); line(a, true, 't'); for (let i = 1; i < b; i++) out.push([0, i, 't']); }
+        else if (r < 0.64) rect(R(1, 2), R(1, 2), 'c');                                                                         // concrete
+        else if (r < 0.74) rect(R(2, 4), R(1, 2), 'w');                                                                         // the canal
+        else if (r < 0.9) rect(R(2, 4), R(1, 2), 'f');                                                                          // trees
+        else out.push([0, 0, 'o'], [1, 0, 'o']);                                                                               // oil
+    }
+    return out;
+}
 /**
- * The yard of level n: rows of BW chars ('.' ground, 't' tyres, 'c' concrete, 'w' canal, 'f' trees,
- * 'o' oil, 'G' the garage). Pieces are dropped on the left half and mirrored; a yard that would cut a
- * way in off the garage or leave a pocket nobody can reach is thrown away and built again.
+ * The yard of level n: rows of BW chars - '.' ground, 't' tyres, 'c' concrete, 'w' water, 'f' trees,
+ * 'o' oil, 'k' containers, 'h' warehouses, 'n' fences, 'p' pallets, 'x' wrecks, 'G' the garage. Pieces of
+ * its district are dropped on the left half and mirrored, one by one, each kept only if every open tile
+ * can still be reached (what a shot breaks counts as open), until the yard is full enough: a third of it
+ * on the first levels, nearly half later on.
  */
 function build(n) {
-    const rnd = seeded(7919 * n + 13);
-    for (let attempt = 0; attempt < 50; attempt++) {
+    const th = theme(n), rnd = seeded(7919 * n + 13);
+    const target = Math.min(0.46, 0.33 + n * 0.012);
+    for (let attempt = 0; attempt < 60; attempt++) {
         const T = Array.from({ length: TH }, () => Array(TW).fill('.'));
-        const put = (tx, ty, ch) => {
-            if (tx < 0 || ty < 0 || tx > (TW - 1) / 2 || ty >= TH || reserved(tx, ty)) return;
-            T[ty][tx] = ch; T[ty][TW - 1 - tx] = ch;
+        const open = (tx, ty) => tx >= 0 && ty >= 0 && tx < TW && ty < TH && !SOLID_TILE.includes(T[ty][tx]);
+        const connected = () => {
+            const seen = new Set(['11,0']), q = [[11, 0]];
+            while (q.length) {
+                const [x, y] = q.pop();
+                for (const [dx, dy] of Object.values(DIRS)) { const k = (x + dx) + ',' + (y + dy); if (open(x + dx, y + dy) && !seen.has(k)) { seen.add(k); q.push([x + dx, y + dy]); } }
+            }
+            for (let y = 0; y < TH; y++) for (let x = 0; x < TW; x++) if (open(x, y) && !seen.has(x + ',' + y)) return false;
+            return true;
         };
-        const pieces = 7 + Math.min(n, 7);
-        for (let k = 0; k < pieces; k++) {
-            const x = Math.floor(rnd() * Math.ceil(TW / 2)), y = 2 + Math.floor(rnd() * (TH - 4)), r = rnd();
-            if (r < 0.34) {                                  // a wall of tyres
-                const len = 2 + Math.floor(rnd() * 5), across = rnd() < 0.55;
-                for (let i = 0; i < len; i++) put(across ? x + i : x, across ? y : y + i, 't');
-            } else if (r < 0.48) {                           // an L of tyres
-                const a = 2 + Math.floor(rnd() * 3), b = 2 + Math.floor(rnd() * 3);
-                for (let i = 0; i < a; i++) put(x + i, y, 't');
-                for (let i = 0; i < b; i++) put(x, y + i, 't');
-            } else if (r < 0.62) {                           // concrete
-                const w = 1 + Math.floor(rnd() * 2), h = 1 + Math.floor(rnd() * 2);
-                for (let i = 0; i < w; i++) for (let j = 0; j < h; j++) put(x + i, y + j, 'c');
-            } else if (r < 0.72) {                           // the canal
-                const w = 2 + Math.floor(rnd() * 3), h = 1 + Math.floor(rnd() * 2);
-                if (y > 3 && y < 9) for (let i = 0; i < w; i++) for (let j = 0; j < h; j++) put(x + i, y + j, 'w');
-            } else if (r < 0.88) {                           // trees
-                const w = 2 + Math.floor(rnd() * 3), h = 1 + Math.floor(rnd() * 2);
-                for (let i = 0; i < w; i++) for (let j = 0; j < h; j++) if (T[y + j] && T[y + j][x + i] === '.') put(x + i, y + j, 'f');
-            } else {                                         // oil
-                put(x, y, 'o'); put(x + 1, y, 'o');
+        let filled = 0;
+        const half = Math.ceil(TW / 2);
+        for (let tries = 0; tries < 500 && filled < target * TW * TH; tries++) {
+            const p = piece(th, rnd), ox = Math.floor(rnd() * half), oy = 1 + Math.floor(rnd() * (TH - 2));
+            const cells = [];
+            let ok = true;
+            for (const [dx, dy, ch] of p) {
+                const x = ox + dx, y = oy + dy;
+                if (x < 0 || y < 0 || x > (TW - 1) / 2 || y >= TH || reserved(x, y) || T[y][x] !== '.') { ok = false; break; }
+                cells.push([x, y, ch]);
             }
+            if (!ok) continue;
+            for (const [x, y, ch] of cells) { T[y][x] = ch; T[y][TW - 1 - x] = ch; }
+            if (!connected()) { for (const [x, y] of cells) { T[y][x] = '.'; T[y][TW - 1 - x] = '.'; } continue; }
+            for (const [x, y, ch] of cells) if (FILLS.includes(ch)) filled += x === TW - 1 - x ? 1 : 2;
         }
-        // every open tile reachable from the way in, tyres counted as open (they can be shot through)
-        const open = (tx, ty) => tx >= 0 && ty >= 0 && tx < TW && ty < TH && T[ty][tx] !== 'c' && T[ty][tx] !== 'w';
-        const seen = new Set(['11,0']), q = [[11, 0]];
-        while (q.length) {
-            const [x, y] = q.shift();
-            for (const [dx, dy] of Object.values(DIRS)) {
-                const k = (x + dx) + ',' + (y + dy);
-                if (open(x + dx, y + dy) && !seen.has(k)) { seen.add(k); q.push([x + dx, y + dy]); }
-            }
-        }
-        let ok = true;
-        for (let y = 0; y < TH && ok; y++) for (let x = 0; x < TW; x++) if (open(x, y) && !seen.has(x + ',' + y)) { ok = false; break; }
-        if (!ok) continue;
+        if (filled < target * TW * TH * 0.85) continue;
         // into bricks; the garage and its ring of tyres
         const g = Array.from({ length: BH }, (_, by) => Array.from({ length: BW }, (_, bx) => T[by >> 1][bx >> 1]));
         for (let y = RING.y; y < RING.y + RING.h; y++) for (let x = RING.x; x < RING.x + RING.w; x++) g[y][x] = 't';
@@ -357,7 +390,7 @@ class Game {
             if (!BLOCKS_SHOT.includes(ch)) continue;
             hit = true;
             if (ch === 'G') base = s.team === 'e';                    // (the M car's own shots don't hurt its garage)
-            else if (ch === 't' || (ch === 'c' && s.heavy)) { this.grid[y][x] = '.'; this.version++; this.events.push({ type: 'brick', x, y, was: ch }); }
+            else if ((s.heavy ? BREAKS_HEAVY : BREAKS).includes(ch)) { this.grid[y][x] = '.'; this.version++; this.events.push({ type: 'brick', x, y, was: ch }); }
         }
         if (base && !this.lost) {
             this._removeShot(s);
@@ -431,4 +464,4 @@ function saveBest(file, best) {
     fs.renameSync(file + '.tmp', file);
 }
 
-module.exports = { Game, DT, BW, BH, TW, TH, DIRS, LIVES, GARAGE_HP, PER_LEVEL, ON_YARD, TYPES, POWERS, PLAYER, BASE, RING, SPAWNS, build, convoy, seeded, loadBest, saveBest };
+module.exports = { THEMES, theme, Game, DT, BW, BH, TW, TH, DIRS, LIVES, GARAGE_HP, PER_LEVEL, ON_YARD, TYPES, POWERS, PLAYER, BASE, RING, SPAWNS, build, convoy, seeded, loadBest, saveBest };

@@ -127,11 +127,47 @@ function carLayer(kind, dir, paint, variant) {
 }
 
 /* ---------- the yard ---------- */
+/** each district's ground: its colour and what's painted on it */
+const GROUND = {
+    yard: [[0, '#3c4049'], [1, '#30333b']],
+    docks: [[0, '#565c64'], [1, '#454a52']],
+    warehouses: [[0, '#2f3238'], [1, '#26292e']],
+    parking: [[0, '#383b41'], [1, '#2c2f34']],
+    scrapyard: [[0, '#4a4034'], [1, '#3a3229']],
+};
 function drawGround(c, level) {
-    const W = M.BW * B, H = M.BH * B, ox = OX - BOARD.x, oy = OY - BOARD.y;
+    const W = M.BW * B, H = M.BH * B, ox = OX - BOARD.x, oy = OY - BOARD.y, th = M.theme(level);
     c.roundRect(0, 0, BOARD.w, BOARD.h, 16, '#07080b');
     c.card(ox - 6, oy - 6, W + 12, H + 12, 10, [[0, '#24272e'], [1, '#17191e']]);
-    c.card(ox, oy, W, H, 4, [[0, '#3c4049'], [1, '#30333b']]);
+    c.card(ox, oy, W, H, 4, GROUND[th]);
+    if (th === 'docks') {
+        // concrete slabs, a rail track across, yellow safety lines
+        for (let x = 0; x < M.BW; x += 4) c.fillRect(ox + x * B, oy, 1, H, withAlpha('#000000', 0.18));
+        for (let y = 0; y < M.BH; y += 4) c.fillRect(ox, oy + y * B, W, 1, withAlpha('#000000', 0.18));
+        for (const ry of [9, 17]) {
+            for (let x = 0; x < W; x += 10) c.fillRect(ox + x, oy + ry * B - 4, 5, 20, '#4a3a2a');
+            c.fillRect(ox, oy + ry * B, W, 2.5, '#9aa0a8'); c.fillRect(ox, oy + ry * B + 9, W, 2.5, '#9aa0a8');
+        }
+        for (let y = 2; y < M.BH - 4; y += 7) c.fillRect(ox + 8, oy + y * B, W - 16, 2, withAlpha('#f2c21a', 0.35));
+    } else if (th === 'warehouses') {
+        // loading bays: hatched yellow, arrows
+        for (let k = 0; k < 10; k++) {
+            const x = ox + hash(k, 21 + level) * (W - 90), y = oy + hash(k, 22) * (H - 50);
+            c.strokeRoundRect(x, y, 80, 40, 2, 2, withAlpha('#f2c21a', 0.35));
+            for (let i = 0; i < 8; i++) c.line(x + 4 + i * 10, y + 36, x + 14 + i * 10, y + 4, 2, withAlpha('#f2c21a', 0.18));
+        }
+        for (let k = 0; k < 8; k++) { const x = ox + 30 + hash(k, 23 + level) * (W - 60), y = oy + 20 + hash(k, 24) * (H - 40); c.fillRect(x - 2, y, 4, 18, withAlpha('#ffffff', 0.25)); poly(c, [[x - 8, y], [x + 8, y], [x, y - 10]], withAlpha('#ffffff', 0.25)); }
+    } else if (th === 'parking') {
+        // the bays' white lines in rows, P painted
+        for (let row = 1; row < M.BH - 2; row += 6) for (let x = 2; x < M.BW - 2; x += 3) c.fillRect(ox + x * B, oy + row * B, 2, 3 * B, withAlpha('#ffffff', 0.22));
+        for (let row = 1; row < M.BH - 2; row += 6) c.fillRect(ox + 2 * B, oy + row * B, W - 4 * B, 2, withAlpha('#ffffff', 0.18));
+        for (let k = 0; k < 6; k++) c.text('P', ox + 60 + k * 180, oy + 4 * B + (k % 2) * 12 * B, 28, withAlpha('#ffffff', 0.12), { font: 'bold', align: 'center', literal: true });
+    } else if (th === 'scrapyard') {
+        // dirt: gravel, tyre tracks, puddles
+        for (let k = 0; k < 1800; k++) c.fillRect(ox + hash(k, 31 + level) * W, oy + hash(k, 32) * H, 2, 2, withAlpha(k % 3 ? '#6a5a44' : '#2a2219', 0.45));
+        for (let k = 0; k < 7; k++) { const y = oy + hash(k, 33 + level) * H; for (let x = 0; x < W; x += 6) { const yy = y + Math.sin(x * 0.02 + k) * 18; c.fillRect(ox + x, yy, 5, 3, withAlpha('#1e1810', 0.35)); c.fillRect(ox + x, yy + 14, 5, 3, withAlpha('#1e1810', 0.35)); } }
+        for (let k = 0; k < 9; k++) { const x = ox + hash(k, 34 + level) * W, y = oy + hash(k, 35) * H; c.circle(x, y, 10 + hash(k, 36) * 14, withAlpha('#1a1d22', 0.6)); c.circle(x - 4, y - 3, 5, withAlpha('#7a8aa8', 0.12)); }
+    }
     // light from the yard's lamps: warm pools
     for (let k = 0; k < 6; k++) { const x = ox + (k + 0.5) * W / 6, y = oy + (k % 2 ? H * 0.3 : H * 0.7); for (let i = 12; i >= 1; i--) c.circle(x, y, i * 12, withAlpha('#ffd89a', 0.009)); }
     for (let k = 0; k < 700; k++) c.fillRect(ox + hash(k, 1 + level) * W, oy + hash(k, 2) * H, 1.5, 1.5, withAlpha(k % 3 ? '#ffffff' : '#000000', 0.05));
@@ -177,6 +213,43 @@ function drawBricks(c, grid, garageHp) {
             c.arc(X + m, Y + m, m * 0.88, m * 1.08, 280, 360, withAlpha('#ffffff', 0.25));
         }
     }
+    // fences: posts and a mesh you can see (and shoot) through
+    for (let y = 0; y < M.BH; y++) for (let x = 0; x < M.BW; x++) {
+        if (grid[y][x] !== 'n') continue;
+        const X = ox + x * B, Y = oy + y * B, across = grid[y][x - 1] === 'n' || grid[y][x + 1] === 'n';
+        for (let i = 0; i < 4; i++) {
+            if (across) { c.line(X + i * 4, Y + 4, X + i * 4 + 4, Y + 12, 0.8, withAlpha('#c9d0da', 0.55)); c.line(X + i * 4 + 4, Y + 4, X + i * 4, Y + 12, 0.8, withAlpha('#c9d0da', 0.55)); }
+            else { c.line(X + 4, Y + i * 4, X + 12, Y + i * 4 + 4, 0.8, withAlpha('#c9d0da', 0.55)); c.line(X + 12, Y + i * 4, X + 4, Y + i * 4 + 4, 0.8, withAlpha('#c9d0da', 0.55)); }
+        }
+        if (across) { c.fillRect(X, Y + 3, B, 1.5, '#9aa0a8'); c.fillRect(X, Y + 12, B, 1.5, '#9aa0a8'); } else { c.fillRect(X + 3, Y, 1.5, B, '#9aa0a8'); c.fillRect(X + 12, Y, 1.5, B, '#9aa0a8'); }
+        if ((across ? x : y) % 2 === 0) { c.circle(X + 8 + 1, Y + 8 + 2, 2.6, withAlpha('#000000', 0.4)); c.circle(X + 8, Y + 8, 2.4, '#5a616c'); c.circle(X + 7.4, Y + 7.4, 1, '#c9d0da'); }
+    }
+    // pallets: stacks of planks
+    for (let y = 0; y < M.BH; y++) for (let x = 0; x < M.BW; x++) {
+        if (grid[y][x] !== 'p') continue;
+        const X = ox + x * B, Y = oy + y * B, v = hash(x, y) < 0.5;
+        c.fillRect(X + 2, Y + 3, B - 1, B - 1, withAlpha('#000000', 0.45));
+        c.fillRect(X + 0.5, Y + 0.5, B - 1, B - 1, '#7a5a32');
+        for (let i = 0; i < 3; i++) v ? c.fillRect(X + 1.5 + i * 5, Y + 1, 3.5, B - 2, mix('#c89a5a', '#a07040', hash(i, x + y))) : c.fillRect(X + 1, Y + 1.5 + i * 5, B - 2, 3.5, mix('#c89a5a', '#a07040', hash(i, x + y)));
+        c.fillRect(X + 0.5, Y + 0.5, B - 1, 1, withAlpha('#ffffff', 0.25));
+    }
+    // containers, warehouses, wrecks: each block drawn whole
+    const seen = new Set();
+    for (let y = 0; y < M.BH; y++) for (let x = 0; x < M.BW; x++) {
+        const ch = grid[y][x];
+        if (!'khx'.includes(ch) || seen.has(x + ',' + y)) continue;
+        let x0 = x, x1 = x, y0 = y, y1 = y;
+        const q = [[x, y]]; seen.add(x + ',' + y);
+        while (q.length) {
+            const [a, b] = q.pop();
+            x0 = Math.min(x0, a); x1 = Math.max(x1, a); y0 = Math.min(y0, b); y1 = Math.max(y1, b);
+            for (const [dx, dy] of [[1, 0], [-1, 0], [0, 1], [0, -1]]) { const k = (a + dx) + ',' + (b + dy); if (grid[b + dy] && grid[b + dy][a + dx] === ch && !seen.has(k)) { seen.add(k); q.push([a + dx, b + dy]); } }
+        }
+        const X = ox + x0 * B, Y = oy + y0 * B, w = (x1 - x0 + 1) * B, h = (y1 - y0 + 1) * B, along = w >= h;
+        if (ch === 'h') drawWarehouse(c, X, Y, w, h, along);
+        else if (ch === 'k') { const n = Math.max(1, Math.round((along ? w : h) / (6 * B))), rows = Math.max(1, Math.round((along ? h : w) / (2 * B))); for (let i = 0; i < n; i++) for (let r = 0; r < rows; r++) { const L = (along ? w : h) / n, S = (along ? h : w) / rows; drawContainer(c, along ? X + i * L : X + r * S, along ? Y + r * S : Y + i * L, along ? L : S, along ? S : L, along, hash(x0 + i * 7 + r, y0)); } }
+        else { const n = Math.max(1, Math.round((along ? w : h) / (4 * B))), rows = Math.max(1, Math.round((along ? h : w) / (2 * B))); for (let i = 0; i < n; i++) for (let r = 0; r < rows; r++) { const L = (along ? w : h) / n, S = (along ? h : w) / rows; drawWreck(c, along ? X + i * L : X + r * S, along ? Y + r * S : Y + i * L, along ? L : S, along ? S : L, along, hash(x0 + i * 5, y0 + r)); } }
+    }
     // the garage: walls, a striped roof, its door to the yard; damaged: scorched
     const gx = ox + M.BASE.x * B, gy = oy + M.BASE.y * B, gw = M.BASE.w * B, gh = M.BASE.h * B;
     c.roundRect(gx + 2, gy + 3, gw, gh, 4, withAlpha('#000000', 0.5));
@@ -189,6 +262,41 @@ function drawBricks(c, grid, garageHp) {
     if (garageHp < M.GARAGE_HP) {
         for (let k = 0; k < (M.GARAGE_HP - garageHp) * 5; k++) c.circle(gx + 6 + hash(k, 3) * (gw - 12), gy + 6 + hash(k, 4) * (gh - 12), 3 + hash(k, 5) * 4, withAlpha('#000000', 0.45));
     }
+}
+/** a shipping container from above: ribbed steel, its doors at one end */
+function drawContainer(c, X, Y, w, h, along, k) {
+    const col = ['#b8322a', '#2a6aa8', '#2f8a5a', '#d48a1a', '#6a6f78', '#e2e4e8', '#7a3a8a'][Math.floor(k * 7)];
+    c.fillRect(X + 4, Y + 5, w - 2, h - 2, withAlpha('#000000', 0.5));
+    c.card(X + 1, Y + 1, w - 2, h - 2, 1.5, [[0, mix(col, '#ffffff', 0.18)], [1, mix(col, '#000000', 0.25)]]);
+    for (let i = 4; i < (along ? w : h) - 4; i += 4) along ? c.fillRect(X + i, Y + 2, 1.2, h - 4, withAlpha('#000000', 0.22)) : c.fillRect(X + 2, Y + i, w - 4, 1.2, withAlpha('#000000', 0.22));
+    if (along) { c.fillRect(X + w - 5, Y + 2, 2, h - 4, withAlpha('#000000', 0.35)); c.fillRect(X + 1, Y + 1, w - 2, 1.5, withAlpha('#ffffff', 0.3)); } else { c.fillRect(X + 2, Y + h - 5, w - 4, 2, withAlpha('#000000', 0.35)); c.fillRect(X + 1, Y + 1, 1.5, h - 2, withAlpha('#ffffff', 0.3)); }
+    for (const [cx, cy] of [[X + 3, Y + 3], [X + w - 3, Y + 3], [X + 3, Y + h - 3], [X + w - 3, Y + h - 3]]) c.fillRect(cx - 1.5, cy - 1.5, 3, 3, mix(col, '#000000', 0.5));
+}
+/** a warehouse from above: a ridged roof, skylights, vents */
+function drawWarehouse(c, X, Y, w, h, along) {
+    c.fillRect(X + 6, Y + 8, w, h, withAlpha('#000000', 0.5));
+    c.card(X, Y, w, h, 2, [[0, '#8a929c'], [1, '#5a616c']]);
+    if (along) { c.gradientRect(X + 2, Y + 2, w - 4, h / 2 - 2, [[0, '#a0a8b2'], [1, '#7a828c']]); c.fillRect(X + 2, Y + h / 2 - 1, w - 4, 2, '#4a515c'); }
+    else { c.fillRect(X + w / 2 - 1, Y + 2, 2, h - 4, '#4a515c'); c.fillRect(X + 2, Y + 2, w / 2 - 3, h - 4, withAlpha('#ffffff', 0.12)); }
+    for (let i = 10; i < (along ? w : h) - 10; i += 22) {
+        if (along) { c.roundRect(X + i, Y + 5, 12, h / 2 - 9, 2, withAlpha('#9ad0ff', 0.4)); c.circle(X + i + 6, Y + h * 0.75, 3, '#3a3f48'); }
+        else { c.roundRect(X + 5, Y + i, w / 2 - 9, 12, 2, withAlpha('#9ad0ff', 0.4)); c.circle(X + w * 0.75, Y + i + 6, 3, '#3a3f48'); }
+    }
+    c.strokeRoundRect(X, Y, w, h, 2, 1.5, '#3a3f48');
+}
+/** an abandoned car from above: faded paint, rust, broken glass, a wheel gone */
+function drawWreck(c, X, Y, w, h, along, k) {
+    const paint = [['#8a5a3a', '#4a2a1a'], ['#5a6a7a', '#2a3440'], ['#8a8a6a', '#4a4a3a'], ['#6a2a2a', '#3a1414'], ['#4a5a4a', '#202a20']][Math.floor(k * 5)];
+    const L = (along ? w : h) - 6, S = (along ? h : w) - 8, cx = X + w / 2, cy = Y + h / 2;
+    const R = (lx, ly) => (along ? [cx + lx, cy + ly] : [cx + ly, cy + lx]);
+    const rect = (x0, y0, x1, y1, col) => { const a = R(x0, y0), b = R(x1, y1); c.fillRect(Math.min(a[0], b[0]), Math.min(a[1], b[1]), Math.abs(b[0] - a[0]), Math.abs(b[1] - a[1]), col); };
+    rect(-L / 2 + 2, -S / 2 + 3, L / 2 + 2, S / 2 + 3, withAlpha('#000000', 0.45));
+    for (const sx of [-1, 1]) for (const sy of [-1, 1]) if (!(sx === 1 && sy === 1 && k > 0.5)) rect(sx * L * 0.3 - 3, sy * S / 2 - 1.5, sx * L * 0.3 + 3, sy * S / 2 + 1.5, '#0c0c0e');
+    rect(-L / 2, -S / 2, L / 2, S / 2, paint[1]);
+    rect(-L / 2 + 1, -S / 2 + 1, L / 2 - 1, S / 2 - 1, paint[0]);
+    rect(-L * 0.12, -S / 2 + 2, L * 0.22, S / 2 - 2, '#1a2026');
+    rect(-L * 0.05, -S / 2 + 3, L * 0.08, S / 2 - 3, withAlpha('#c8dcff', 0.25));
+    for (let i = 0; i < 6; i++) { const p = R((hash(i, k) - 0.5) * L * 0.9, (hash(k, i) - 0.5) * S * 0.8); c.circle(p[0], p[1], 1.5 + hash(i, i + k) * 2.5, withAlpha(i % 2 ? '#7a3a14' : '#2a1a10', 0.7)); }
 }
 function groundLayer(level) { return lay('ss-ground|' + level, BOARD.w, BOARD.h, (c) => drawGround(c, level)); }
 function bricksLayer(level, version, grid, hp) { return lay('ss-bricks|' + level + '|' + version + '|' + hp, BOARD.w, BOARD.h, (c) => drawBricks(c, grid, hp)); }

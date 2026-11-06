@@ -9,7 +9,8 @@
  *
  * Steering:
  *   iDrive controller (held by the game on screen): push and hold = drive that way (let go: stop),
- *     press = fire, turn = pause. Not playing: press starts / goes on, push left leaves, a turn lets go
+ *     press = fire; a small turn does nothing (it happens by accident while driving), a big one (PAUSE_NOTCHES
+ *     within a second) pauses. Not playing: press starts / goes on, push left leaves, a turn lets go
  *     of the controller so it moves over the bar and the header.
  *   touchscreen (where the kit runs the screen): a joystick where the finger goes down on the yard (it
  *     drives while held), a tap fires; FIRE on the panel.
@@ -32,6 +33,8 @@ const A = require('./art');
 const W = 1600, H = 520;
 const BEST_FILE = 'street_siege_best.json';
 const PARKED_MS = 500;
+const PAUSE_NOTCHES = 8;             // a turn this big within PAUSE_MS pauses the game (a small one: nothing)
+const PAUSE_MS = 1000;
 const GOLD = '#ffd36e', CYAN = '#7fe8ff', RED = '#e7222e', GREEN = '#5ff0a6';
 const LABEL = { ready: 'START', playing: 'FIRE', paused: 'GO ON', over: 'AGAIN' };
 const KIND_NAME = { hatch: 'HATCHBACK', van: 'VAN', pickup: 'PICK-UP', suv: 'ARMOURED SUV' };
@@ -97,7 +100,7 @@ mgu.run({
         for (const [b, d] of [['BTN_UP', 'U'], ['BTN_DOWN', 'D'], ['BTN_LEFT', 'L'], ['BTN_RIGHT', 'R']]) ui.onClick(b, () => drive(d));
         if (ctx.hideButton) for (const b of ['BTN_UP', 'BTN_DOWN', 'BTN_LEFT', 'BTN_RIGHT']) ctx.hideButton(b);
 
-        let ccu = null;
+        let ccu = null, turns = [];
         if (ctx.controller) ctx.controller.onInput((v) => {
             const k = Number(v.frontRotaryEncoderOperation), pb = Number(v.frontRotaryEncoderPushButton), df = Number(v.frontRotaryEncoderDeflection);
             const L = ccu;
@@ -112,7 +115,13 @@ mgu.run({
             if (state === 'playing') {
                 game.drive(held);
                 if (pr) fire();
-                if (d) pause();
+                if (d) {
+                    // turned by accident while driving: ignored; a deliberate big turn pauses
+                    const t = Date.now();
+                    turns = turns.filter((x) => t - x[0] < PAUSE_MS);
+                    turns.push([t, Math.abs(d)]);
+                    if (turns.reduce((a, x) => a + x[1], 0) >= PAUSE_NOTCHES) { turns = []; pause(); }
+                }
                 return;
             }
             if (pr) play();
@@ -344,7 +353,7 @@ mgu.run({
                 cv.roundRect(P.x + 100, ly, 130 * Math.min(1, v / full), 8, 4, p.c[0]);
                 ly += 16;
             }
-            const lines = touch ? ['Hold a push: drive · press: fire', 'Turn: pause' + (autoFire() ? ' · auto fire on' : '')] : ['Bar: Up · Down · Left · Right', 'Auto fire · smooth with mgu-render'];
+            const lines = touch ? ['Hold a push: drive · press: fire', 'A big turn: pause' + (autoFire() ? ' · auto fire on' : '')] : ['Bar: Up · Down · Left · Right', 'Auto fire · smooth with mgu-render'];
             lines.forEach((l, i) => cv.text(l, P.x + 24, P.y + 440 + i * 16, 12, withAlpha('#ffffff', 0.45), { font: 'label' }));
             const D = A.FIRE_BTN, can = !parked.moving();
             if (can && state !== 'playing') A.glow(cv, D.x, D.y, D.r * 1.6, '#ff2a4a', 0.3 + 0.12 * Math.sin(now / 300));

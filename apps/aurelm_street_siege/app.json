@@ -2,7 +2,7 @@
   "id": "aurelm_street_siege",
   "title": "Street Siege",
   "description": "Defend the M garage: cars storm an industrial yard at night and the M car stops them with its roof cannon. Tyre walls that fall apart, concrete, a canal, trees, oil, power-ups; drawn by the GPU renderer at 60 fps. Parked only.",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "vendor": "custom",
   "loggingId": "OA9G",
   "iconGlyph": "siege",

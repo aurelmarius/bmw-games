@@ -132,7 +132,7 @@ The car apps (Engine Care, Hybrid Cost) are in [aurelmarius/bmw-apps](https://gi
 * **Power-ups**: CANNON (faster shots, then two at a time, then through concrete), SHIELD, NITRO (the others stand still), FORTRESS (concrete round the garage for a while), +1 CAR, EMP (every car on the yard gone).
 * **The garage** stands three hits (it smokes; two hits at once count as one); lost, or with no cars left, it's over. The M car's own shots don't hurt it.
 * **Explosions** with sparks, smoke and a shake, chips of tyre and concrete flying, tracers, a shield that turns round the car.
-* **iDrive controller**: push and hold the way to drive, press = fire, turn = pause. **Touchscreen**: a joystick where the finger goes down on the yard, a tap or FIRE fires. **Automatic fire** (a setting, on): the cannon fires by itself at a car in its line.
+* **iDrive controller**: push and hold the way to drive, press = fire; a small turn of the knob does nothing (it happens by accident while driving), a big turn pauses. **Touchscreen**: a joystick where the finger goes down on the yard, a tap or FIRE fires. **Automatic fire** (a setting, on): the cannon fires by itself at a car in its line.
 * **Settings**: difficulty (easy / normal / hard), automatic fire, your car's paint. Best score kept for each difficulty.
 * An original game in the genre of arena tank shooters: its own yards, cars and rules; no make's badge on any car.
 
@@ -208,7 +208,7 @@ The games run smoothest with the **mgu-render** GPU renderer, installed from the
 1. Download the `<game>@<version>.tgz` files from [Releases](https://github.com/aurelmarius/bmw-games/releases).
 2. Copy the files onto a USB stick or build a USB repository:
    ```powershell
-   node mgu-install.js usb-repo E:\ aurelm_snake@1.0.0.tgz aurelm_track_defender@1.0.0.tgz aurelm_pit_wall@1.0.0.tgz aurelm_lucky_sevens@1.1.0.tgz aurelm_blackjack@1.0.1.tgz aurelm_solitaire@1.0.0.tgz aurelm_apex_chase@1.0.0.tgz aurelm_street_siege@1.0.0.tgz aurelm_pinball@1.0.1.tgz aurelm_ridge_duel@1.0.0.tgz aurelm_lap_record@1.0.0.tgz
+   node mgu-install.js usb-repo E:\ aurelm_snake@1.0.0.tgz aurelm_track_defender@1.0.0.tgz aurelm_pit_wall@1.0.0.tgz aurelm_lucky_sevens@1.1.0.tgz aurelm_blackjack@1.0.1.tgz aurelm_solitaire@1.0.0.tgz aurelm_apex_chase@1.0.0.tgz aurelm_street_siege@1.0.1.tgz aurelm_pinball@1.0.1.tgz aurelm_ridge_duel@1.0.0.tgz aurelm_lap_record@1.0.0.tgz
    ```
 3. Insert the USB drive into your car and install from the **USB** page of the Store.
 
@@ -222,7 +222,7 @@ Copy the package to the head unit and run `mgu-deploy.sh`:
 /var/opt/mgu-deploy/mgu-deploy.sh install --artifact aurelm_blackjack@1.0.1.tgz --yes
 /var/opt/mgu-deploy/mgu-deploy.sh install --artifact aurelm_solitaire@1.0.0.tgz --yes
 /var/opt/mgu-deploy/mgu-deploy.sh install --artifact aurelm_apex_chase@1.0.0.tgz --yes
-/var/opt/mgu-deploy/mgu-deploy.sh install --artifact aurelm_street_siege@1.0.0.tgz --yes
+/var/opt/mgu-deploy/mgu-deploy.sh install --artifact aurelm_street_siege@1.0.1.tgz --yes
 /var/opt/mgu-deploy/mgu-deploy.sh install --artifact aurelm_pinball@1.0.1.tgz --yes
 /var/opt/mgu-deploy/mgu-deploy.sh install --artifact aurelm_ridge_duel@1.0.0.tgz --yes
 /var/opt/mgu-deploy/mgu-deploy.sh install --artifact aurelm_lap_record@1.0.0.tgz --yes

@@ -193,9 +193,6 @@ function drawBricks(c, grid, garageHp) {
             c.gradientRect(X, Y, B, B, [[0, '#14507a'], [1, '#0b3556']]);
             if (grid[y - 1] && grid[y - 1][x] !== 'w') c.fillRect(X, Y, B, 2, '#3a4048');
             if (grid[y + 1] && grid[y + 1][x] !== 'w') c.fillRect(X, Y + B - 2, B, 2, '#3a4048');
-        } else if (ch === 'o') {
-            c.circle(X + B / 2, Y + B / 2, B * 0.6, withAlpha('#06060a', 0.85));
-            c.circle(X + B * 0.35, Y + B * 0.4, B * 0.22, withAlpha(['#7a3aff', '#2affb0', '#ffb02a'][(x + y) % 3], 0.22));
         } else if (ch === 'c') {
             c.card(X, Y, B, B, 1, [[0, '#9aa0a8'], [1, '#6a7078']]);
             c.fillRect(X, Y, B, 1, withAlpha('#ffffff', 0.35));
@@ -212,6 +209,26 @@ function drawBricks(c, grid, garageHp) {
             c.circle(X + m, Y + m, m * 0.36, '#050506');
             c.arc(X + m, Y + m, m * 0.88, m * 1.08, 280, 360, withAlpha('#ffffff', 0.25));
         }
+    }
+    // oil: one glossy puddle for each patch, a rainbow sheen on it (flat on the ground: nothing like a tyre)
+    const oiled = new Set();
+    for (let y = 0; y < M.BH; y++) for (let x = 0; x < M.BW; x++) {
+        if (grid[y][x] !== 'o' || oiled.has(x + ',' + y)) continue;
+        let x0 = x, x1 = x, y0 = y, y1 = y;
+        const q = [[x, y]]; oiled.add(x + ',' + y);
+        while (q.length) {
+            const [a, b2] = q.pop();
+            x0 = Math.min(x0, a); x1 = Math.max(x1, a); y0 = Math.min(y0, b2); y1 = Math.max(y1, b2);
+            for (const [dx, dy] of [[1, 0], [-1, 0], [0, 1], [0, -1]]) { const k = (a + dx) + ',' + (b2 + dy); if (grid[b2 + dy] && grid[b2 + dy][a + dx] === 'o' && !oiled.has(k)) { oiled.add(k); q.push([a + dx, b2 + dy]); } }
+        }
+        const cx = ox + (x0 + x1 + 1) * B / 2, cy = oy + (y0 + y1 + 1) * B / 2, rx = (x1 - x0 + 1) * B / 2, ry = (y1 - y0 + 1) * B / 2;
+        for (let k = 0; k < 7; k++) {
+            const px = cx + (hash(k, x0) - 0.5) * rx, py = cy + (hash(y0, k) - 0.5) * ry, r = Math.min(rx, ry) * (0.45 + hash(k, k + x0) * 0.4);
+            poly(c, ellipse(px, py, r * 1.25, r * 0.85, 18), withAlpha('#07070a', 0.55));
+        }
+        poly(c, ellipse(cx, cy, rx * 0.8, ry * 0.7, 22), withAlpha('#030305', 0.6));
+        ['#7a3aff', '#2a9aff', '#2affb0', '#ffd02a', '#ff6a2a'].forEach((col, k) => c.arc(cx - rx * 0.15, cy - ry * 0.1, rx * (0.25 + k * 0.07), rx * (0.25 + k * 0.07) + 1.6, 200 + k * 8, 300 - k * 6, withAlpha(col, 0.35)));
+        c.circle(cx - rx * 0.35, cy - ry * 0.3, 2, withAlpha('#ffffff', 0.35));
     }
     // fences: posts and a mesh you can see (and shoot) through
     for (let y = 0; y < M.BH; y++) for (let x = 0; x < M.BW; x++) {

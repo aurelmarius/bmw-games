@@ -57,54 +57,61 @@ const THEMES = ['yard', 'docks', 'warehouses', 'parking', 'scrapyard'];
 const theme = (n) => THEMES[(Math.max(1, n) - 1) % THEMES.length];
 // what blocks the way in a yard (fences: cars, not shots), what counts towards a yard's fill
 const SOLID_TILE = 'cwkhnx', FILLS = 'tcwkhnpx';
-/** a piece for a district: [[dx, dy, ch], ...] in tiles */
-function piece(th, rnd) {
-    const R = (a, b) => a + Math.floor(rnd() * (b - a + 1)), out = [];
-    const rect = (w, h, ch) => { for (let i = 0; i < w; i++) for (let j = 0; j < h; j++) out.push([i, j, ch]); };
-    const line = (len, across, ch) => { for (let i = 0; i < len; i++) out.push(across ? [i, 0, ch] : [0, i, ch]); };
+/**
+ * What fills a block of w x h tiles in a district: [[dx, dy, ch], ...]. Solid things, a whole block or most
+ * of it (an L, a half), sometimes a gap (a little square); never a slot a car can't turn in.
+ */
+function blockFill(th, w, h, y, rnd) {
+    const out = [], R = (a, b) => a + Math.floor(rnd() * (b - a + 1));
+    const rect = (x0, y0, ww, hh, ch) => { for (let i = 0; i < ww; i++) for (let j = 0; j < hh; j++) out.push([x0 + i, y0 + j, ch]); };
+    const shape = (ch) => {
+        const r = rnd();
+        if (r < 0.5 || w < 3 || h < 3) rect(0, 0, w, h, ch);                                     // the whole block
+        else if (r < 0.75) { rect(0, 0, w, 1, ch); rect(0, 1, 1, h - 1, ch); rect(1, h - 1, w - 1, 1, ch); }   // an L / a C open to one side
+        else rect(0, 0, w, Math.ceil(h / 2), ch);                                                    // half of it
+    };
     const r = rnd();
     if (th === 'docks') {
-        if (r < 0.5) { const across = rnd() < 0.6; rect(across ? R(2, 4) : R(1, 2), across ? R(1, 2) : R(2, 4), 'k'); }       // containers, in rows
-        else if (r < 0.65) rect(R(2, 4), R(1, 2), 'w');                                                                         // a dock basin
-        else if (r < 0.85) line(R(3, 6), rnd() < 0.5, 'n');                                                                     // a fence
-        else line(R(2, 4), rnd() < 0.5, 't');                                                                                   // fenders
+        if (r < 0.6) rect(0, 0, w, h, 'k');                                                         // a stack of containers
+        else if (r < 0.75 && y > 2 && y < 9) rect(0, 0, w, h, 'w');                                  // a dock basin
+        else if (r < 0.9) shape('n');                                                               // fenced off
+        else shape('t');
     } else if (th === 'warehouses') {
-        if (r < 0.4) rect(R(2, 4), R(2, 3), 'h');                                                                               // a warehouse
-        else if (r < 0.7) rect(R(1, 2), R(1, 2), 'p');                                                                          // pallets
-        else if (r < 0.88) line(R(3, 6), rnd() < 0.5, 'n');
-        else line(R(2, 3), rnd() < 0.5, 'c');                                                                                   // bollards
+        if (r < 0.55) rect(0, 0, w, h, 'h');                                                        // a warehouse
+        else if (r < 0.8) shape('p');                                                               // pallets
+        else if (r < 0.9) shape('n');
+        else rect(0, 0, w, h, 'c');
     } else if (th === 'parking') {
-        if (r < 0.55) line(2 * R(1, 3), true, 'x');                                                                             // a row of wrecks
-        else if (r < 0.7) { line(2 * R(1, 2), false, 'x'); }
-        else if (r < 0.85) { rect(R(2, 3), 1, 'c'); out.push([0, -1, 'f'], [1, -1, 'f']); }                                     // an island with trees
-        else line(R(3, 5), rnd() < 0.5, 't');
+        if (r < 0.6) { for (let j = 0; j < h; j++) for (let i = 0; i < w; i++) out.push([i, j, 'x']); }    // parked rows, wreck by wreck
+        else if (r < 0.8) { rect(0, 0, w, h, 'c'); for (let i = 0; i < w; i++) out.push([i, -0, 'f']); }  // an island with trees
+        else shape('t');
     } else if (th === 'scrapyard') {
-        if (r < 0.3) rect(R(1, 2), R(1, 2), 't');                                                                               // a heap of tyres
-        else if (r < 0.55) line(2, rnd() < 0.5, 'x');
-        else if (r < 0.7) rect(R(2, 3), 1, 'k');
-        else if (r < 0.85) rect(R(1, 2), 1, 'p');
-        else { out.push([0, 0, 'o'], [1, 0, 'o']); }
+        if (r < 0.35) shape('t');                                                                   // a heap of tyres
+        else if (r < 0.6) rect(0, 0, w, h, 'x');
+        else if (r < 0.75) rect(0, 0, w, h, 'k');
+        else if (r < 0.9) shape('p');
+        else { rect(0, 0, w, h, 't'); out.push([R(0, w - 1), h, 'o']); }
     } else {
-        if (r < 0.34) line(R(2, 6), rnd() < 0.55, 't');                                                                         // a wall of tyres
-        else if (r < 0.48) { const a = R(2, 4), b = R(2, 4); line(a, true, 't'); for (let i = 1; i < b; i++) out.push([0, i, 't']); }
-        else if (r < 0.64) rect(R(1, 2), R(1, 2), 'c');                                                                         // concrete
-        else if (r < 0.74) rect(R(2, 4), R(1, 2), 'w');                                                                         // the canal
-        else if (r < 0.9) rect(R(2, 4), R(1, 2), 'f');                                                                          // trees
-        else out.push([0, 0, 'o'], [1, 0, 'o']);                                                                               // oil
+        if (r < 0.4) shape('t');                                                                    // tyres
+        else if (r < 0.6) shape('c');                                                               // concrete
+        else if (r < 0.72 && y > 2 && y < 9) rect(0, 0, w, h, 'w');                                  // the canal
+        else if (r < 0.88) rect(0, 0, w, h, 'f');                                                   // trees (cover, not a wall)
+        else { shape('t'); out.push([w, R(0, h - 1), 'o']); }
     }
-    return out;
+    // (trees on an island: on its top row only, over the concrete)
+    return out.filter(([dx, dy, ch], k, a) => ch !== 'f' || th !== 'parking' || !a.some(([x2, y2, c2]) => x2 === dx && y2 === dy && c2 !== 'f'));
 }
 /**
  * The yard of level n: rows of BW chars - '.' ground, 't' tyres, 'c' concrete, 'w' water, 'f' trees,
- * 'o' oil, 'k' containers, 'h' warehouses, 'n' fences, 'p' pallets, 'x' wrecks, 'G' the garage. Pieces of
- * its district are dropped on the left half and mirrored, one by one, each kept only if every open tile
- * can still be reached (what a shot breaks counts as open), until the yard is full enough: a third of it
- * on the first levels, nearly half later on.
+ * 'o' oil, 'k' containers, 'h' warehouses, 'n' fences, 'p' pallets, 'x' wrecks, 'G' the garage.
+ * Laid out as a town: blocks of 2-4 tiles with streets two tiles wide between them (a car is one), on the
+ * left half and mirrored; some streets closed between two blocks (longer walls, dead ends); a block or a
+ * closing is kept only if every open tile can still be reached (what a shot breaks counts as open).
  */
 function build(n) {
-    const th = theme(n), rnd = seeded(7919 * n + 13);
-    const target = Math.min(0.46, 0.33 + n * 0.012);
-    for (let attempt = 0; attempt < 60; attempt++) {
+    const th = theme(n), rnd = seeded(7919 * n + 13), R = (a, b) => a + Math.floor(rnd() * (b - a + 1));
+    const half = Math.ceil(TW / 2);
+    for (let attempt = 0; attempt < 80; attempt++) {
         const T = Array.from({ length: TH }, () => Array(TW).fill('.'));
         const open = (tx, ty) => tx >= 0 && ty >= 0 && tx < TW && ty < TH && !SOLID_TILE.includes(T[ty][tx]);
         const connected = () => {
@@ -116,23 +123,50 @@ function build(n) {
             for (let y = 0; y < TH; y++) for (let x = 0; x < TW; x++) if (open(x, y) && !seen.has(x + ',' + y)) return false;
             return true;
         };
-        let filled = 0;
-        const half = Math.ceil(TW / 2);
-        for (let tries = 0; tries < 500 && filled < target * TW * TH; tries++) {
-            const p = piece(th, rnd), ox = Math.floor(rnd() * half), oy = 1 + Math.floor(rnd() * (TH - 2));
-            const cells = [];
-            let ok = true;
-            for (const [dx, dy, ch] of p) {
-                const x = ox + dx, y = oy + dy;
-                if (x < 0 || y < 0 || x > (TW - 1) / 2 || y >= TH || reserved(x, y) || T[y][x] !== '.') { ok = false; break; }
-                cells.push([x, y, ch]);
+        /** open tiles with a wall on both sides (a slot one tile wide: no room to turn) */
+        const wall = (x, y) => x < 0 || y < 0 || x >= TW || y >= TH || FILLS.includes(T[y][x]);
+        const slots = () => { let k = 0; for (let y = 0; y < TH; y++) for (let x = 0; x < TW; x++) if (!wall(x, y) && ((wall(x - 1, y) && wall(x + 1, y)) || (wall(x, y - 1) && wall(x, y + 1)))) k++; return k; };
+        /** put cells (mirrored); undone if the yard falls apart or gets a slot one tile wide */
+        const place = (cells) => {
+            const done = [], before = slots();
+            for (const [x, y, ch] of cells) {
+                if (x < 0 || y < 0 || x >= half || y >= TH || reserved(x, y) || reserved(TW - 1 - x, y) || T[y][x] !== '.') continue;
+                T[y][x] = ch; T[y][TW - 1 - x] = ch; done.push([x, y]);
             }
-            if (!ok) continue;
-            for (const [x, y, ch] of cells) { T[y][x] = ch; T[y][TW - 1 - x] = ch; }
-            if (!connected()) { for (const [x, y] of cells) { T[y][x] = '.'; T[y][TW - 1 - x] = '.'; } continue; }
-            for (const [x, y, ch] of cells) if (FILLS.includes(ch)) filled += x === TW - 1 - x ? 1 : 2;
+            if (connected() && slots() <= before) return done.length;
+            for (const [x, y] of done) { T[y][x] = '.'; T[y][TW - 1 - x] = '.'; }
+            return 0;
+        };
+        // the town plan: blocks across and down, streets of two between
+        const cols = [], rows = [];
+        // (no slot one tile wide: at the yard's edges, nor in the middle between a block and its mirror)
+        for (let x = 2 * R(0, 1); x < half; ) { let w = R(2, 4); if (x + w - 1 === half - 2) w++; if (x + w > half) w = half - x; cols.push([x, w]); x += w + 2; }
+        for (let y = 2; y < TH - 1; ) { let h = R(2, 3); if (y + h === TH - 1) h++; rows.push([y, Math.min(h, TH - y)]); y += h + 2; }
+        const blocks = [];
+        for (const [x, w] of cols) for (const [y, h] of rows) blocks.push({ x, y, w, h });
+        for (const b of blocks) {
+            if (rnd() < 0.12) continue;                                              // a square
+            // not all the same size: some a tile shorter one way (the street there wider)
+            if (rnd() < 0.35 && b.w > 2) { if (rnd() < 0.5) b.x++; b.w--; }
+            if (rnd() < 0.35 && b.h > 2) { if (rnd() < 0.5) b.y++; b.h--; }
+            place(blockFill(th, b.w, b.h, b.y, rnd).map(([dx, dy, ch]) => [b.x + dx, b.y + dy, ch]));
         }
-        if (filled < target * TW * TH * 0.85) continue;
+        // some streets closed between two blocks: longer walls, dead ends
+        for (let k = 0; k < 14 + Math.min(n, 8); k++) {
+            const b = blocks[Math.floor(rnd() * blocks.length)], across = rnd() < 0.5;
+            const ch = T[b.y][b.x];
+            if (!FILLS.includes(ch)) continue;
+            const cells = [];
+            if (across) for (let j = 0; j < b.h; j++) { cells.push([b.x + b.w, b.y + j, ch], [b.x + b.w + 1, b.y + j, ch]); }
+            else for (let i = 0; i < b.w; i++) { cells.push([b.x + i, b.y + b.h, ch], [b.x + i, b.y + b.h + 1, ch]); }
+            // only where the far side is a block too (so the wall joins two blocks, no stub)
+            const far = across ? [b.x + b.w + 2, b.y] : [b.x, b.y + b.h + 2];
+            if (!T[far[1]] || !FILLS.includes(T[far[1]][far[0]]) || (across && b.x + b.w + 1 >= half)) continue;
+            place(cells);
+        }
+        let filled = 0;
+        for (const r of T) for (const ch of r) if (FILLS.includes(ch)) filled++;
+        if (filled < 0.28 * TW * TH) continue;
         // into bricks; the garage and its ring of tyres
         const g = Array.from({ length: BH }, (_, by) => Array.from({ length: BW }, (_, bx) => T[by >> 1][bx >> 1]));
         for (let y = RING.y; y < RING.y + RING.h; y++) for (let x = RING.x; x < RING.x + RING.w; x++) g[y][x] = 't';

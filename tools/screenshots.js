@@ -509,6 +509,7 @@ if (which === 'street_siege') {
         await global.__app.start(ctx);
         const frames = async (ms, until) => { for (let t = 0; t < ms; t += 16) { now += 16; pilot(); await ctx.draw(); if (until && until()) return true; } return false; };
         clicks.BTN_PLAY();
+        g.startLevel(2);                            // (the docks)
         // the siege under way: four cars in, shots flying, a car just blown up
         g.car.shield = 1e9;                         // (the autopilot only defends; for the pictures it can't lose)
         await frames(90000, () => { return g.t > 20000 && g.cars.filter((e) => e.state === 'on').length >= 3 && g.shots.length >= 2 && g.killed >= 2; });

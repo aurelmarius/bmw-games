@@ -1,8 +1,8 @@
 {
   "id": "aurelm_street_siege",
   "title": "Street Siege",
-  "description": "Defend the M garage: cars storm an industrial yard at night and the M car stops them with its roof cannon. Tyre walls that fall apart, concrete, a canal, trees, oil, power-ups; drawn by the GPU renderer at 60 fps. Parked only.",
-  "version": "1.0.1",
+  "description": "Defend the M garage: cars storm the town by night and the M car stops them with its roof cannon. Five districts in turn (the yard, the docks, the warehouses, the parking, the scrapyard) laid out as mazes with wide streets: tyres, containers, warehouses, fences, pallets, wrecks, water, oil; power-ups; drawn by the GPU renderer at 60 fps. Parked only.",
+  "version": "1.1.0",
   "vendor": "custom",
   "loggingId": "OA9G",
   "iconGlyph": "siege",

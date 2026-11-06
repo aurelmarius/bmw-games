@@ -127,7 +127,8 @@ The car apps (Engine Care, Hybrid Cost) are in [aurelmarius/bmw-apps](https://gi
 ### 8. 🛡️ Street Siege (`aurelm_street_siege`)
 *Defend the M garage: cars storm an industrial yard at night, the M car stops them with its roof cannon. GPU renderer at 60 fps. Parked only.*
 
-* **The yard from above**: asphalt with painted bays, cracks, drains and pools of lamp light; stacks of race tyres (red and white) that fall apart brick by brick when shot, concrete barriers with hazard stripes, a canal (cars can't cross it, shots can), trees whose crowns hide the cars under them, oil patches that make a car slide on. Every level its own yard (symmetric, reachable everywhere).
+* **Five districts, in turn, level after level**: the **yard** (stacks of race tyres, concrete, a canal, trees), the **docks** (containers in stacks, a basin, rail tracks, fences), the **warehouses** (long roofs with skylights, pallets, bollards), the **parking** (rows of abandoned cars, islands with trees) and the **scrapyard** (heaps of tyres, wrecks, oil on the dirt). Each is a maze laid out like a town: blocks with streets two cars wide between them, some closed off into long walls and dead ends, a third to nearly half of the yard full; symmetric, every street reachable. A new layout every level.
+* **What's in the way**: tyres and pallets fall apart brick by brick when shot; concrete and wrecks only give way to the strongest cannon; containers and warehouses never; fences stop the cars but not the shots (fire through them); water stops cars, not shots; oil makes a car slide; trees hide the cars under them.
 * **Twenty cars a level**, four on the yard at most, in from the top: **hatchbacks** (fast), **vans**, **pick-ups** (they fire twice as often), **armoured SUVs** (four hits; they go rusty, then scorched). Three of them flash: hit, they leave a power-up.
 * **Power-ups**: CANNON (faster shots, then two at a time, then through concrete), SHIELD, NITRO (the others stand still), FORTRESS (concrete round the garage for a while), +1 CAR, EMP (every car on the yard gone).
 * **The garage** stands three hits (it smokes; two hits at once count as one); lost, or with no cars left, it's over. The M car's own shots don't hurt it.
@@ -136,7 +137,7 @@ The car apps (Engine Care, Hybrid Cost) are in [aurelmarius/bmw-apps](https://gi
 * **Settings**: difficulty (easy / normal / hard), automatic fire, your car's paint. Best score kept for each difficulty.
 * An original game in the genre of arena tank shooters: its own yards, cars and rules; no make's badge on any car.
 
-![Street Siege - the siege under way](docs/screenshots/street_siege-game.png)
+![Street Siege - the siege under way at the docks](docs/screenshots/street_siege-game.png)
 ![Street Siege - shield and NITRO on, a power-up on the yard](docs/screenshots/street_siege-power.png)
 <sub>Screenshots drawn by the app on a PC (`tools/screenshots.js`), played by an autopilot.</sub>
 
@@ -208,7 +209,7 @@ The games run smoothest with the **mgu-render** GPU renderer, installed from the
 1. Download the `<game>@<version>.tgz` files from [Releases](https://github.com/aurelmarius/bmw-games/releases).
 2. Copy the files onto a USB stick or build a USB repository:
    ```powershell
-   node mgu-install.js usb-repo E:\ aurelm_snake@1.0.0.tgz aurelm_track_defender@1.0.0.tgz aurelm_pit_wall@1.0.0.tgz aurelm_lucky_sevens@1.1.0.tgz aurelm_blackjack@1.0.1.tgz aurelm_solitaire@1.0.0.tgz aurelm_apex_chase@1.0.0.tgz aurelm_street_siege@1.0.1.tgz aurelm_pinball@1.0.1.tgz aurelm_ridge_duel@1.0.0.tgz aurelm_lap_record@1.0.0.tgz
+   node mgu-install.js usb-repo E:\ aurelm_snake@1.0.0.tgz aurelm_track_defender@1.0.0.tgz aurelm_pit_wall@1.0.0.tgz aurelm_lucky_sevens@1.1.0.tgz aurelm_blackjack@1.0.1.tgz aurelm_solitaire@1.0.0.tgz aurelm_apex_chase@1.0.0.tgz aurelm_street_siege@1.1.0.tgz aurelm_pinball@1.0.1.tgz aurelm_ridge_duel@1.0.0.tgz aurelm_lap_record@1.0.0.tgz
    ```
 3. Insert the USB drive into your car and install from the **USB** page of the Store.
 
@@ -222,7 +223,7 @@ Copy the package to the head unit and run `mgu-deploy.sh`:
 /var/opt/mgu-deploy/mgu-deploy.sh install --artifact aurelm_blackjack@1.0.1.tgz --yes
 /var/opt/mgu-deploy/mgu-deploy.sh install --artifact aurelm_solitaire@1.0.0.tgz --yes
 /var/opt/mgu-deploy/mgu-deploy.sh install --artifact aurelm_apex_chase@1.0.0.tgz --yes
-/var/opt/mgu-deploy/mgu-deploy.sh install --artifact aurelm_street_siege@1.0.1.tgz --yes
+/var/opt/mgu-deploy/mgu-deploy.sh install --artifact aurelm_street_siege@1.1.0.tgz --yes
 /var/opt/mgu-deploy/mgu-deploy.sh install --artifact aurelm_pinball@1.0.1.tgz --yes
 /var/opt/mgu-deploy/mgu-deploy.sh install --artifact aurelm_ridge_duel@1.0.0.tgz --yes
 /var/opt/mgu-deploy/mgu-deploy.sh install --artifact aurelm_lap_record@1.0.0.tgz --yes

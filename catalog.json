@@ -158,17 +158,17 @@
     {
       "id": "aurelm_street_siege",
       "kind": "app",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "title": "Street Siege",
       "description": "Defend the M garage: cars storm an industrial yard at night and the M car stops them with its roof cannon. Tyre walls that fall apart, concrete, a canal, trees, oil, power-ups; drawn by the GPU renderer at 60 fps. Parked only.",
       "mguHmi": [
         "ID7"
       ],
       "artifact": {
-        "name": "aurelm_street_siege@1.0.0.tgz",
-        "size": 571843,
-        "sha256": "de7c99afa830479d6a5170b1e386316a2d849a9fd77874b16a499cd17e2cc479",
-        "url": "packages/aurelm_street_siege@1.0.0.tgz"
+        "name": "aurelm_street_siege@1.0.1.tgz",
+        "size": 572025,
+        "sha256": "280e5fda69f6285830470f93dacb2b463c5bbdbc0ed3e363dcd195af51fc0456",
+        "url": "packages/aurelm_street_siege@1.0.1.tgz"
       },
       "uninstallable": true
     },

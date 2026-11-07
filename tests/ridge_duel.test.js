@@ -44,6 +44,16 @@ test('the ground: inside the board, smooth enough to drive; a shell bites a roun
     assert.ok(gr.burnt[500] && gr.burnt[530] && !gr.burnt[560]);
 });
 
+test('every ground has its own id (a new match, a round again: never the drawing of the last one)', () => {
+    const a = new Game({ rng: seeded(1) }), b = new Game({ rng: seeded(1) });
+    assert.notStrictEqual(a.ground.id, b.ground.id);
+    const id = a.ground.id, v = a.ground.ver;
+    a.newRound();
+    assert.notStrictEqual(a.ground.id, id);
+    a.ground.carve(300, 300, 20);
+    assert.strictEqual(a.ground.ver, v + 1);
+});
+
 test('a shell flies as it should: range v^2 sin 2a / g on the flat, no wind', () => {
     const g = flat();
     g.cars[1].x = W - 41; g.cars[1].settle(g.ground);                 // (out of the way)

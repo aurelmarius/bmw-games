@@ -52,8 +52,10 @@ function seeded(s) { s = (s >>> 0) || 1; return () => { s = (s * 1103515245 + 12
 function gauss(rng) { let u = 0, v = 0; while (!u) u = rng(); while (!v) v = rng(); return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v); }
 
 /* ---------- the ground ---------- */
+let groundSeq = 0;                           // every ground its own id (its drawing is cached under it)
 class Ground {
     constructor(rng) {
+        this.id = ++groundSeq;
         this.h = new Float32Array(W);
         this.burnt = new Uint8Array(W);
         this.ver = 1;

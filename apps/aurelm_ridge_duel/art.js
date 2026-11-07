@@ -73,7 +73,8 @@ function skyLayer() {
 
 /* ---------- the ground: a gradient column for every x, grass on top, strata, firs ---------- */
 function groundLayer(g, round) {
-    return lay('rd-ground|' + round + '|' + g.ground.ver, BOARD.w, BOARD.h, (c) => {
+    // (under the ground's own id: a new match, or a round played again, starts at round 1 / the same round)
+    return lay('rd-ground|' + g.ground.id + '|' + g.ground.ver, BOARD.w, BOARD.h, (c) => {
         const gr = g.ground, H = BOARD.h;
         const STOPS = [[0, '#5a4630'], [0.18, '#4a3824'], [0.5, '#33261a'], [1, '#1e160f']];
         for (let x = 0; x < BOARD.w; x++) {

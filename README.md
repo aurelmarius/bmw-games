@@ -205,6 +205,8 @@ The games run smoothest with the **mgu-render** GPU renderer, installed from the
 
 **Installed a game from v1.1.3 or older?** The games' ids now carry the `aurelm_` prefix (`aurelm_snake`, …), as the Store's publishing guide asks, so the Store sees them as new apps: install them again, then remove the old ones (without the prefix) from the Store. Best scores, credits and statistics start afresh.
 
+Publishing a release (its draft's *Publish release* button or the *Publish Release* workflow) turns every older release into a pre-release (`tools/retire_older_releases.sh`): the Store reads every published release, so a game renamed or moved would otherwise show twice.
+
 ### Method 2: Via USB Stick
 1. Download the `<game>@<version>.tgz` files from [Releases](https://github.com/aurelmarius/bmw-games/releases).
 2. Copy the files onto a USB stick or build a USB repository:
